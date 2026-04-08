@@ -1,0 +1,11 @@
+# Cache
+.cache/
+
+# Build
+build/
+dist/
+target/
+
+# Environment
+.env*
+!.env.example

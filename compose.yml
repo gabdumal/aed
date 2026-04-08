@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  dev_environment:
+    build:
+      context: .devcontainer
+      dockerfile: Dockerfile
+    user: root
+    volumes:
+      # Mount the project root
+      - .:/workspace:Z
+    working_dir: /workspace
+    env_file: .env
+    # Keep container running
+    command: sleep infinity
+    networks:
+      - default

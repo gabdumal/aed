@@ -1,0 +1,32 @@
+{
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Gruntfuggly.todo-tree",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-containers",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.cpptools-themes",
+        "ms-vscode.cpptools",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker-portuguese-brazilian",
+        "streetsidesoftware.code-spell-checker",
+        "vadimcn.vscode-lldb"
+      ],
+      "settings": {
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "dockerComposeFile": "../compose.yml",
+  "name": "aed",
+  "remoteUser": "root",
+  "service": "dev_environment",
+  "workspaceFolder": "/workspace"
+}

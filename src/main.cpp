@@ -1,10 +1,7 @@
-#include "contiguousList.hpp"
-
-constexpr unsigned int maximum_size = 1 << 6;
+#include "testContiguousList.hpp"
 
 int main() {
-    auto contiguous_list = ContiguousList(maximum_size);
-    contiguous_list.insert(0, 1);
+    TestContiguousList::test();
 
     return 0;
 }

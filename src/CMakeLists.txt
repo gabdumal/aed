@@ -4,10 +4,11 @@ add_executable(aed
 )
 
 ## Directories
-add_subdirectory(contiguousList)
+add_subdirectory(lib)
+add_subdirectory(test)
 
 ## Link libraries
 target_link_libraries(aed
     PUBLIC
-        contiguousList
+        testContiguousList
 )

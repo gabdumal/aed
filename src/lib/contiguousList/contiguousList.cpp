@@ -16,10 +16,15 @@ ContiguousList::~ContiguousList() {
 void ContiguousList::ensureIsInsideRange(unsigned int index) {
     if (index < 0 ||
         index > this->quantity_of_items) {
-        throw std::out_of_range(
-            "Index should be between 0 and " +
-            std::to_string(this->quantity_of_items) +
-            ".");
+        std::string message = "Index should be 0.";
+
+        if (this->quantity_of_items > 0) {
+            message = "Index should be between 0 and " +
+                      std::to_string(this->quantity_of_items) +
+                      ".";
+        }
+
+        throw std::out_of_range(message);
     }
 }
 

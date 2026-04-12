@@ -1,5 +1,6 @@
 #include "contiguousList.hpp"
 
+#include <print>
 #include <stdexcept>
 
 ContiguousList::ContiguousList(unsigned int maximum_size) {
@@ -41,10 +42,29 @@ void ContiguousList::ensureIsNotFull() {
     }
 }
 
+bool ContiguousList::willIncludeNewItem(unsigned int index) {
+    return index == this->quantity_of_items;
+}
+
 void ContiguousList::insert(unsigned int index, Content content) {
     this->ensureIsInsideRange(index);
-    this->ensureIsNotFull();
 
-    this->items[quantity_of_items] = content;
-    this->quantity_of_items++;
+    if (this->willIncludeNewItem(index)) {
+        this->ensureIsNotFull();
+        this->quantity_of_items++;
+    }
+
+    this->items[index] = content;
+}
+
+void ContiguousList::print() {
+    unsigned int index = 0;
+    while (index + 1 < this->quantity_of_items) {
+        std::print("{}, ", this->items[index]);
+        index++;
+    }
+    if (index < this->quantity_of_items && index >= 0) {
+        std::print("{}", this->items[index]);
+    }
+    std::println();
 }

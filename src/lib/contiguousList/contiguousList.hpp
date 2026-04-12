@@ -12,6 +12,7 @@ class ContiguousList {
         void ensureIsInsideRange(unsigned int index);
         bool isFull();
         void ensureIsNotFull();
+        bool willIncludeNewItem(unsigned int index);
 
     public:
         ContiguousList(unsigned int maximum_size);
@@ -19,6 +20,7 @@ class ContiguousList {
         ~ContiguousList();
 
         void insert(unsigned int index, Content content);
+        void print();
 };
 
 #endif  // __CONTIGUOUS_LIST_HPP__

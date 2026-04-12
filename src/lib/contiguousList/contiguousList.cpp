@@ -14,23 +14,22 @@ ContiguousList::~ContiguousList() {
     delete[] this->items;
 }
 
-void ContiguousList::ensureIsInsideRange(unsigned int index) {
-    if (index < 0 ||
-        index > this->quantity_of_items) {
-        std::string message = "Index should be 0.";
-
-        if (this->quantity_of_items > 0) {
-            message = "Index should be between 0 and " +
-                      std::to_string(this->quantity_of_items) +
-                      ".";
-        }
-
-        throw std::out_of_range(message);
+void ContiguousList::ensureIsInsideRangeToInsert(unsigned int index) {
+    if (index > this->quantity_of_items) {
+        throw std::out_of_range(
+            "Index should be at least 0 and at most " +
+            std::to_string(this->quantity_of_items) +
+            ".");
     }
 }
 
-bool ContiguousList::isFull() {
-    return this->quantity_of_items == this->maximum_size;
+void ContiguousList::ensureIsInsideRangeToRemove(unsigned int index) {
+    if (index >= this->quantity_of_items) {
+        throw std::out_of_range(
+            "Index should be at least 0 and below " +
+            std::to_string(this->quantity_of_items) +
+            ".");
+    }
 }
 
 void ContiguousList::ensureIsNotFull() {
@@ -38,8 +37,16 @@ void ContiguousList::ensureIsNotFull() {
         throw std::length_error(
             "List is already full, with " +
             std::to_string(this->quantity_of_items) +
-            " elements.");
+            " items.");
     }
+}
+
+bool ContiguousList::isEmpty() {
+    return this->quantity_of_items == 0;
+}
+
+bool ContiguousList::isFull() {
+    return this->quantity_of_items == this->maximum_size;
 }
 
 bool ContiguousList::willIncludeNewItem(unsigned int index) {
@@ -47,7 +54,7 @@ bool ContiguousList::willIncludeNewItem(unsigned int index) {
 }
 
 void ContiguousList::insert(unsigned int index, Content content) {
-    this->ensureIsInsideRange(index);
+    this->ensureIsInsideRangeToInsert(index);
 
     if (this->willIncludeNewItem(index)) {
         this->ensureIsNotFull();
@@ -67,4 +74,12 @@ void ContiguousList::print() {
         std::print("{}", this->items[index]);
     }
     std::println();
+}
+
+void ContiguousList::remove(unsigned int index) {
+    this->ensureIsInsideRangeToInsert(index);
+
+    if (this->isEmpty()) {
+        return;
+    }
 }

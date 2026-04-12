@@ -5,15 +5,39 @@
 
 #include "contiguousList.hpp"
 
-void TestContiguousList::test() {
-    constexpr unsigned int maximum_size = 1 << 2;
+void listWithMaximumSizeOfZero() {
+    std::println("TEST: maximum size of 0.");
+    std::println();
+
+    constexpr unsigned int maximum_size = 0;
 
     auto contiguous_list = ContiguousList(maximum_size);
     std::print("Items: ");
     contiguous_list.print();
 
     try {
-        contiguous_list.insert(-1, 4);
+        contiguous_list.insert(0, 4);
+    } catch (std::length_error exception) {
+        std::println("Exception: {}", exception.what());
+    }
+    std::print("Items: ");
+    contiguous_list.print();
+
+    std::println();
+}
+
+void listWithMaximumSizeOfFour() {
+    std::println("TEST: maximum size of 4.");
+    std::println();
+
+    constexpr unsigned int maximum_size = 4;
+
+    auto contiguous_list = ContiguousList(maximum_size);
+    std::print("Items: ");
+    contiguous_list.print();
+
+    try {
+        contiguous_list.insert((unsigned int) -1, 4);
     } catch (std::out_of_range exception) {
         std::println("Exception: {}", exception.what());
     }
@@ -47,4 +71,16 @@ void TestContiguousList::test() {
     }
     std::print("Items: ");
     contiguous_list.print();
+
+    std::println();
+}
+
+void TestContiguousList::test() {
+    std::println("TESTS: CONTIGUOUS LIST");
+    std::println();
+
+    listWithMaximumSizeOfZero();
+    listWithMaximumSizeOfFour();
+
+    std::println();
 }

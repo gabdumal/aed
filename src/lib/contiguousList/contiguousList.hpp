@@ -9,10 +9,12 @@ class ContiguousList {
         unsigned int quantity_of_items;
         Content *items;
 
-        void ensureIsInsideRange(unsigned int index);
+        bool isEmpty();
         bool isFull();
-        void ensureIsNotFull();
         bool willIncludeNewItem(unsigned int index);
+        void ensureIsInsideRangeToInsert(unsigned int index);
+        void ensureIsInsideRangeToRemove(unsigned int index);
+        void ensureIsNotFull();
 
     public:
         ContiguousList(unsigned int maximum_size);
@@ -21,6 +23,7 @@ class ContiguousList {
 
         void insert(unsigned int index, Content content);
         void print();
+        void remove(unsigned int index);
 };
 
 #endif  // __CONTIGUOUS_LIST_HPP__

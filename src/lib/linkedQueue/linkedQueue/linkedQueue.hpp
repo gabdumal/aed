@@ -8,8 +8,8 @@
 
 class LinkedQueue {
     private:
-        LinkedQueueNode *head;
-        LinkedQueueNode *tail;
+        LinkedQueueNode *head_node;
+        LinkedQueueNode *tail_node;
 
     public:
         LinkedQueue();
@@ -18,9 +18,11 @@ class LinkedQueue {
 
         bool contains(LinkedQueueNode::Content content);
         bool isEmpty();
+
         std::expected<LinkedQueueNode::Content, std::string> dequeue();
-        std::expected<void, std::string> remove();
-        void insert(LinkedQueueNode::Content content);
+        std::expected<LinkedQueueNode::Content, std::string> peek();
+        void enqueue(LinkedQueueNode::Content content);
+
         void print();
 };
 

@@ -7,15 +7,15 @@ class LinkedQueueNode {
 
     private:
         Content content;
-        LinkedQueueNode *next;
+        LinkedQueueNode *node_behind;
 
     public:
-        LinkedQueueNode(Content content);
+        LinkedQueueNode(Content content, LinkedQueueNode *node_ahead);
 
         ~LinkedQueueNode();
 
-        Content get();
-        void set(Content content);
+        Content getContent();
+        LinkedQueueNode *getNodeBehind();
 };
 
 #endif  // __LINKED_QUEUE_NODE_HPP__

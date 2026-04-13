@@ -3,43 +3,89 @@
 #include <expected>
 #include <print>
 
+#include "linkedQueueNode.hpp"
+
+constexpr std::string message_when_list_is_empty = "List is empty.";
+
 LinkedQueue::LinkedQueue() {
-    this->head = nullptr;
-    this->tail = nullptr;
+    this->head_node = nullptr;
+    this->tail_node = nullptr;
 }
 
 LinkedQueue::~LinkedQueue() {
-    // TODO
+    auto current_node = this->head_node;
+
+    while (current_node != nullptr) {
+        auto node_behind = current_node->getNodeBehind();
+        delete current_node;
+        current_node = node_behind;
+    }
+
+    this->head_node = nullptr;
+    this->tail_node = nullptr;
 }
 
 bool LinkedQueue::isEmpty() {
-    return this->head == nullptr;
+    return this->head_node == nullptr;
 }
 
-void LinkedQueue::insert(LinkedQueueNode::Content content) {
-    // TODO
+void LinkedQueue::enqueue(LinkedQueueNode::Content content) {
+    auto new_node =
+        new LinkedQueueNode(content, this->tail_node);
+
+    this->tail_node = new_node;
+    if (head_node == nullptr) {
+        this->head_node = new_node;
+    }
 }
 
 void LinkedQueue::print() {
-    // TODO
+    std::print("Head: ");
+
+    auto current_node = this->head_node;
+    while (current_node != nullptr) {
+        std::print("{}, ", current_node->getContent());
+        current_node = current_node->getNodeBehind();
+    }
+
     std::println();
 }
 
-std::expected<void, std::string> LinkedQueue::remove() {
+std::expected<LinkedQueueNode::Content, std::string> LinkedQueue::peek() {
     if (this->isEmpty()) {
-        return std::unexpected("List is empty.");
+        return std::unexpected(message_when_list_is_empty);
     }
 
-    // TODO
-
-    return {};
+    return this->head_node->getContent();
 }
 
 std::expected<LinkedQueueNode::Content, std::string> LinkedQueue::dequeue() {
-    // TODO
+    if (this->isEmpty()) {
+        return std::unexpected(message_when_list_is_empty);
+    }
+
+    auto content = this->head_node->getContent();
+    auto node_behind_head_node = this->head_node->getNodeBehind();
+
+    delete this->head_node;
+    this->head_node = node_behind_head_node;
+
+    if (this->head_node == nullptr) {
+        this->tail_node = nullptr;
+    }
+
+    return content;
 }
 
 bool LinkedQueue::contains(LinkedQueueNode::Content content) {
-    // TODO
+    auto current_node = this->head_node;
+
+    while (current_node != nullptr) {
+        if (current_node->getContent() == content) {
+            return true;
+        }
+        current_node = current_node->getNodeBehind();
+    }
+
     return false;
 }

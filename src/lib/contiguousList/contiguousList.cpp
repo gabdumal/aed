@@ -14,11 +14,17 @@ ContiguousList::~ContiguousList() {
     delete[] this->items;
 }
 
-bool ContiguousList::isInsideRangeToInsert(unsigned int index) {
+bool ContiguousList::isInsideRangeOrIsNextToLastFilledPosition(unsigned int index) {
     return index <= this->quantity_of_items;
 }
 
-bool ContiguousList::isInsideRangeToRemove(unsigned int index) {
+std::string ContiguousList::getMessageForIndexOutsideRange() {
+    return "Index should be at least 0 and below " +
+           std::to_string(this->quantity_of_items) +
+           ".";
+}
+
+bool ContiguousList::isInsideRange(unsigned int index) {
     return index < this->quantity_of_items;
 }
 
@@ -31,7 +37,7 @@ bool ContiguousList::isFull() {
 }
 
 std::expected<void, std::string> ContiguousList::insert(unsigned int index, Content content) {
-    if (!this->isInsideRangeToInsert(index)) {
+    if (!this->isInsideRangeOrIsNextToLastFilledPosition(index)) {
         return std::unexpected(
             "Index should be at least 0 and at most " +
             std::to_string(this->quantity_of_items) +
@@ -74,11 +80,8 @@ std::expected<void, std::string> ContiguousList::remove(unsigned int index) {
         return std::unexpected("List is empty.");
     }
 
-    if (!this->isInsideRangeToRemove(index)) {
-        return std::unexpected(
-            "Index should be at least 0 and below " +
-            std::to_string(this->quantity_of_items) +
-            ".");
+    if (!this->isInsideRange(index)) {
+        return std::unexpected(this->getMessageForIndexOutsideRange());
     }
 
     this->quantity_of_items--;
@@ -88,4 +91,24 @@ std::expected<void, std::string> ContiguousList::remove(unsigned int index) {
     }
 
     return {};
+}
+
+std::expected<ContiguousList::Content, std::string> ContiguousList::get(unsigned int index) {
+    if (!this->isInsideRange(index)) {
+        return std::unexpected(this->getMessageForIndexOutsideRange());
+    }
+
+    return this->items[index];
+}
+
+bool ContiguousList::contains(Content content) {
+    for (
+        unsigned int current_index = 0;
+        current_index < this->quantity_of_items;
+        current_index++) {
+        if (this->items[current_index] == content) {
+            return true;
+        }
+    }
+    return false;
 }

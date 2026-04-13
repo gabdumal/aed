@@ -5,6 +5,6 @@ namespace TestContiguousList {
 
     void test();
 
-}
+}  // namespace TestContiguousList
 
 #endif  // __TEST_CONTIGUOUS_LIST_HPP__

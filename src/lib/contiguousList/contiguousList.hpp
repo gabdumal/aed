@@ -10,23 +10,25 @@ class ContiguousList {
 
     private:
         unsigned int maximum_size;
-
         unsigned int quantity_of_items;
         Content *items;
 
-        bool isInsideRangeToInsert(unsigned int index);
-        bool isInsideRangeToRemove(unsigned int index);
+        bool isInsideRange(unsigned int index);
+        bool isInsideRangeOrIsNextToLastFilledPosition(unsigned int index);
+        std::string getMessageForIndexOutsideRange();
 
     public:
         ContiguousList(unsigned int maximum_size);
 
         ~ContiguousList();
 
+        bool contains(Content index);
         bool isEmpty();
         bool isFull();
+        std::expected<Content, std::string> get(unsigned int index);
         std::expected<void, std::string> insert(unsigned int index, Content content);
-        void print();
         std::expected<void, std::string> remove(unsigned int index);
+        void print();
 };
 
 #endif  // __CONTIGUOUS_LIST_HPP__

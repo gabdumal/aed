@@ -22,7 +22,7 @@ class ContiguousList {
 
         ~ContiguousList();
 
-        bool contains(Content index);
+        bool contains(Content content);
         bool isEmpty();
         bool isFull();
         std::expected<Content, std::string> get(unsigned int index);

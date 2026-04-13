@@ -6,7 +6,9 @@ LinkedQueueNode::LinkedQueueNode(LinkedQueueNode::Content content, LinkedQueueNo
     this->content = content;
     this->node_behind = nullptr;
 
-    node_ahead->node_behind = this;
+    if (node_ahead != nullptr) {
+        node_ahead->node_behind = this;
+    }
 }
 
 LinkedQueueNode::~LinkedQueueNode() {

@@ -4,20 +4,20 @@
 
 #include "contiguousList.hpp"
 
-void printItem(ContiguousList::Content content) {
+void TestContiguousList::printItem(ContiguousList::Content content) {
     std::println("Item: {}", content);
 }
 
-void printItems(ContiguousList &contiguous_list) {
+void TestContiguousList::printItems(ContiguousList &contiguous_list) {
     std::print("Items: ");
     contiguous_list.print();
 }
 
-void printError(const std::string &error) {
+void TestContiguousList::printError(const std::string &error) {
     std::println("Error: {}", error);
 }
 
-void testContains(ContiguousList &contiguous_list, ContiguousList::Content content) {
+void TestContiguousList::testContains(ContiguousList &contiguous_list, ContiguousList::Content content) {
     std::println("Contains {}?", content);
     auto result = contiguous_list.contains(content);
     if (result) {
@@ -28,7 +28,7 @@ void testContains(ContiguousList &contiguous_list, ContiguousList::Content conte
     std::println();
 }
 
-void testGet(ContiguousList &contiguous_list, unsigned int index) {
+void TestContiguousList::testGet(ContiguousList &contiguous_list, unsigned int index) {
     std::println("Get at {}.", index);
     auto result = contiguous_list.get(index);
     if (!result) {
@@ -39,7 +39,7 @@ void testGet(ContiguousList &contiguous_list, unsigned int index) {
     std::println();
 }
 
-void testInsert(ContiguousList &contiguous_list, unsigned int index, ContiguousList::Content content) {
+void TestContiguousList::testInsert(ContiguousList &contiguous_list, unsigned int index, ContiguousList::Content content) {
     std::println("Insert {} at {}.", content, index);
     auto result = contiguous_list.insert(index, content);
     if (!result) {
@@ -50,7 +50,7 @@ void testInsert(ContiguousList &contiguous_list, unsigned int index, ContiguousL
     std::println();
 }
 
-void testRemove(ContiguousList &contiguous_list, unsigned int index) {
+void TestContiguousList::testRemove(ContiguousList &contiguous_list, unsigned int index) {
     std::println("Remove at {}.", index);
     auto result = contiguous_list.remove(index);
     if (!result) {
@@ -61,7 +61,7 @@ void testRemove(ContiguousList &contiguous_list, unsigned int index) {
     std::println();
 }
 
-void listWithMaximumSizeOfZero() {
+void TestContiguousList::testListWithMaximumSizeOfZero() {
     std::println("## TEST: maximum size of 0.");
     std::println();
 
@@ -77,7 +77,7 @@ void listWithMaximumSizeOfZero() {
     std::println();
 }
 
-void listWithMaximumSizeOfFour() {
+void TestContiguousList::testListWithMaximumSizeOfFour() {
     std::println("## TEST: maximum size of 4.");
     std::println();
 
@@ -129,8 +129,8 @@ void TestContiguousList::test() {
     std::println("# TESTS: CONTIGUOUS LIST");
     std::println();
 
-    listWithMaximumSizeOfZero();
-    listWithMaximumSizeOfFour();
+    TestContiguousList::testListWithMaximumSizeOfZero();
+    TestContiguousList::testListWithMaximumSizeOfFour();
 
     std::println();
 }

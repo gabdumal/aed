@@ -1,13 +1,16 @@
 #include "testContiguousList.hpp"
 
 #include <print>
-#include <stdexcept>
 
 #include "contiguousList.hpp"
 
 void printItems(ContiguousList &contiguous_list) {
     std::print("Items: ");
     contiguous_list.print();
+}
+
+void printError(const std::string &error) {
+    std::println("Error: {}", error);
 }
 
 void listWithMaximumSizeOfZero() {
@@ -19,11 +22,10 @@ void listWithMaximumSizeOfZero() {
     auto contiguous_list = ContiguousList(maximum_size);
     printItems(contiguous_list);
 
-    try {
-        contiguous_list.insert(0, 4);
-    } catch (std::length_error exception) {
-        std::println("Exception: {}", exception.what());
+    if (auto result = contiguous_list.insert(0, 4); !result) {
+        printError(result.error());
     }
+
     printItems(contiguous_list);
 
     std::println();
@@ -38,10 +40,13 @@ void listWithMaximumSizeOfFour() {
     auto contiguous_list = ContiguousList(maximum_size);
     printItems(contiguous_list);
 
-    try {
-        contiguous_list.insert((unsigned int) -1, 4);
-    } catch (std::out_of_range exception) {
-        std::println("Exception: {}", exception.what());
+    if (auto result = contiguous_list.remove(0); !result) {
+        printError(result.error());
+    }
+    printItems(contiguous_list);
+
+    if (auto result = contiguous_list.insert((unsigned int) -1, 4); !result) {
+        printError(result.error());
     }
     printItems(contiguous_list);
 
@@ -57,13 +62,8 @@ void listWithMaximumSizeOfFour() {
     contiguous_list.insert(2, 3);
     printItems(contiguous_list);
 
-    contiguous_list.insert(3, 4);
-    printItems(contiguous_list);
-
-    try {
-        contiguous_list.insert(4, 5);
-    } catch (std::length_error exception) {
-        std::println("Exception: {}", exception.what());
+    if (auto result = contiguous_list.insert(3, 4); !result) {
+        printError(result.error());
     }
     printItems(contiguous_list);
 
@@ -76,7 +76,7 @@ void listWithMaximumSizeOfFour() {
     contiguous_list.remove(0);
     printItems(contiguous_list);
 
-    contiguous_list.insert(3, 5);
+    contiguous_list.insert(2, -3);
     printItems(contiguous_list);
 
     std::println();

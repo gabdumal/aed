@@ -77,9 +77,15 @@ void ContiguousList::print() {
 }
 
 void ContiguousList::remove(unsigned int index) {
-    this->ensureIsInsideRangeToInsert(index);
+    this->ensureIsInsideRangeToRemove(index);
 
     if (this->isEmpty()) {
         return;
+    }
+
+    this->quantity_of_items--;
+
+    for (unsigned int current_index = index; current_index < this->quantity_of_items; current_index++) {
+        this->items[current_index] = this->items[current_index + 1];
     }
 }

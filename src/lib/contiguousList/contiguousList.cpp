@@ -3,25 +3,49 @@
 #include <expected>
 #include <print>
 
-ContiguousList::ContiguousList(unsigned int maximum_size) {
+std::string getMessageForIndexNotWithin(int maximum) {
+    return "Index should be at least 0 and below " +
+           std::to_string(maximum) +
+           ".";
+}
+
+std::string getMessageForIndexNotWithinNorImmediatelyAfter(int maximum) {
+    return "Index should be at least 0 and at most " +
+           std::to_string(maximum) +
+           ".";
+}
+
+std::string getMessageForEmptyList() {
+    return "List is empty.";
+}
+
+std::string getMessageForFullList(int quantity_of_items) {
+    return "List is already full, with " +
+           std::to_string(quantity_of_items) +
+           " items.";
+}
+
+ContiguousList::ContiguousList(int maximum_size) {
+    if (maximum_size < 1) {
+        throw(std::string("Maximum size should be at least 1."));
+    }
+
     this->maximum_size = maximum_size;
     this->quantity_of_items = 0;
 
-    this->items = new Content[maximum_size];
+    this->items = new Content[(unsigned int) maximum_size];
 }
 
 ContiguousList::~ContiguousList() {
     delete[] this->items;
 }
 
-std::string ContiguousList::getMessageForIndexOutsideRange() {
-    return "Index should be at least 0 and below " +
-           std::to_string(this->quantity_of_items) +
-           ".";
+bool ContiguousList::isWithin(int index) {
+    return index >= 0 && index < this->quantity_of_items;
 }
 
-bool ContiguousList::isInsideRange(unsigned int index) {
-    return index < this->quantity_of_items;
+bool ContiguousList::isWithinOrImmediatelyAfter(int index) {
+    return index >= 0 && index <= this->quantity_of_items;
 }
 
 bool ContiguousList::isEmpty() {
@@ -32,22 +56,30 @@ bool ContiguousList::isFull() {
     return this->quantity_of_items == this->maximum_size;
 }
 
-std::expected<void, std::string> ContiguousList::insert(unsigned int index, Content content) {
-    if (index > this->quantity_of_items) {
+bool ContiguousList::contains(Content content) {
+    for (
+        int current_index = 0;
+        current_index < this->quantity_of_items;
+        current_index++) {
+        if (this->items[current_index] == content) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::expected<void, std::string> ContiguousList::insert(int index, Content content) {
+    if (!this->isWithinOrImmediatelyAfter(index)) {
         return std::unexpected(
-            "Index should be at least 0 and at most " +
-            std::to_string(this->quantity_of_items) +
-            ".");
+            getMessageForIndexNotWithinNorImmediatelyAfter(this->quantity_of_items));
     }
 
     if (this->isFull()) {
         return std::unexpected(
-            "List is already full, with " +
-            std::to_string(this->quantity_of_items) +
-            " items.");
+            getMessageForFullList(this->quantity_of_items));
     }
 
-    for (unsigned int current_index = this->quantity_of_items;
+    for (int current_index = this->quantity_of_items;
          current_index > index;
          current_index--) {
         this->items[current_index] = this->items[current_index - 1];
@@ -59,8 +91,55 @@ std::expected<void, std::string> ContiguousList::insert(unsigned int index, Cont
     return {};
 }
 
+std::expected<void, std::string> ContiguousList::insertAtEnd(Content content) {
+    auto index = this->quantity_of_items;
+    return this->insert(index, content);
+}
+
+std::expected<void, std::string> ContiguousList::remove(int index) {
+    if (this->isEmpty()) {
+        return std::unexpected(getMessageForEmptyList());
+    }
+
+    if (!this->isWithin(index)) {
+        return std::unexpected(getMessageForIndexNotWithin(this->quantity_of_items));
+    }
+
+    this->quantity_of_items--;
+
+    for (int current_index = index;
+         current_index < this->quantity_of_items;
+         current_index++) {
+        this->items[current_index] = this->items[current_index + 1];
+    }
+
+    return {};
+}
+
+std::expected<void, std::string> ContiguousList::removeAtEnd() {
+    auto index = this->quantity_of_items - 1;
+    return this->remove(index);
+}
+
+std::expected<ContiguousList::Content, std::string> ContiguousList::getContent(int index) {
+    if (this->isEmpty()) {
+        return std::unexpected(getMessageForEmptyList());
+    }
+
+    if (!this->isWithin(index)) {
+        return std::unexpected(getMessageForIndexNotWithin(this->quantity_of_items));
+    }
+
+    return this->items[index];
+}
+
+std::expected<ContiguousList::Content, std::string> ContiguousList::getContentAtEnd() {
+    auto index = this->quantity_of_items - 1;
+    return this->getContent(index);
+}
+
 void ContiguousList::print() {
-    unsigned int index = 0;
+    int index = 0;
     while (index + 1 < this->quantity_of_items) {
         std::print("{}, ", this->items[index]);
         index++;
@@ -69,42 +148,4 @@ void ContiguousList::print() {
         std::print("{}", this->items[index]);
     }
     std::println();
-}
-
-std::expected<void, std::string> ContiguousList::remove(unsigned int index) {
-    if (this->isEmpty()) {
-        return std::unexpected("List is empty.");
-    }
-
-    if (!this->isInsideRange(index)) {
-        return std::unexpected(this->getMessageForIndexOutsideRange());
-    }
-
-    this->quantity_of_items--;
-
-    for (unsigned int current_index = index; current_index < this->quantity_of_items; current_index++) {
-        this->items[current_index] = this->items[current_index + 1];
-    }
-
-    return {};
-}
-
-std::expected<ContiguousList::Content, std::string> ContiguousList::getContent(unsigned int index) {
-    if (!this->isInsideRange(index)) {
-        return std::unexpected(this->getMessageForIndexOutsideRange());
-    }
-
-    return this->items[index];
-}
-
-bool ContiguousList::contains(Content content) {
-    for (
-        unsigned int current_index = 0;
-        current_index < this->quantity_of_items;
-        current_index++) {
-        if (this->items[current_index] == content) {
-            return true;
-        }
-    }
-    return false;
 }

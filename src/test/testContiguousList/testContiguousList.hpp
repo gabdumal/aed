@@ -6,9 +6,15 @@
 class TestContiguousList {
     private:
         static void testContains(ContiguousList &contiguous_list, ContiguousList::Content content);
-        static void testGet(ContiguousList &contiguous_list, unsigned int index);
-        static void testInsert(ContiguousList &contiguous_list, unsigned int index, ContiguousList::Content content);
-        static void testRemove(ContiguousList &contiguous_list, unsigned int index);
+
+        static void testInsert(ContiguousList &contiguous_list, int index, ContiguousList::Content content);
+        static void testInsertAtEnd(ContiguousList &contiguous_list, ContiguousList::Content content);
+
+        static void testRemove(ContiguousList &contiguous_list, int index);
+        static void testRemoveAtEnd(ContiguousList &contiguous_list);
+
+        static void testGetContent(ContiguousList &contiguous_list, int index);
+        static void testGetContentAtEnd(ContiguousList &contiguous_list);
 
         static void printItem(ContiguousList::Content content);
         static void printItems(ContiguousList &contiguous_list);
@@ -18,8 +24,7 @@ class TestContiguousList {
         static void testListWithMaximumSizeOfZero();
 
     public:
-        static void
-            test();
+        static void test();
 };
 
 #endif  // __TEST_CONTIGUOUS_LIST_HPP__

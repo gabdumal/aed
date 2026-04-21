@@ -9,25 +9,31 @@ class ContiguousList {
         typedef int Content;
 
     private:
-        unsigned int maximum_size;
-        unsigned int quantity_of_items;
+        int maximum_size;
+        int quantity_of_items;
         Content *items;
 
-        bool isInsideRange(unsigned int index);
-        std::string getMessageForIndexOutsideRange();
+        bool isWithin(int index);
+        bool isWithinOrImmediatelyAfter(int index);
 
     public:
-        ContiguousList(unsigned int maximum_size);
+        ContiguousList(int maximum_size);
 
         ~ContiguousList();
 
-        bool contains(Content content);
         bool isEmpty();
         bool isFull();
+        bool contains(Content content);
 
-        std::expected<Content, std::string> getContent(unsigned int index);
-        std::expected<void, std::string> insert(unsigned int index, Content content);
-        std::expected<void, std::string> remove(unsigned int index);
+        std::expected<void, std::string> insert(int index, Content content);
+        std::expected<void, std::string> insertAtEnd(Content content);
+
+        std::expected<void, std::string> remove(int index);
+        std::expected<void, std::string> removeAtEnd();
+
+        std::expected<Content, std::string> getContent(int index);
+        std::expected<Content, std::string> getContentAtEnd();
+
         void print();
 };
 

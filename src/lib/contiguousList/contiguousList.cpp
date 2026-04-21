@@ -14,10 +14,6 @@ ContiguousList::~ContiguousList() {
     delete[] this->items;
 }
 
-bool ContiguousList::isInsideRangeOrIsNextToLastFilledPosition(unsigned int index) {
-    return index <= this->quantity_of_items;
-}
-
 std::string ContiguousList::getMessageForIndexOutsideRange() {
     return "Index should be at least 0 and below " +
            std::to_string(this->quantity_of_items) +
@@ -37,7 +33,7 @@ bool ContiguousList::isFull() {
 }
 
 std::expected<void, std::string> ContiguousList::insert(unsigned int index, Content content) {
-    if (!this->isInsideRangeOrIsNextToLastFilledPosition(index)) {
+    if (index > this->quantity_of_items) {
         return std::unexpected(
             "Index should be at least 0 and at most " +
             std::to_string(this->quantity_of_items) +
@@ -93,7 +89,7 @@ std::expected<void, std::string> ContiguousList::remove(unsigned int index) {
     return {};
 }
 
-std::expected<ContiguousList::Content, std::string> ContiguousList::get(unsigned int index) {
+std::expected<ContiguousList::Content, std::string> ContiguousList::getContent(unsigned int index) {
     if (!this->isInsideRange(index)) {
         return std::unexpected(this->getMessageForIndexOutsideRange());
     }

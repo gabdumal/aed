@@ -10,7 +10,6 @@ services:
       # Mount the project root
       - .:/workspace:Z
     working_dir: /workspace
-    env_file: .env
     # Keep container running
     command: sleep infinity
     networks:

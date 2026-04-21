@@ -30,7 +30,7 @@ void TestContiguousList::testContains(ContiguousList &contiguous_list, Contiguou
 
 void TestContiguousList::testGet(ContiguousList &contiguous_list, unsigned int index) {
     std::println("Get at {}.", index);
-    auto result = contiguous_list.get(index);
+    auto result = contiguous_list.getContent(index);
     if (!result) {
         printError(result.error());
     } else {

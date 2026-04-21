@@ -14,7 +14,6 @@ class ContiguousList {
         Content *items;
 
         bool isInsideRange(unsigned int index);
-        bool isInsideRangeOrIsNextToLastFilledPosition(unsigned int index);
         std::string getMessageForIndexOutsideRange();
 
     public:
@@ -25,7 +24,8 @@ class ContiguousList {
         bool contains(Content content);
         bool isEmpty();
         bool isFull();
-        std::expected<Content, std::string> get(unsigned int index);
+
+        std::expected<Content, std::string> getContent(unsigned int index);
         std::expected<void, std::string> insert(unsigned int index, Content content);
         std::expected<void, std::string> remove(unsigned int index);
         void print();

@@ -1,7 +1,7 @@
 FROM fedora:latest
 
 # Install system dependencies and generate locale
-RUN dnf upgrade
+RUN dnf upgrade -y
 RUN dnf install -y \
     git \
     curl \

@@ -102,13 +102,13 @@ std::expected<void, std::string> ContiguousList::insertAtEnd(Content content) {
 }
 
 std::expected<void, std::string> ContiguousList::remove(int index) {
-    if (this->isEmpty()) {
-        return std::unexpected(getMessageForEmptyList());
-    }
-
     if (!this->isWithin(index)) {
         return std::unexpected(
             this->getMessageForIndexNotWithin());
+    }
+
+    if (this->isEmpty()) {
+        return std::unexpected(getMessageForEmptyList());
     }
 
     this->quantity_of_items--;

@@ -11,6 +11,7 @@ class LinkedList {
         LinkedListNode *first_node;
 
         static std::string getMessageForNegativeIndex();
+        static std::string getMessageForIndexNotWithin(int maximum);
         static std::string getMessageForIndexNotWithinNorImmediatelyAfter(int maximum);
         static std::string getMessageForEmptyList();
 
@@ -30,9 +31,9 @@ class LinkedList {
         std::expected<void, std::string> insertAtBegin(LinkedListNode::Content content);
         std::expected<void, std::string> insertAtEnd(LinkedListNode::Content content);
 
-        std::expected<LinkedListNode::Content, std::string> remove(int index);
-        std::expected<LinkedListNode::Content, std::string> removeAtBegin();
-        std::expected<LinkedListNode::Content, std::string> removeAtEnd();
+        std::expected<void, std::string> remove(int index);
+        std::expected<void, std::string> removeAtBegin();
+        std::expected<void, std::string> removeAtEnd();
 
         std::expected<LinkedListNode::Content, std::string> getContent(int index);
         std::expected<LinkedListNode::Content, std::string> getContentAtBegin();

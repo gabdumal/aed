@@ -95,7 +95,7 @@ void TestContiguousList::testRemoveAtEnd(ContiguousList &contiguous_list) {
 }
 
 void TestContiguousList::testGetContent(ContiguousList &contiguous_list, int index) {
-    std::println("Get at {}.", index);
+    std::println("Get content at {}.", index);
     auto result = contiguous_list.getContent(index);
     if (!result) {
         printError(result.error());
@@ -106,7 +106,7 @@ void TestContiguousList::testGetContent(ContiguousList &contiguous_list, int ind
 }
 
 void TestContiguousList::testGetContentAtEnd(ContiguousList &contiguous_list) {
-    std::println("Get at end.");
+    std::println("Get content at end.");
     auto result = contiguous_list.getContentAtEnd();
     if (!result) {
         printError(result.error());
@@ -117,7 +117,7 @@ void TestContiguousList::testGetContentAtEnd(ContiguousList &contiguous_list) {
 }
 
 void TestContiguousList::testGetContentAtBegin(ContiguousList &contiguous_list) {
-    std::println("Get at begin.");
+    std::println("Get content at begin.");
     auto result = contiguous_list.getContentAtBegin();
     if (!result) {
         printError(result.error());

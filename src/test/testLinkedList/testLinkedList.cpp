@@ -61,74 +61,74 @@ void TestLinkedList::testInsertAtEnd(LinkedList &linked_list, LinkedListNode::Co
     std::println();
 }
 
-// void TestLinkedList::testRemove(LinkedList &linked_list, int index) {
-//     std::println("Remove at {}.", index);
-//     auto result = linked_list.remove(index);
-//     if (!result) {
-//         printError(result.error());
-//     } else {
-//         printItems(linked_list);
-//     }
-//     std::println();
-// }
+void TestLinkedList::testRemove(LinkedList &linked_list, int index) {
+    std::println("Remove at {}.", index);
+    auto result = linked_list.remove(index);
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItems(linked_list);
+    }
+    std::println();
+}
 
-// void TestLinkedList::testRemoveAtBegin(LinkedList &linked_list) {
-//     std::println("Remove at begin.");
-//     auto result = linked_list.removeAtBegin();
-//     if (!result) {
-//         printError(result.error());
-//     } else {
-//         printItems(linked_list);
-//     }
-//     std::println();
-// }
+void TestLinkedList::testRemoveAtBegin(LinkedList &linked_list) {
+    std::println("Remove at begin.");
+    auto result = linked_list.removeAtBegin();
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItems(linked_list);
+    }
+    std::println();
+}
 
-// void TestLinkedList::testRemoveAtEnd(LinkedList &linked_list) {
-//     std::println("Remove at end.");
-//     auto result = linked_list.removeAtEnd();
-//     if (!result) {
-//         printError(result.error());
-//     } else {
-//         printItems(linked_list);
-//     }
-//     std::println();
-// }
+void TestLinkedList::testRemoveAtEnd(LinkedList &linked_list) {
+    std::println("Remove at end.");
+    auto result = linked_list.removeAtEnd();
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItems(linked_list);
+    }
+    std::println();
+}
 
-// void TestLinkedList::testGetContent(LinkedList &linked_list, int index) {
-//     std::println("Get at {}.", index);
-//     auto result = linked_list.getContent(index);
-//     if (!result) {
-//         printError(result.error());
-//     } else {
-//         printItem(result.value());
-//     }
-//     std::println();
-// }
+void TestLinkedList::testGetContent(LinkedList &linked_list, int index) {
+    std::println("Get content at {}.", index);
+    auto result = linked_list.getContent(index);
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItem(result.value());
+    }
+    std::println();
+}
 
-// void TestLinkedList::testGetContentAtEnd(LinkedList &linked_list) {
-//     std::println("Get at end.");
-//     auto result = linked_list.getContentAtEnd();
-//     if (!result) {
-//         printError(result.error());
-//     } else {
-//         printItem(result.value());
-//     }
-//     std::println();
-// }
+void TestLinkedList::testGetContentAtEnd(LinkedList &linked_list) {
+    std::println("Get content at end.");
+    auto result = linked_list.getContentAtEnd();
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItem(result.value());
+    }
+    std::println();
+}
 
-// void TestLinkedList::testGetContentAtBegin(LinkedList &linked_list) {
-//     std::println("Get at begin.");
-//     auto result = linked_list.getContentAtBegin();
-//     if (!result) {
-//         printError(result.error());
-//     } else {
-//         printItem(result.value());
-//     }
-//     std::println();
-// }
+void TestLinkedList::testGetContentAtBegin(LinkedList &linked_list) {
+    std::println("Get content at begin.");
+    auto result = linked_list.getContentAtBegin();
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItem(result.value());
+    }
+    std::println();
+}
 
 void TestLinkedList::test() {
-    std::println("# TESTS: CONTIGUOUS LIST");
+    std::println("# TESTS: LINKED LIST");
     std::println();
 
     auto linked_list = LinkedList();
@@ -136,25 +136,29 @@ void TestLinkedList::test() {
 
     testContains(linked_list, 0);
 
-    // testGetContent(linked_list, 0);
-    // testGetContentAtBegin(linked_list);
-    // testGetContentAtEnd(linked_list);
+    testGetContent(linked_list, 0);
+    testGetContentAtBegin(linked_list);
+    testGetContentAtEnd(linked_list);
 
-    // testRemove(linked_list, 0);
-    // testRemoveAtBegin(linked_list);
-    // testRemoveAtEnd(linked_list);
+    testRemove(linked_list, 0);
+    testRemoveAtBegin(linked_list);
+    testRemoveAtEnd(linked_list);
 
     testInsert(linked_list, -1, 4);
 
     testInsert(linked_list, 0, 4);
 
-    // testContains(linked_list, 0);
+    testRemoveAtBegin(linked_list);
 
-    // testContains(linked_list, 4);
+    testInsertAtBegin(linked_list, 4);
+
+    testContains(linked_list, 0);
+
+    testContains(linked_list, 4);
 
     testInsert(linked_list, 0, 1);
 
-    // testGetContent(linked_list, 0);
+    testGetContent(linked_list, 0);
 
     testInsert(linked_list, 1, 2);
 
@@ -166,29 +170,35 @@ void TestLinkedList::test() {
 
     testInsert(linked_list, 3, 4);
 
-    // testRemove(linked_list, 3);
+    testRemove(linked_list, 3);
 
-    // testRemove(linked_list, 0);
+    testRemove(linked_list, 0);
 
     testInsert(linked_list, 2, -3);
 
-    // testGetContent(linked_list, 2);
+    testRemove(linked_list, 4);
 
-    // testContains(linked_list, -3);
+    testRemove(linked_list, 4);
 
-    // testRemoveAtEnd(linked_list);
+    testContains(linked_list, 4);
+
+    testGetContent(linked_list, 4);
+
+    testGetContent(linked_list, 3);
+
+    testRemoveAtEnd(linked_list);
 
     testInsertAtEnd(linked_list, -2);
 
-    // testGetContentAtEnd(linked_list);
+    testInsertAtBegin(linked_list, 1);
 
-    // testGetContentAtBegin(linked_list);
+    testRemoveAtBegin(linked_list);
 
-    // testInsertAtBegin(linked_list, 1);
+    testInsertAtBegin(linked_list, 1);
 
-    // testRemoveAtBegin(linked_list);
+    testGetContentAtEnd(linked_list);
 
-    // testInsertAtBegin(linked_list, 1);
+    testGetContentAtBegin(linked_list);
 
     std::println();
 

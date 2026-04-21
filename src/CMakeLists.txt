@@ -11,5 +11,6 @@ add_subdirectory(test)
 target_link_libraries(aed
     PUBLIC
         testContiguousList
+        testLinkedList
         testLinkedQueue
 )

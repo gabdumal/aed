@@ -16,6 +16,11 @@ class ContiguousList {
         bool isWithin(int index);
         bool isWithinOrImmediatelyAfter(int index);
 
+        std::string getMessageForIndexNotWithin();
+        std::string getMessageForIndexNotWithinNorImmediatelyAfter();
+        static std::string getMessageForEmptyList();
+        std::string getMessageForFullList();
+
     public:
         ContiguousList(int maximum_size);
 
@@ -26,12 +31,15 @@ class ContiguousList {
         bool contains(Content content);
 
         std::expected<void, std::string> insert(int index, Content content);
+        std::expected<void, std::string> insertAtBegin(Content content);
         std::expected<void, std::string> insertAtEnd(Content content);
 
         std::expected<void, std::string> remove(int index);
+        std::expected<void, std::string> removeAtBegin();
         std::expected<void, std::string> removeAtEnd();
 
         std::expected<Content, std::string> getContent(int index);
+        std::expected<Content, std::string> getContentAtBegin();
         std::expected<Content, std::string> getContentAtEnd();
 
         void print();

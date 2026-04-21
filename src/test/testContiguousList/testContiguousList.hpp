@@ -8,12 +8,15 @@ class TestContiguousList {
         static void testContains(ContiguousList &contiguous_list, ContiguousList::Content content);
 
         static void testInsert(ContiguousList &contiguous_list, int index, ContiguousList::Content content);
+        static void testInsertAtBegin(ContiguousList &contiguous_list, ContiguousList::Content content);
         static void testInsertAtEnd(ContiguousList &contiguous_list, ContiguousList::Content content);
 
         static void testRemove(ContiguousList &contiguous_list, int index);
+        static void testRemoveAtBegin(ContiguousList &contiguous_list);
         static void testRemoveAtEnd(ContiguousList &contiguous_list);
 
         static void testGetContent(ContiguousList &contiguous_list, int index);
+        static void testGetContentAtBegin(ContiguousList &contiguous_list);
         static void testGetContentAtEnd(ContiguousList &contiguous_list);
 
         static void printItem(ContiguousList::Content content);

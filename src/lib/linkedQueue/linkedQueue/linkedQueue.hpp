@@ -11,6 +11,8 @@ class LinkedQueue {
         LinkedQueueNode *head_node;
         LinkedQueueNode *tail_node;
 
+        static std::string getMessageForEmptyQueue();
+
     public:
         LinkedQueue();
 

@@ -1,16 +1,17 @@
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
 #include "testContiguousList.hpp"
+#include "testLinkedList.hpp"
 #include "testLinkedQueue.hpp"
 
 int main(int argc, char *argv[]) {
     std::string test_to_run;
-    
+
     if (argc >= 2) {
         test_to_run = argv[1];
     } else {
-        const char* env_test = std::getenv("TEST_TO_RUN");
+        const char *env_test = std::getenv("TEST_TO_RUN");
         if (env_test) {
             test_to_run = env_test;
         } else {
@@ -22,6 +23,8 @@ int main(int argc, char *argv[]) {
 
     if (test_to_run == "TestContiguousList") {
         TestContiguousList::test();
+    } else if (test_to_run == "TestLinkedList") {
+        TestLinkedList::test();
     } else if (test_to_run == "TestLinkedQueue") {
         TestLinkedQueue::test();
     } else {

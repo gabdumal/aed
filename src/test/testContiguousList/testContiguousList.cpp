@@ -39,6 +39,17 @@ void TestContiguousList::testInsert(ContiguousList &contiguous_list, int index, 
     std::println();
 }
 
+void TestContiguousList::testInsertAtBegin(ContiguousList &contiguous_list, ContiguousList::Content content) {
+    std::println("Insert {} at begin.", content);
+    auto result = contiguous_list.insertAtBegin(content);
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItems(contiguous_list);
+    }
+    std::println();
+}
+
 void TestContiguousList::testInsertAtEnd(ContiguousList &contiguous_list, ContiguousList::Content content) {
     std::println("Insert {} at end.", content);
     auto result = contiguous_list.insertAtEnd(content);
@@ -53,6 +64,17 @@ void TestContiguousList::testInsertAtEnd(ContiguousList &contiguous_list, Contig
 void TestContiguousList::testRemove(ContiguousList &contiguous_list, int index) {
     std::println("Remove at {}.", index);
     auto result = contiguous_list.remove(index);
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItems(contiguous_list);
+    }
+    std::println();
+}
+
+void TestContiguousList::testRemoveAtBegin(ContiguousList &contiguous_list) {
+    std::println("Remove at begin.");
+    auto result = contiguous_list.removeAtBegin();
     if (!result) {
         printError(result.error());
     } else {
@@ -94,6 +116,17 @@ void TestContiguousList::testGetContentAtEnd(ContiguousList &contiguous_list) {
     std::println();
 }
 
+void TestContiguousList::testGetContentAtBegin(ContiguousList &contiguous_list) {
+    std::println("Get at begin.");
+    auto result = contiguous_list.getContentAtBegin();
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItem(result.value());
+    }
+    std::println();
+}
+
 void TestContiguousList::testListWithMaximumSizeOfZero() {
     std::println("## TEST: maximum size of 0.");
     std::println();
@@ -121,9 +154,11 @@ void TestContiguousList::testListWithMaximumSizeOfFour() {
     testContains(contiguous_list, 0);
 
     testGetContent(contiguous_list, 0);
+    testGetContentAtBegin(contiguous_list);
     testGetContentAtEnd(contiguous_list);
 
     testRemove(contiguous_list, 0);
+    testRemoveAtBegin(contiguous_list);
     testRemoveAtEnd(contiguous_list);
 
     testInsert(contiguous_list, -1, 4);
@@ -161,6 +196,14 @@ void TestContiguousList::testListWithMaximumSizeOfFour() {
     testInsertAtEnd(contiguous_list, -2);
 
     testGetContentAtEnd(contiguous_list);
+
+    testGetContentAtBegin(contiguous_list);
+
+    testInsertAtBegin(contiguous_list, 1);
+
+    testRemoveAtBegin(contiguous_list);
+
+    testInsertAtBegin(contiguous_list, 1);
 
     std::println();
 }

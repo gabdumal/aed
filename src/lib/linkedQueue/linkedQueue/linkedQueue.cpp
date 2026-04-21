@@ -5,7 +5,9 @@
 
 #include "linkedQueueNode.hpp"
 
-constexpr std::string message_when_list_is_empty = "List is empty.";
+std::string LinkedQueue::getMessageForEmptyQueue() {
+    return "Queue is empty.";
+}
 
 LinkedQueue::LinkedQueue() {
     this->head_node = nullptr;
@@ -53,7 +55,7 @@ void LinkedQueue::print() {
 
 std::expected<LinkedQueueNode::Content, std::string> LinkedQueue::peek() {
     if (this->isEmpty()) {
-        return std::unexpected(message_when_list_is_empty);
+        return std::unexpected(this->getMessageForEmptyQueue());
     }
 
     return this->head_node->getContent();
@@ -61,7 +63,7 @@ std::expected<LinkedQueueNode::Content, std::string> LinkedQueue::peek() {
 
 std::expected<LinkedQueueNode::Content, std::string> LinkedQueue::dequeue() {
     if (this->isEmpty()) {
-        return std::unexpected(message_when_list_is_empty);
+        return std::unexpected(this->getMessageForEmptyQueue());
     }
 
     auto content = this->head_node->getContent();

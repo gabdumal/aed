@@ -4,67 +4,63 @@
 
 #include "openAddressingHash.hpp"
 
-void TestOpenAddressingHash::printItem(OpenAddressingHash::Content content) {
-    std::string text = "";
-    if (content == OpenAddressingHash::empty_slot) {
-        text = "-";
-    } else if (content == OpenAddressingHash::deleted_slot) {
-        text = "X";
-    } else {
-        text = std::to_string(content);
-    }
-    std::println("Item: {}", text);
+void TestOpenAddressingHash::printValue(OpenAddressingHash::ContentValue value) {
+    std::println("Value: {}", value);
 }
 
-void TestOpenAddressingHash::printItems(OpenAddressingHash &contiguous_list) {
+void TestOpenAddressingHash::printItems(OpenAddressingHash &open_addressing_hash) {
     std::print("Items: ");
-    contiguous_list.print();
+    open_addressing_hash.print();
 }
 
 void TestOpenAddressingHash::printError(const std::string &error) {
     std::println("Error: {}", error);
 }
 
-void TestOpenAddressingHash::testContains(OpenAddressingHash &contiguous_list, OpenAddressingHash::Content content) {
-    std::println("Contains {}?", content);
-    auto result = contiguous_list.contains(content);
-    if (result) {
-        std::println("True.");
-    } else {
-        std::println("False.");
-    }
-    std::println();
-}
-
-void TestOpenAddressingHash::testInsert(OpenAddressingHash &contiguous_list, int key, OpenAddressingHash::Content content) {
-    std::println("Insert {} at key {}.", content, key);
-    auto result = contiguous_list.insert(key, content);
+void TestOpenAddressingHash::testContains(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key) {
+    std::println("Contains key {}?", key);
+    auto result = open_addressing_hash.contains(key);
     if (!result) {
         printError(result.error());
     } else {
-        printItems(contiguous_list);
+        if (result.value()) {
+            std::println("True.");
+        } else {
+            std::println("False.");
+        }
     }
     std::println();
 }
 
-void TestOpenAddressingHash::testRemove(OpenAddressingHash &contiguous_list, int key) {
+void TestOpenAddressingHash::testInsert(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key, OpenAddressingHash::ContentValue value) {
+    std::println("Insert {} at key {}.", value, key);
+    auto result = open_addressing_hash.insert(key, value);
+    if (!result) {
+        printError(result.error());
+    } else {
+        printItems(open_addressing_hash);
+    }
+    std::println();
+}
+
+void TestOpenAddressingHash::testRemove(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key) {
     std::println("Remove at key {}.", key);
-    auto result = contiguous_list.remove(key);
+    auto result = open_addressing_hash.remove(key);
     if (!result) {
         printError(result.error());
     } else {
-        printItems(contiguous_list);
+        printItems(open_addressing_hash);
     }
     std::println();
 }
 
-void TestOpenAddressingHash::testGetContent(OpenAddressingHash &contiguous_list, int key) {
+void TestOpenAddressingHash::testGetContent(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key) {
     std::println("Get content at key {}.", key);
-    auto result = contiguous_list.getContent(key);
+    auto result = open_addressing_hash.getContent(key);
     if (!result) {
         printError(result.error());
     } else {
-        printItem(result.value());
+        printValue(result.value());
     }
     std::println();
 }
@@ -76,7 +72,7 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfZero() {
     constexpr int maximum_size = 0;
 
     try {
-        auto contiguous_list = OpenAddressingHash(maximum_size);
+        auto open_addressing_hash = OpenAddressingHash(maximum_size);
     } catch (std::string error) {
         std::println("{}", error);
     }
@@ -90,44 +86,47 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfFour() {
 
     constexpr int maximum_size = 4;
 
-    auto contiguous_list = OpenAddressingHash(maximum_size);
-    printItems(contiguous_list);
+    auto open_addressing_hash = OpenAddressingHash(maximum_size);
+    printItems(open_addressing_hash);
+    std::println();
 
-    testContains(contiguous_list, 0);
+    testContains(open_addressing_hash, 0);
 
-    testGetContent(contiguous_list, 0);
+    testGetContent(open_addressing_hash, 0);
 
-    testRemove(contiguous_list, 0);
+    testRemove(open_addressing_hash, 0);
 
-    testInsert(contiguous_list, -1, 4);
+    testInsert(open_addressing_hash, -1, 4);
 
-    testInsert(contiguous_list, 0, 4);
+    testInsert(open_addressing_hash, 0, 4);
 
-    testContains(contiguous_list, 0);
+    testContains(open_addressing_hash, 0);
 
-    testContains(contiguous_list, 4);
+    testContains(open_addressing_hash, 4);
 
-    testInsert(contiguous_list, 0, 1);
+    testInsert(open_addressing_hash, 0, 1);
 
-    testGetContent(contiguous_list, 0);
+    testGetContent(open_addressing_hash, 0);
 
-    testInsert(contiguous_list, 1, 2);
+    testInsert(open_addressing_hash, 1, 2);
 
-    testInsert(contiguous_list, 2, 3);
+    testInsert(open_addressing_hash, 2, 3);
 
-    testInsert(contiguous_list, 3, 4);
+    testInsert(open_addressing_hash, 3, 4);
 
-    testRemove(contiguous_list, 3);
+    testRemove(open_addressing_hash, 3);
 
-    testInsert(contiguous_list, 3, 4);
+    testGetContent(open_addressing_hash, 3);
 
-    testRemove(contiguous_list, 0);
+    testInsert(open_addressing_hash, 3, 4);
 
-    testInsert(contiguous_list, 2, -3);
+    testRemove(open_addressing_hash, 0);
 
-    testGetContent(contiguous_list, 2);
+    testInsert(open_addressing_hash, 2, -3);
 
-    testContains(contiguous_list, -3);
+    testGetContent(open_addressing_hash, 2);
+
+    testContains(open_addressing_hash, 2);
 
     std::println();
 }

@@ -22,31 +22,32 @@ OpenAddressingHash::~OpenAddressingHash() {
     delete[] this->items;
 }
 
-std::expected<unsigned int, std::string> OpenAddressingHash::calculateIndex(int key) {
+std::expected<unsigned int, std::string> OpenAddressingHash::calculateIndex(OpenAddressingHash::ContentKey key) {
     if (key < 0) {
-        return std::unexpected("Key should be at least 0.");
+        return std::unexpected(message_for_negative_key);
     }
     return (unsigned int) key %
            this->maximum_size;
 }
 
-bool OpenAddressingHash::contains(Content content) {
-    for (
-        unsigned int current_index = 0;
-        current_index < this->maximum_size;
-        current_index++) {
-        if (this->items[current_index] == content) {
+std::expected<bool, std::string> OpenAddressingHash::contains(OpenAddressingHash::ContentKey key) {
+    if (key < 0) {
+        return std::unexpected(message_for_negative_key);
+    }
+
+    for (unsigned int current_index = 0;
+         current_index < this->maximum_size;
+         current_index++) {
+        const auto &entry = this->items[current_index];
+
+        if (entry.key == key) {
             return true;
         }
     }
     return false;
 }
 
-std::expected<void, std::string> OpenAddressingHash::insert(int key, Content content) {
-    if (content <= 0) {
-        return std::unexpected("Content must be at least 0.");
-    }
-
+std::expected<void, std::string> OpenAddressingHash::insert(OpenAddressingHash::ContentKey key, OpenAddressingHash::ContentValue value) {
     auto ideal_index = this->calculateIndex(key);
     if (!ideal_index) {
         return std::unexpected(ideal_index.error());
@@ -56,79 +57,90 @@ std::expected<void, std::string> OpenAddressingHash::insert(int key, Content con
     for (unsigned int steps = 0;
          steps < this->maximum_size;
          steps++) {
-        auto content_at_current_index = this->items[current_index];
+        auto &entry = this->items[current_index];
 
-        if (content_at_current_index == empty_slot ||
-            content_at_current_index == deleted_slot) {
-            this->items[current_index] = content;
+        if (entry.key == key_of_empty_slot ||
+            entry.key == key_of_deleted_slot) {
+            entry.key = key;
+            entry.value = value;
             return {};
         }
 
-        current_index = (current_index + 1) %
-                        this->maximum_size;
+        if (entry.key == key) {
+            // Update existing key.
+            entry.value = value;
+            return {};
+        }
+
+        current_index = (current_index + 1) % this->maximum_size;
     }
 
     return std::unexpected("Hash table is full.");
 }
 
-std::expected<void, std::string> OpenAddressingHash::remove(int key) {
+std::expected<void, std::string> OpenAddressingHash::remove(OpenAddressingHash::ContentKey key) {
     auto ideal_index = this->calculateIndex(key);
     if (!ideal_index) {
         return std::unexpected(ideal_index.error());
     }
     auto current_index = ideal_index.value();
 
-    for (unsigned int steps = 0;
-         steps < this->maximum_size;
-         steps++) {
-        auto content_at_current_index = this->items[current_index];
+    for (
+        unsigned int steps = 0;
+        steps < this->maximum_size;
+        steps++) {
+        auto &entry = this->items[current_index];
 
-        if (content_at_current_index == empty_slot) {
-            return {};
-        } else if (content_at_current_index == deleted_slot) {
-            current_index = (current_index + 1) %
-                            this->maximum_size;
-        } else {
+        if (entry.key == key_of_empty_slot) {
+            break;
+        } else if (entry.key == key_of_deleted_slot) {
+            current_index = (current_index + 1) % this->maximum_size;
+        } else if (entry.key == key) {
             this->items[current_index] = deleted_slot;
             return {};
+        } else {
+            current_index = (current_index + 1) % this->maximum_size;
         }
     }
 
-    return std::unexpected("Hash table is empty.");
+    return std::unexpected("Key not found.");
 }
 
-std::expected<OpenAddressingHash::Content, std::string> OpenAddressingHash::getContent(int key) {
+std::expected<OpenAddressingHash::ContentValue, std::string> OpenAddressingHash::getContent(OpenAddressingHash::ContentKey key) {
     auto ideal_index = this->calculateIndex(key);
     if (!ideal_index) {
         return std::unexpected(ideal_index.error());
     }
     auto current_index = ideal_index.value();
 
-    for (unsigned int steps = 0;
-         steps < this->maximum_size;
-         steps++) {
-        auto content_at_current_index = this->items[current_index];
+    for (
+        unsigned int steps = 0;
+        steps < this->maximum_size;
+        steps++) {
+        const auto &entry = this->items[current_index];
 
-        if (content_at_current_index == empty_slot) {
+        if (entry.key == key_of_empty_slot) {
             break;
-        } else if (content_at_current_index == deleted_slot) {
-            current_index = (current_index + 1) %
-                            this->maximum_size;
+        } else if (entry.key == key) {
+            return entry.value;
         } else {
-            return content_at_current_index;
+            current_index = (current_index + 1) % this->maximum_size;
         }
     }
 
-    return empty_slot;
+    return std::unexpected("Key not found.");
 }
 
 std::string OpenAddressingHash::printContent(OpenAddressingHash::Content content) {
-    if (content == empty_slot) {
-        return "-";
-    } else if (content == deleted_slot) {
-        return "X";
+    std::string key = "";
+    if (content.key == key_of_empty_slot) {
+        key = "-";
+    } else if (content.key == key_of_deleted_slot) {
+        key = "X";
+    } else {
+        key = std::to_string(content.key);
     }
-    return std::to_string(content);
+    return std::format("( key: {}, value: {} )", key, content.value);
 }
 
 void OpenAddressingHash::print() {

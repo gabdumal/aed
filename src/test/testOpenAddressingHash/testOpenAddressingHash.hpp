@@ -5,15 +5,15 @@
 
 class TestOpenAddressingHash {
     private:
-        static void testContains(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::Content content);
+        static void testContains(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key);
 
-        static void testInsert(OpenAddressingHash &open_addressing_hash, int key, OpenAddressingHash::Content content);
+        static void testInsert(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key, OpenAddressingHash::ContentValue value);
 
-        static void testRemove(OpenAddressingHash &open_addressing_hash, int key);
+        static void testRemove(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key);
 
-        static void testGetContent(OpenAddressingHash &open_addressing_hash, int key);
+        static void testGetContent(OpenAddressingHash &open_addressing_hash, OpenAddressingHash::ContentKey key);
 
-        static void printItem(OpenAddressingHash::Content content);
+        static void printValue(OpenAddressingHash::ContentValue value);
         static void printItems(OpenAddressingHash &open_addressing_hash);
         static void printError(const std::string &error);
 

@@ -4,6 +4,7 @@
 #include "testContiguousList.hpp"
 #include "testLinkedList.hpp"
 #include "testLinkedQueue.hpp"
+#include "testLinkedStack.hpp"
 
 int main(int argc, char *argv[]) {
     std::string test_to_run;
@@ -27,6 +28,8 @@ int main(int argc, char *argv[]) {
         TestLinkedList::test();
     } else if (test_to_run == "TestLinkedQueue") {
         TestLinkedQueue::test();
+    } else if (test_to_run == "TestLinkedStack") {
+        TestLinkedStack::test();
     } else {
         std::cerr << "Unknown test: " << test_to_run << "." << std::endl;
         return 1;

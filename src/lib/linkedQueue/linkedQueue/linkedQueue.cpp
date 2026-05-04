@@ -45,9 +45,17 @@ void LinkedQueue::print() {
     std::print("Head: ");
 
     auto current_node = this->head_node;
-    while (current_node != nullptr) {
+
+    while (
+        current_node != nullptr &&
+        current_node->getNodeBehind() != nullptr) {
         std::print("{}, ", current_node->getContent());
+
         current_node = current_node->getNodeBehind();
+    }
+
+    if (current_node != nullptr) {
+        std::print("{}", current_node->getContent());
     }
 
     std::println();

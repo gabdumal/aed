@@ -5,7 +5,15 @@
 #include "openAddressingHash.hpp"
 
 void TestOpenAddressingHash::printItem(OpenAddressingHash::Content content) {
-    std::println("Item: {}", content);
+    std::string text = "";
+    if (content == OpenAddressingHash::empty_slot) {
+        text = "-";
+    } else if (content == OpenAddressingHash::deleted_slot) {
+        text = "X";
+    } else {
+        text = std::to_string(content);
+    }
+    std::println("Item: {}", text);
 }
 
 void TestOpenAddressingHash::printItems(OpenAddressingHash &contiguous_list) {

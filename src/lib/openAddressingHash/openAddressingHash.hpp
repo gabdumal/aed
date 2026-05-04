@@ -7,28 +7,22 @@
 class OpenAddressingHash {
     public:
         typedef int Content;
+        static constexpr OpenAddressingHash::Content empty_slot = -1;
+        static constexpr OpenAddressingHash::Content deleted_slot = -2;
 
     private:
-        int maximum_size;
-        int quantity_of_items;
+        unsigned int maximum_size;
         Content *items;
 
-        bool isWithin(int index);
-        bool isWithinOrImmediatelyAfter(int index);
-
-        std::string getMessageForIndexNotWithin();
-        std::string getMessageForIndexNotWithinNorImmediatelyAfter();
-        static std::string getMessageForEmptyList();
-        std::string getMessageForFullList();
         static std::string printContent(OpenAddressingHash::Content content);
+
+        std::expected<unsigned int, std::string> calculateIndex(int key);
 
     public:
         OpenAddressingHash(int maximum_size);
 
         ~OpenAddressingHash();
 
-        bool isEmpty();
-        bool isFull();
         bool contains(Content content);
 
         std::expected<void, std::string> insert(int key, Content content);

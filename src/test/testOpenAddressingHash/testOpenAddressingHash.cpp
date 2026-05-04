@@ -70,9 +70,10 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfZero() {
     std::println();
 
     constexpr int maximum_size = 0;
+    constexpr int step = 1;
 
     try {
-        auto open_addressing_hash = OpenAddressingHash(maximum_size);
+        auto open_addressing_hash = OpenAddressingHash(maximum_size, step);
     } catch (std::string error) {
         std::println("{}", error);
     }
@@ -80,13 +81,14 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfZero() {
     std::println();
 }
 
-void TestOpenAddressingHash::testListWithMaximumSizeOfFour() {
-    std::println("## TEST: maximum size of 4.");
+void TestOpenAddressingHash::testListWithMaximumSizeOfEight() {
+    std::println("## TEST: maximum size of 8.");
     std::println();
 
-    constexpr int maximum_size = 4;
+    constexpr int maximum_size = 8;
+    constexpr int step = 1;
 
-    auto open_addressing_hash = OpenAddressingHash(maximum_size);
+    auto open_addressing_hash = OpenAddressingHash(maximum_size, step);
     printItems(open_addressing_hash);
     std::println();
 
@@ -98,35 +100,39 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfFour() {
 
     testInsert(open_addressing_hash, -1, 4);
 
-    testInsert(open_addressing_hash, 0, 4);
+    testInsert(open_addressing_hash, 10, 4);
 
-    testContains(open_addressing_hash, 0);
+    testContains(open_addressing_hash, 10);
 
     testContains(open_addressing_hash, 4);
 
-    testInsert(open_addressing_hash, 0, 1);
+    testInsert(open_addressing_hash, 1, 1);
 
     testGetContent(open_addressing_hash, 0);
 
-    testInsert(open_addressing_hash, 1, 2);
+    testInsert(open_addressing_hash, 7, 2);
 
-    testInsert(open_addressing_hash, 2, 3);
+    testInsert(open_addressing_hash, 4, 3);
 
-    testInsert(open_addressing_hash, 3, 4);
+    testInsert(open_addressing_hash, 21, 4);
 
-    testRemove(open_addressing_hash, 3);
+    testRemove(open_addressing_hash, 21);
 
-    testGetContent(open_addressing_hash, 3);
+    testGetContent(open_addressing_hash, 21);
 
-    testInsert(open_addressing_hash, 3, 4);
+    testInsert(open_addressing_hash, 21, 4);
 
-    testRemove(open_addressing_hash, 0);
+    testInsert(open_addressing_hash, 20, 20);
 
-    testInsert(open_addressing_hash, 2, -3);
+    testRemove(open_addressing_hash, 4);
 
-    testGetContent(open_addressing_hash, 2);
+    testInsert(open_addressing_hash, 20, 20);
 
-    testContains(open_addressing_hash, 2);
+    testInsert(open_addressing_hash, 9, -3);
+
+    testGetContent(open_addressing_hash, 9);
+
+    testContains(open_addressing_hash, 9);
 
     std::println();
 }
@@ -136,7 +142,7 @@ void TestOpenAddressingHash::test() {
     std::println();
 
     TestOpenAddressingHash::testListWithMaximumSizeOfZero();
-    TestOpenAddressingHash::testListWithMaximumSizeOfFour();
+    TestOpenAddressingHash::testListWithMaximumSizeOfEight();
 
     std::println();
 }

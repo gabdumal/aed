@@ -28,12 +28,13 @@ class OpenAddressingHash {
         static constexpr auto message_for_negative_key = "Key should be at least 0.";
 
         unsigned int maximum_size;
+        unsigned int step;
         Content *items;
 
         std::expected<unsigned int, std::string> calculateIndex(ContentKey key);
 
     public:
-        OpenAddressingHash(int maximum_size);
+        OpenAddressingHash(int maximum_size, int step);
 
         ~OpenAddressingHash();
 

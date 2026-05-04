@@ -17,7 +17,7 @@ class TestOpenAddressingHash {
         static void printItems(OpenAddressingHash &open_addressing_hash);
         static void printError(const std::string &error);
 
-        static void testListWithMaximumSizeOfFour();
+        static void testListWithMaximumSizeOfEight();
         static void testListWithMaximumSizeOfZero();
 
     public:

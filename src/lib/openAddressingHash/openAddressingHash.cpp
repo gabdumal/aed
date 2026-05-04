@@ -4,12 +4,16 @@
 #include <print>
 #include <string>
 
-OpenAddressingHash::OpenAddressingHash(int maximum_size) {
+OpenAddressingHash::OpenAddressingHash(int maximum_size, int step) {
     if (maximum_size < 1) {
         throw(std::string("Maximum size should be at least 1."));
     }
+    if (step < 1) {
+        throw(std::string("Step should be at least 1."));
+    }
 
     this->maximum_size = (unsigned int) maximum_size;
+    this->step = (unsigned int) step;
 
     this->items = new Content[this->maximum_size];
 
@@ -72,7 +76,7 @@ std::expected<void, std::string> OpenAddressingHash::insert(OpenAddressingHash::
             return {};
         }
 
-        current_index = (current_index + 1) % this->maximum_size;
+        current_index = (current_index + this->step) % this->maximum_size;
     }
 
     return std::unexpected("Hash table is full.");
@@ -93,13 +97,11 @@ std::expected<void, std::string> OpenAddressingHash::remove(OpenAddressingHash::
 
         if (entry.key == key_of_empty_slot) {
             break;
-        } else if (entry.key == key_of_deleted_slot) {
-            current_index = (current_index + 1) % this->maximum_size;
         } else if (entry.key == key) {
             this->items[current_index] = deleted_slot;
             return {};
         } else {
-            current_index = (current_index + 1) % this->maximum_size;
+            current_index = (current_index + this->step) % this->maximum_size;
         }
     }
 
@@ -124,7 +126,7 @@ std::expected<OpenAddressingHash::ContentValue, std::string> OpenAddressingHash:
         } else if (entry.key == key) {
             return entry.value;
         } else {
-            current_index = (current_index + 1) % this->maximum_size;
+            current_index = (current_index + this->step) % this->maximum_size;
         }
     }
 

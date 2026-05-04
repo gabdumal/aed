@@ -5,6 +5,7 @@
 #include "testLinkedList.hpp"
 #include "testLinkedQueue.hpp"
 #include "testLinkedStack.hpp"
+#include "testOpenAddressingHash.hpp"
 
 int main(int argc, char *argv[]) {
     std::string test_to_run;
@@ -30,6 +31,8 @@ int main(int argc, char *argv[]) {
         TestLinkedQueue::test();
     } else if (test_to_run == "TestLinkedStack") {
         TestLinkedStack::test();
+    } else if (test_to_run == "TestOpenAddressingHash") {
+        TestOpenAddressingHash::test();
     } else {
         std::cerr << "Unknown test: " << test_to_run << "." << std::endl;
         return 1;

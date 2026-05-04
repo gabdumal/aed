@@ -98,7 +98,47 @@ std::expected<void, std::string> OpenAddressingHash::remove(OpenAddressingHash::
         if (entry.key == key_of_empty_slot) {
             break;
         } else if (entry.key == key) {
-            this->items[current_index] = deleted_slot;
+            // Found the key. Mark this slot as empty and
+            // relocate subsequent clustered entries so lookups
+            // remain correct.
+            this->items[current_index] = empty_slot;
+
+            unsigned int hole_index = current_index;
+            unsigned int scan_index = hole_index;
+
+            while (true) {
+                scan_index = (scan_index + this->step) % this->maximum_size;
+                const auto &scan_slot = this->items[scan_index];
+
+                if (scan_slot.key == key_of_empty_slot) {
+                    break;
+                }
+
+                auto expected_home_index = this->calculateIndex(scan_slot.key);
+                if (!expected_home_index) {
+                    // Invalid key stored — treat as removed and continue.
+                    this->items[scan_index] = deleted_slot;
+                    continue;
+                }
+                unsigned int home_index = expected_home_index.value();
+
+                bool home_in_cyclic_range;
+                if (hole_index <= scan_index) {
+                    home_in_cyclic_range = (hole_index < home_index) && (home_index <= scan_index);
+                } else {
+                    home_in_cyclic_range = (home_index <= scan_index) || (hole_index < home_index);
+                }
+
+                if (home_in_cyclic_range) {
+                    continue;
+                }
+
+                // Move entry at scan_index into the hole at hole_index, leaving scan_index empty.
+                this->items[hole_index] = this->items[scan_index];
+                this->items[scan_index] = empty_slot;
+                hole_index = scan_index;
+            }
+
             return {};
         } else {
             current_index = (current_index + this->step) % this->maximum_size;

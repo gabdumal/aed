@@ -126,7 +126,7 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfEight() {
 
     testRemove(open_addressing_hash, 4);
 
-    testInsert(open_addressing_hash, 20, 20);
+    testInsert(open_addressing_hash, 20, -20);
 
     testInsert(open_addressing_hash, 9, -3);
 

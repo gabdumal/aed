@@ -15,4 +15,5 @@ target_link_libraries(aed
         testLinkedQueue
         testLinkedStack
         testOpenAddressingHash
+        testExternalHash
 )

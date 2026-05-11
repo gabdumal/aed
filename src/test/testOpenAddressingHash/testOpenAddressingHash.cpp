@@ -86,7 +86,7 @@ void TestOpenAddressingHash::testListWithMaximumSizeOfEight() {
     std::println();
 
     constexpr int maximum_size = 8;
-    constexpr int step = 1;
+    constexpr int step = 3;
 
     auto open_addressing_hash = OpenAddressingHash(maximum_size, step);
     printItems(open_addressing_hash);

@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "testContiguousList.hpp"
+#include "testExternalHash.hpp"
 #include "testLinkedList.hpp"
 #include "testLinkedQueue.hpp"
 #include "testLinkedStack.hpp"
@@ -33,6 +34,8 @@ int main(int argc, char *argv[]) {
         TestLinkedStack::test();
     } else if (test_to_run == "TestOpenAddressingHash") {
         TestOpenAddressingHash::test();
+    } else if (test_to_run == "TestExternalHash") {
+        TestExternalHash::test();
     } else {
         std::cerr << "Unknown test: " << test_to_run << "." << std::endl;
         return 1;

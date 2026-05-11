@@ -26,6 +26,7 @@ class OpenAddressingHash {
 
     private:
         static constexpr auto message_for_negative_key = "Key should be at least 0.";
+        static constexpr auto message_for_key_not_found = "Key not found.";
 
         unsigned int maximum_size;
         unsigned int step;

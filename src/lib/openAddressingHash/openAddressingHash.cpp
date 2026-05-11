@@ -35,19 +35,24 @@ std::expected<unsigned int, std::string> OpenAddressingHash::calculateIndex(Open
 }
 
 std::expected<bool, std::string> OpenAddressingHash::contains(OpenAddressingHash::ContentKey key) {
-    if (key < 0) {
-        return std::unexpected(message_for_negative_key);
+    auto ideal_index = this->calculateIndex(key);
+    if (!ideal_index) {
+        return std::unexpected(ideal_index.error());
     }
+    auto current_index = ideal_index.value();
 
-    for (unsigned int current_index = 0;
-         current_index < this->maximum_size;
-         current_index++) {
+    for (unsigned int steps = 0;
+         steps < this->maximum_size;
+         steps++) {
         const auto &entry = this->items[current_index];
 
         if (entry.key == key) {
             return true;
         }
+
+        current_index = (current_index + this->step) % this->maximum_size;
     }
+
     return false;
 }
 
@@ -145,7 +150,7 @@ std::expected<void, std::string> OpenAddressingHash::remove(OpenAddressingHash::
         }
     }
 
-    return std::unexpected("Key not found.");
+    return std::unexpected(message_for_key_not_found);
 }
 
 std::expected<OpenAddressingHash::ContentValue, std::string> OpenAddressingHash::getContent(OpenAddressingHash::ContentKey key) {
@@ -170,7 +175,7 @@ std::expected<OpenAddressingHash::ContentValue, std::string> OpenAddressingHash:
         }
     }
 
-    return std::unexpected("Key not found.");
+    return std::unexpected(message_for_key_not_found);
 }
 
 std::string OpenAddressingHash::printContent(OpenAddressingHash::Content content) {

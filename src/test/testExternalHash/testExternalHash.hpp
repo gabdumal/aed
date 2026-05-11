@@ -19,7 +19,7 @@ class TestExternalHash {
         static void printItems(ExternalHashTable &external_hash_table);
         static void printError(const std::string &error);
 
-        static void testListWithMaximumSizeOfEight();
+        static void testListWithMaximumSizeOfSeven();
         static void testListWithMaximumSizeOfZero();
 
     public:

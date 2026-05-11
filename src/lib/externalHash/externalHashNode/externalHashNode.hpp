@@ -22,7 +22,9 @@ class ExternalHashNode {
         void setNextNode(ExternalHashNode *next_node);
 
         ContentKey getContentKey();
+
         ContentValue getContentValue();
+        void setContentValue(ContentValue value);
 
         std::string print();
 };

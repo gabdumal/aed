@@ -8,8 +8,13 @@
 
 class ExternalHashTable {
     private:
+        static constexpr auto message_for_negative_key = "Key should be at least 0.";
+        static constexpr auto message_for_key_not_found = "Key not found.";
+
         unsigned int maximum_size;
         ExternalHashNode **items;
+
+        std::expected<unsigned int, std::string> calculateIndex(ExternalHashNode::ContentKey key);
 
     public:
         ExternalHashTable(int maximum_size);

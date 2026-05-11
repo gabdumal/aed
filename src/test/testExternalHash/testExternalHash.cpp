@@ -91,11 +91,11 @@ void TestExternalHash::testListWithMaximumSizeOfZero() {
     std::println();
 }
 
-void TestExternalHash::testListWithMaximumSizeOfEight() {
-    std::println("## TEST: maximum size of 8.");
+void TestExternalHash::testListWithMaximumSizeOfSeven() {
+    std::println("## TEST: maximum size of 7.");
     std::println();
 
-    constexpr int maximum_size = 8;
+    constexpr int maximum_size = 7;
 
     auto external_hash_table = ExternalHashTable(maximum_size);
     printItems(external_hash_table);
@@ -151,7 +151,7 @@ void TestExternalHash::test() {
     std::println();
 
     TestExternalHash::testListWithMaximumSizeOfZero();
-    TestExternalHash::testListWithMaximumSizeOfEight();
+    TestExternalHash::testListWithMaximumSizeOfSeven();
 
     std::println();
 }

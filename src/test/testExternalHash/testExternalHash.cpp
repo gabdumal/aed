@@ -4,12 +4,12 @@
 
 #include "externalHashTable.hpp"
 
-void TestExternalHash::printValue(ExternalHashNode::ContentValue value) {
+void TestExternalHash::printValue(ExternalHashNode::Value value) {
     std::println("Value: {}", value);
 }
 
 void TestExternalHash::printItems(ExternalHashTable &external_hash_table) {
-    std::print("Items: ");
+    std::println("Items: ");
     external_hash_table.print();
 }
 
@@ -17,7 +17,7 @@ void TestExternalHash::printError(const std::string &error) {
     std::println("Error: {}", error);
 }
 
-void TestExternalHash::testContains(ExternalHashTable &external_hash_table, ExternalHashNode::ContentKey key) {
+void TestExternalHash::testContains(ExternalHashTable &external_hash_table, ExternalHashNode::Key key) {
     std::println("Contains key {}?", key);
     auto result = external_hash_table.contains(key);
     if (!result) {
@@ -32,7 +32,7 @@ void TestExternalHash::testContains(ExternalHashTable &external_hash_table, Exte
     std::println();
 }
 
-void TestExternalHash::testInsert(ExternalHashTable &external_hash_table, ExternalHashNode::ContentKey key, ExternalHashNode::ContentValue value) {
+void TestExternalHash::testInsert(ExternalHashTable &external_hash_table, ExternalHashNode::Key key, ExternalHashNode::Value value) {
     std::println("Insert {} at key {}.", value, key);
     auto result = external_hash_table.insert(key, value);
     if (!result) {
@@ -43,7 +43,7 @@ void TestExternalHash::testInsert(ExternalHashTable &external_hash_table, Extern
     std::println();
 }
 
-void TestExternalHash::testRemove(ExternalHashTable &external_hash_table, ExternalHashNode::ContentKey key) {
+void TestExternalHash::testRemove(ExternalHashTable &external_hash_table, ExternalHashNode::Key key) {
     std::println("Remove at key {}.", key);
     auto result = external_hash_table.remove(key);
     if (!result) {
@@ -54,7 +54,7 @@ void TestExternalHash::testRemove(ExternalHashTable &external_hash_table, Extern
     std::println();
 }
 
-void TestExternalHash::testGetContent(ExternalHashTable &external_hash_table, ExternalHashNode::ContentKey key) {
+void TestExternalHash::testGetContent(ExternalHashTable &external_hash_table, ExternalHashNode::Key key) {
     std::println("Get content at key {}.", key);
     auto result = external_hash_table.getContent(key);
     if (!result) {
@@ -65,14 +65,10 @@ void TestExternalHash::testGetContent(ExternalHashTable &external_hash_table, Ex
     std::println();
 }
 
-void TestExternalHash::testCountKeysGreaterThan(ExternalHashTable &external_hash_table, ExternalHashNode::ContentKey key) {
+void TestExternalHash::testCountKeysGreaterThan(ExternalHashTable &external_hash_table, ExternalHashNode::Key key) {
     std::println("Count keys greater than {}.", key);
-    auto result = external_hash_table.getContent(key);
-    if (!result) {
-        printError(result.error());
-    } else {
-        printValue(result.value());
-    }
+    auto result = external_hash_table.countKeysGreaterThan(key);
+    std::println("Quantity: {}", result);
     std::println();
 }
 
@@ -106,6 +102,10 @@ void TestExternalHash::testListWithMaximumSizeOfSeven() {
     testGetContent(external_hash_table, 0);
 
     testRemove(external_hash_table, 0);
+
+    testCountKeysGreaterThan(external_hash_table, 0);
+    testCountKeysGreaterThan(external_hash_table, 7);
+    testCountKeysGreaterThan(external_hash_table, 21);
 
     testInsert(external_hash_table, -1, 4);
 
@@ -142,6 +142,10 @@ void TestExternalHash::testListWithMaximumSizeOfSeven() {
     testGetContent(external_hash_table, 9);
 
     testContains(external_hash_table, 9);
+
+    testCountKeysGreaterThan(external_hash_table, 0);
+    testCountKeysGreaterThan(external_hash_table, 7);
+    testCountKeysGreaterThan(external_hash_table, 21);
 
     std::println();
 }

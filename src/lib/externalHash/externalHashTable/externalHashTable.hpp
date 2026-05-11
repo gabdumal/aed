@@ -14,22 +14,22 @@ class ExternalHashTable {
         unsigned int maximum_size;
         ExternalHashNode **items;
 
-        std::expected<unsigned int, std::string> calculateIndex(ExternalHashNode::ContentKey key);
+        std::expected<unsigned int, std::string> calculateIndex(ExternalHashNode::Key key);
 
     public:
         ExternalHashTable(int maximum_size);
 
         ~ExternalHashTable();
 
-        std::expected<bool, std::string> contains(ExternalHashNode::ContentKey key);
+        std::expected<bool, std::string> contains(ExternalHashNode::Key key);
 
-        std::expected<void, std::string> insert(ExternalHashNode::ContentKey key, ExternalHashNode::ContentValue value);
+        std::expected<void, std::string> insert(ExternalHashNode::Key key, ExternalHashNode::Value value);
 
-        std::expected<void, std::string> remove(ExternalHashNode::ContentKey key);
+        std::expected<void, std::string> remove(ExternalHashNode::Key key);
 
-        std::expected<ExternalHashNode::ContentValue, std::string> getContent(ExternalHashNode::ContentKey key);
+        std::expected<ExternalHashNode::Value, std::string> getContent(ExternalHashNode::Key key);
 
-        unsigned int countKeysGreaterThan(ExternalHashNode::ContentKey key);
+        unsigned int countKeysGreaterThan(ExternalHashNode::Key key);
 
         void print();
 };

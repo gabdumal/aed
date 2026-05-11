@@ -5,26 +5,34 @@
 
 class ExternalHashNode {
     public:
-        typedef int ContentKey;
-        typedef int ContentValue;
+        typedef int Key;
+        typedef int Value;
 
     private:
-        ContentKey key;
-        ContentValue value;
+        Key key;
+        Value value;
         ExternalHashNode *next_node;
 
+        static constexpr ExternalHashNode::Key default_key = 0;
+        static constexpr ExternalHashNode::Value default_value = 0;
+
     public:
-        ExternalHashNode(ContentKey key, ContentValue value);
+        ExternalHashNode() {
+            key = default_key;
+            value = default_value;
+        };
+
+        ExternalHashNode(Key key, Value value);
 
         ~ExternalHashNode();
 
         ExternalHashNode *getNextNode();
         void setNextNode(ExternalHashNode *next_node);
 
-        ContentKey getContentKey();
+        Key getKey();
 
-        ContentValue getContentValue();
-        void setContentValue(ContentValue value);
+        Value getValue();
+        void setValue(Value value);
 
         std::string print();
 };

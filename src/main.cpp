@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "testBinaryTree.hpp"
 #include "testContiguousList.hpp"
 #include "testExternalHash.hpp"
 #include "testLinkedList.hpp"
@@ -36,6 +37,8 @@ int main(int argc, char *argv[]) {
         TestOpenAddressingHash::test();
     } else if (test_to_run == "TestExternalHash") {
         TestExternalHash::test();
+    } else if (test_to_run == "TestBinaryTree") {
+        TestBinaryTree::test();
     } else {
         std::cerr << "Unknown test: " << test_to_run << "." << std::endl;
         return 1;

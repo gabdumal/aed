@@ -1,6 +1,8 @@
 #include "binaryTreeNode.hpp"
 
 #include <expected>
+#include <format>
+#include <print>
 
 BinaryTreeNode::BinaryTreeNode(Content content) {
     this->content = content;
@@ -73,6 +75,36 @@ BinaryTreeNode *BinaryTreeNode::getSuccessor(BinaryTreeNode *node) {
     return successor_node;
 }
 
+void BinaryTreeNode::switchNodes(BinaryTreeNode *first_node, BinaryTreeNode *second_node) {
+    auto left_child_of_first_node = first_node->children[index_of_left_child];
+    auto right_child_of_first_node = first_node->children[index_of_right_child];
+
+    auto left_child_of_second_node = second_node->children[index_of_left_child];
+    auto right_child_of_second_node = second_node->children[index_of_right_child];
+
+    second_node->children[index_of_left_child] = left_child_of_first_node;
+    second_node->children[index_of_right_child] = right_child_of_first_node;
+
+    first_node->children[index_of_left_child] = left_child_of_second_node;
+    first_node->children[index_of_right_child] = right_child_of_second_node;
+}
+
+std::expected<BinaryTreeNode *, std::string> BinaryTreeNode::advanceStepToFindNodeToRemove(BinaryTreeNode *node, Content content, unsigned int index_of_child) {
+    auto next_node = recursiveRemove(node->children[index_of_child], content);
+    if (!next_node) {
+        return std::unexpected(next_node.error());
+    }
+
+    node->children[index_of_child] = next_node.value();
+    return node;
+}
+
+BinaryTreeNode *BinaryTreeNode::removeNodeWith0Or1Children(BinaryTreeNode *node, unsigned int index_of_child) {
+    auto child = node->children[index_of_child];
+    delete node;
+    return child;
+}
+
 std::expected<BinaryTreeNode *, std::string> BinaryTreeNode::recursiveRemove(BinaryTreeNode *node, Content content) {
     if (node == nullptr) {
         return std::unexpected(message_for_content_not_found);
@@ -81,49 +113,23 @@ std::expected<BinaryTreeNode *, std::string> BinaryTreeNode::recursiveRemove(Bin
     if (content == node->content) {
         // Node with 0 or 1 children.
         if (node->children[index_of_left_child] == nullptr) {
-            auto right_child = node->children[index_of_right_child];
-            delete node;
-            return right_child;
+            return BinaryTreeNode::removeNodeWith0Or1Children(node, index_of_right_child);
         }
         if (node->children[index_of_right_child] == nullptr) {
-            auto left_child = node->children[index_of_left_child];
-            delete node;
-            return left_child;
+            return BinaryTreeNode::removeNodeWith0Or1Children(node, index_of_left_child);
         }
 
         // Node with 2 children.
-        auto node_to_be_deleted = node;
-        auto left_child_of_node_to_be_deleted = node_to_be_deleted->children[index_of_left_child];
-        auto right_child_of_node_to_be_deleted = node_to_be_deleted->children[index_of_right_child];
-
         auto successor_node = BinaryTreeNode::getSuccessor(node);
-        auto left_child_of_successor_node = successor_node->children[index_of_left_child];
-        auto right_child_of_successor_node = successor_node->children[index_of_right_child];
-
-        successor_node->children[index_of_left_child] = left_child_of_node_to_be_deleted;
-        successor_node->children[index_of_right_child] = right_child_of_node_to_be_deleted;
-
-        node_to_be_deleted->children[index_of_left_child] = left_child_of_successor_node;
-        node_to_be_deleted->children[index_of_right_child] = right_child_of_successor_node;
-
-        return BinaryTreeNode::recursiveRemove(node_to_be_deleted, content);
+        BinaryTreeNode::switchNodes(node, successor_node);
+        return BinaryTreeNode::recursiveRemove(node, content);
     }
 
     if (content < node->content) {
-        auto next_node = recursiveRemove(node->children[index_of_left_child], content);
-        if (!next_node) {
-            return std::unexpected(next_node.error());
-        }
-        node->children[index_of_left_child] = next_node.value();
+        return BinaryTreeNode::advanceStepToFindNodeToRemove(node, content, index_of_left_child);
     } else {
-        auto next_node = recursiveRemove(node->children[index_of_right_child], content);
-        if (!next_node) {
-            return std::unexpected(next_node.error());
-        }
-        node->children[index_of_right_child] = next_node.value();
+        return BinaryTreeNode::advanceStepToFindNodeToRemove(node, content, index_of_right_child);
     }
-
-    return node;
 }
 
 std::expected<void, std::string> BinaryTreeNode::remove(Content content) {
@@ -133,4 +139,68 @@ std::expected<void, std::string> BinaryTreeNode::remove(Content content) {
     } else {
         return {};
     }
+}
+
+std::string BinaryTreeNode::recursivePrintByLevel(BinaryTreeNode *node, unsigned int level) {
+    if (node == nullptr) {
+        return "";
+    }
+    std::string output = "";
+
+    output += BinaryTreeNode::recursivePrintByLevel(node->children[index_of_right_child], level + 1);
+    output += std::format("({})\t", level);
+
+    for (unsigned int current_index = 0;
+         current_index < level;
+         current_index++) {
+        output += "\t";
+    }
+
+    output += std::format("{}\n", node->content);
+
+    output += BinaryTreeNode::recursivePrintByLevel(node->children[index_of_left_child], level + 1);
+
+    return output;
+}
+
+void BinaryTreeNode::printByLevel() {
+    auto output = BinaryTreeNode::recursivePrintByLevel(this, 0);
+    std::println("{}", output);
+}
+
+std::string BinaryTreeNode::recursivePrintHierarchically(BinaryTreeNode *node, const std::string &prefix, bool is_last_child, bool is_root) {
+    std::string output = "";
+
+    if (node == nullptr) {
+        return output;
+    }
+
+    if (is_root) {
+        output += std::format("{}\n", node->content);
+    } else {
+        auto connector = is_last_child ? "└── " : "├── ";
+        output += prefix + connector + std::format("{}\n", node->content);
+    }
+
+    std::string child_prefix = prefix;
+    if (!is_root) {
+        child_prefix += is_last_child ? "    " : "│   ";
+    }
+
+    bool has_left_child = node->children[index_of_left_child] != nullptr;
+    bool has_right_child = node->children[index_of_right_child] != nullptr;
+
+    if (has_right_child) {
+        output += BinaryTreeNode::recursivePrintHierarchically(node->children[index_of_right_child], child_prefix, has_left_child ? false : true, false);
+    }
+    if (has_left_child) {
+        output += BinaryTreeNode::recursivePrintHierarchically(node->children[index_of_left_child], child_prefix, true, false);
+    }
+
+    return output;
+}
+
+void BinaryTreeNode::printHierarchically() {
+    auto output = BinaryTreeNode::recursivePrintHierarchically(this, std::string(""), false, true);
+    std::println("{}", output);
 }

@@ -18,17 +18,18 @@ class BinaryTreeNode {
         Content content;
         BinaryTreeNode *children[maximum_quantity_of_children];
 
-        BinaryTreeNode *recursiveInsert(BinaryTreeNode *node, Content content);
+        static bool recursiveContains(BinaryTreeNode *node, Content content);
+        static BinaryTreeNode *recursiveInsert(BinaryTreeNode *node, Content content);
+        static BinaryTreeNode *getSuccessor(BinaryTreeNode *node);
+        static std::expected<BinaryTreeNode *, std::string> recursiveRemove(BinaryTreeNode *node, Content content);
 
     public:
         BinaryTreeNode(Content content);
 
         ~BinaryTreeNode();
 
-        std::expected<bool, std::string> contains(Content content);
-
+        bool contains(Content content);
         void insert(Content content);
-
         std::expected<void, std::string> remove(Content content);
 
         void print();

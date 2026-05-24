@@ -141,34 +141,7 @@ std::expected<void, std::string> BinaryTreeNode::remove(Content content) {
     }
 }
 
-std::string BinaryTreeNode::recursivePrintByLevel(BinaryTreeNode *node, unsigned int level) {
-    if (node == nullptr) {
-        return "";
-    }
-    std::string output = "";
-
-    output += BinaryTreeNode::recursivePrintByLevel(node->children[index_of_right_child], level + 1);
-    output += std::format("({})\t", level);
-
-    for (unsigned int current_index = 0;
-         current_index < level;
-         current_index++) {
-        output += "\t";
-    }
-
-    output += std::format("{}\n", node->content);
-
-    output += BinaryTreeNode::recursivePrintByLevel(node->children[index_of_left_child], level + 1);
-
-    return output;
-}
-
-void BinaryTreeNode::printByLevel() {
-    auto output = BinaryTreeNode::recursivePrintByLevel(this, 0);
-    std::println("{}", output);
-}
-
-std::string BinaryTreeNode::recursivePrintHierarchically(BinaryTreeNode *node, const std::string &prefix, bool is_last_child, bool is_root) {
+std::string BinaryTreeNode::recursivePrint(BinaryTreeNode *node, const std::string &prefix, bool is_last_child, bool is_root) {
     std::string output = "";
 
     if (node == nullptr) {
@@ -190,17 +163,29 @@ std::string BinaryTreeNode::recursivePrintHierarchically(BinaryTreeNode *node, c
     bool has_left_child = node->children[index_of_left_child] != nullptr;
     bool has_right_child = node->children[index_of_right_child] != nullptr;
 
-    if (has_right_child) {
-        output += BinaryTreeNode::recursivePrintHierarchically(node->children[index_of_right_child], child_prefix, has_left_child ? false : true, false);
+    // If this is a leaf, don't show child positions.
+    if (!has_left_child && !has_right_child) {
+        return output;
     }
+
+    if (has_right_child) {
+        output += BinaryTreeNode::recursivePrint(node->children[index_of_right_child], child_prefix, false, false);
+    } else {
+        auto connector = "├── ";
+        output += child_prefix + connector + std::format("{}\n", std::string("-"));
+    }
+
     if (has_left_child) {
-        output += BinaryTreeNode::recursivePrintHierarchically(node->children[index_of_left_child], child_prefix, true, false);
+        output += BinaryTreeNode::recursivePrint(node->children[index_of_left_child], child_prefix, true, false);
+    } else {
+        auto connector = "└── ";
+        output += child_prefix + connector + std::format("{}\n", std::string("-"));
     }
 
     return output;
 }
 
-void BinaryTreeNode::printHierarchically() {
-    auto output = BinaryTreeNode::recursivePrintHierarchically(this, std::string(""), false, true);
+void BinaryTreeNode::print() {
+    auto output = BinaryTreeNode::recursivePrint(this, std::string(""), false, true);
     std::println("{}", output);
 }

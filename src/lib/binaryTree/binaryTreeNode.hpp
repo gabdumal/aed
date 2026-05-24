@@ -28,8 +28,7 @@ class BinaryTreeNode {
         static void switchNodes(BinaryTreeNode *first_node, BinaryTreeNode *second_node);
         static std::expected<BinaryTreeNode *, std::string> recursiveRemove(BinaryTreeNode *node, Content content);
 
-        static std::string recursivePrintByLevel(BinaryTreeNode *node, unsigned int level);
-        static std::string recursivePrintHierarchically(BinaryTreeNode *node, const std::string &prefix, bool is_last_child, bool is_root);
+        static std::string recursivePrint(BinaryTreeNode *node, const std::string &prefix, bool is_last_child, bool is_root);
 
     public:
         BinaryTreeNode(Content content);
@@ -40,8 +39,7 @@ class BinaryTreeNode {
         void insert(Content content);
         std::expected<void, std::string> remove(Content content);
 
-        void printByLevel();
-        void printHierarchically();
+        void print();
 };
 
 #endif  // __BINARY_TREE_HPP__

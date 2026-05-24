@@ -13,6 +13,5 @@ void TestBinaryTree::test() {
     tree->insert(22);
     tree->insert(6);
 
-    tree->printByLevel();
-    // tree->printHierarchically();
+    tree->print();
 }

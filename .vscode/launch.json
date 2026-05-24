@@ -8,7 +8,7 @@
       "args": [],
       "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}/.env",
-      "terminal": "console",
+      "terminal": "integrated",
       "preLaunchTask": "CMake: build"
     }
   ],

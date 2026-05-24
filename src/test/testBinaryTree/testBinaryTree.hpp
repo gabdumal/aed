@@ -5,13 +5,11 @@
 
 class TestBinaryTree {
     private:
-        static void testContains(BinaryTreeNode &tree, BinaryTreeNode::Content content);
+        static void testContains(BinaryTreeNode *tree, BinaryTreeNode::Content content);
 
-        static void testInsert(BinaryTreeNode &tree, BinaryTreeNode::Content content);
+        static void testRemove(BinaryTreeNode *tree, BinaryTreeNode::Content content);
 
-        static void testRemove(BinaryTreeNode &tree, BinaryTreeNode::Content content);
-
-        static void printItems(BinaryTreeNode &tree);
+        static void printTree(BinaryTreeNode *tree);
         static void printError(const std::string &error);
 
     public:

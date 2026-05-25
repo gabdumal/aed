@@ -17,6 +17,8 @@ class DiscoverAddends {
 
         static std::expected<Addends, std::string> discoverAddendsWithSortedOptions(std::vector<int> options, int sum);
 
+        static std::expected<Addends, std::string> discoverAddendsWithUnsortedOptions(std::vector<int> options, int sum);
+
         static void run(
             std::vector<int> options, int sum, bool is_sorted);
 

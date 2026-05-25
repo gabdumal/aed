@@ -2,6 +2,7 @@
 
 #include <expected>
 #include <print>
+#include <unordered_set>
 
 std::expected<DiscoverAddends::Addends, std::string>
     DiscoverAddends::discoverAddendsWithSortedOptions(
@@ -26,7 +27,26 @@ std::expected<DiscoverAddends::Addends, std::string>
         }
     }
 
-    return std::unexpected(message_for_not_found_addends);
+    return std::unexpected(std::string(message_for_not_found_addends));
+}
+
+std::expected<DiscoverAddends::Addends, std::string>
+    DiscoverAddends::discoverAddendsWithUnsortedOptions(
+        std::vector<int> options, int sum) {
+    auto checked_options = std::unordered_set<int>();
+
+    for (unsigned int index = 0; index < options.size(); index++) {
+        auto option = options[index];
+        auto complement = sum - option;
+
+        if (checked_options.contains(complement)) {
+            return {{complement, option}};
+        }
+
+        checked_options.insert(option);
+    }
+
+    return std::unexpected(std::string(message_for_not_found_addends));
 }
 
 void DiscoverAddends::run(
@@ -37,10 +57,12 @@ void DiscoverAddends::run(
     auto result =
         is_sorted
             ? DiscoverAddends::discoverAddendsWithSortedOptions(options, sum)
-            : DiscoverAddends::discoverAddendsWithSortedOptions(options, sum);
+            : DiscoverAddends::discoverAddendsWithUnsortedOptions(options, sum);
 
     if (!result) {
         std::println("Error: {}", result.error());
+        std::println();
+        return;
     }
 
     auto addends = result.value();
@@ -58,4 +80,34 @@ void DiscoverAddends::main() {
         {3, 4, 4, 7},
         8,
         true);
+
+    DiscoverAddends::run(
+        {3, 7, 5, 4},
+        8,
+        false);
+
+    DiscoverAddends::run(
+        {3, 7, 4, 4},
+        8,
+        false);
+
+    DiscoverAddends::run(
+        {3, 4, 5, 7},
+        20,
+        true);
+
+    DiscoverAddends::run(
+        {3, 4, 4, 7},
+        20,
+        true);
+
+    DiscoverAddends::run(
+        {3, 7, 5, 4},
+        20,
+        false);
+
+    DiscoverAddends::run(
+        {3, 7, 4, 4},
+        20,
+        false);
 }

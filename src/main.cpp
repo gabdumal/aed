@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "discoverAddends.hpp"
 #include "testBinaryTree.hpp"
 #include "testContiguousList.hpp"
 #include "testExternalHash.hpp"
@@ -10,37 +11,39 @@
 #include "testOpenAddressingHash.hpp"
 
 int main(int argc, char *argv[]) {
-    std::string test_to_run;
+    std::string algorithm_to_run;
 
     if (argc >= 2) {
-        test_to_run = argv[1];
+        algorithm_to_run = argv[1];
     } else {
-        const char *env_test = std::getenv("TEST_TO_RUN");
-        if (env_test) {
-            test_to_run = env_test;
+        const char *env_algorithm = std::getenv("ALGORITHM_TO_RUN");
+        if (env_algorithm) {
+            algorithm_to_run = env_algorithm;
         } else {
-            std::cerr << "Usage: " << argv[0] << " <TestName>" << std::endl;
-            std::cerr << "Or set TEST_TO_RUN environment variable" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <AlgorithmName>" << std::endl;
+            std::cerr << "Or set ALGORITHM_TO_RUN environment variable" << std::endl;
             return 1;
         }
     }
 
-    if (test_to_run == "TestContiguousList") {
+    if (algorithm_to_run == "TestContiguousList") {
         TestContiguousList::test();
-    } else if (test_to_run == "TestLinkedList") {
+    } else if (algorithm_to_run == "TestLinkedList") {
         TestLinkedList::test();
-    } else if (test_to_run == "TestLinkedQueue") {
+    } else if (algorithm_to_run == "TestLinkedQueue") {
         TestLinkedQueue::test();
-    } else if (test_to_run == "TestLinkedStack") {
+    } else if (algorithm_to_run == "TestLinkedStack") {
         TestLinkedStack::test();
-    } else if (test_to_run == "TestOpenAddressingHash") {
+    } else if (algorithm_to_run == "TestOpenAddressingHash") {
         TestOpenAddressingHash::test();
-    } else if (test_to_run == "TestExternalHash") {
+    } else if (algorithm_to_run == "TestExternalHash") {
         TestExternalHash::test();
-    } else if (test_to_run == "TestBinaryTree") {
+    } else if (algorithm_to_run == "TestBinaryTree") {
         TestBinaryTree::test();
+    } else if (algorithm_to_run == "DiscoverAddends") {
+        DiscoverAddends::main();
     } else {
-        std::cerr << "Unknown test: " << test_to_run << "." << std::endl;
+        std::cerr << "Unknown algorithm: " << algorithm_to_run << "." << std::endl;
         return 1;
     }
 

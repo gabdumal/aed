@@ -6,6 +6,7 @@ add_executable(aed
 ## Directories
 add_subdirectory(lib)
 add_subdirectory(test)
+add_subdirectory(exercises)
 
 ## Link libraries
 target_link_libraries(aed
@@ -17,4 +18,5 @@ target_link_libraries(aed
         testOpenAddressingHash
         testExternalHash
         testBinaryTree
+        discoverAddends
 )

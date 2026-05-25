@@ -6,16 +6,19 @@
 
 BinaryTreeNode::BinaryTreeNode(Content content) {
     this->content = content;
+    for (unsigned int current_index = 0;
+         current_index < this->maximum_quantity_of_children;
+         ++current_index) {
+        this->children[current_index] = nullptr;
+    }
 }
 
 BinaryTreeNode::~BinaryTreeNode() {
     for (unsigned int current_index = 0;
          current_index < this->maximum_quantity_of_children;
          current_index++) {
-        auto current_child = this->children[current_index];
-
-        delete current_child;
-        current_child = nullptr;
+        delete this->children[current_index];
+        this->children[current_index] = nullptr;
     }
 
     this->content = default_content;

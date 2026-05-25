@@ -13,7 +13,9 @@ ExternalHashTable::ExternalHashTable(int maximum_size) {
 
     this->items = new ExternalHashNode *[this->maximum_size];
 
-    for (unsigned int current_index = 0; current_index < this->maximum_size; current_index++) {
+    for (unsigned int current_index = 0;
+         current_index < this->maximum_size;
+         current_index++) {
         this->items[current_index] = nullptr;
     }
 }

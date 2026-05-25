@@ -79,4 +79,6 @@ void TestBinaryTree::test() {
 
     TestBinaryTree::testRemove(tree, 7);
     TestBinaryTree::testContains(tree, 7);
+
+    delete tree;
 }

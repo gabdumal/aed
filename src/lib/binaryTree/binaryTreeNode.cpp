@@ -235,3 +235,25 @@ unsigned int BinaryTreeNode::recursiveCountNodesRecursively(BinaryTreeNode *node
 unsigned int BinaryTreeNode::countNodesRecursively() {
     return BinaryTreeNode::recursiveCountNodesRecursively(this);
 }
+
+bool BinaryTreeNode::recursiveIsStrictlyBinary(BinaryTreeNode *node) {
+    if (node == nullptr) {
+        return true;
+    }
+
+    auto left_child = node->children[index_of_left_child];
+    auto right_child = node->children[index_of_right_child];
+
+    if ((left_child == nullptr) != (right_child == nullptr)) {
+        return false;
+    }
+
+    auto is_strictly_binary_to_the_left = recursiveIsStrictlyBinary(left_child);
+    auto is_strictly_binary_to_the_right = recursiveIsStrictlyBinary(right_child);
+
+    return is_strictly_binary_to_the_left && is_strictly_binary_to_the_right;
+}
+
+bool BinaryTreeNode::isStrictlyBinary() {
+    return BinaryTreeNode::recursiveIsStrictlyBinary(this);
+}

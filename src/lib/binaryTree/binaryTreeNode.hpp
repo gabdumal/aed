@@ -32,6 +32,8 @@ class BinaryTreeNode {
 
         static unsigned int recursiveCountNodesRecursively(BinaryTreeNode *node);
 
+        static bool recursiveIsStrictlyBinary(BinaryTreeNode *node);
+
     public:
         BinaryTreeNode(Content content);
 
@@ -42,6 +44,7 @@ class BinaryTreeNode {
         std::expected<void, std::string> remove(Content content);
         unsigned int countNodes();
         unsigned int countNodesRecursively();
+        bool isStrictlyBinary();
 
         void print();
 };

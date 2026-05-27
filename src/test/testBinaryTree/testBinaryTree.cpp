@@ -48,14 +48,30 @@ void TestBinaryTree::testCountNodesRecursively(BinaryTreeNode *tree) {
     std::println();
 }
 
+void TestBinaryTree::testIsStrictlyBinary(BinaryTreeNode *tree) {
+    auto is_strictly_binary = tree->isStrictlyBinary();
+    std::println("Is strictly binary: {}", is_strictly_binary);
+    std::println();
+}
+
 void TestBinaryTree::test() {
     BinaryTreeNode *tree = new BinaryTreeNode(10);
 
     TestBinaryTree::testCountNodes(tree);
     TestBinaryTree::testCountNodesRecursively(tree);
 
+    TestBinaryTree::testIsStrictlyBinary(tree);
+
     tree->insert(5);
+
+    TestBinaryTree::printTree(tree);
+    TestBinaryTree::testIsStrictlyBinary(tree);
+
     tree->insert(20);
+
+    TestBinaryTree::printTree(tree);
+    TestBinaryTree::testIsStrictlyBinary(tree);
+
     tree->insert(15);
     tree->insert(1);
     tree->insert(7);
@@ -71,6 +87,7 @@ void TestBinaryTree::test() {
     tree->insert(12);
 
     TestBinaryTree::printTree(tree);
+    TestBinaryTree::testIsStrictlyBinary(tree);
 
     TestBinaryTree::testCountNodes(tree);
     TestBinaryTree::testCountNodesRecursively(tree);
@@ -101,6 +118,16 @@ void TestBinaryTree::test() {
 
     TestBinaryTree::testCountNodes(tree);
     TestBinaryTree::testCountNodesRecursively(tree);
+
+    TestBinaryTree::testRemove(tree, 20);
+    TestBinaryTree::testRemove(tree, 5);
+    TestBinaryTree::testRemove(tree, 1);
+    tree->insert(5);
+    tree->insert(24);
+    tree->insert(26);
+
+    TestBinaryTree::printTree(tree);
+    TestBinaryTree::testIsStrictlyBinary(tree);
 
     delete tree;
 }

@@ -4,6 +4,7 @@
 #include "codedLeaves.hpp"
 #include "discoverAddends.hpp"
 #include "testBinaryTree.hpp"
+#include "testBinaryTreeAsArrays.hpp"
 #include "testContiguousList.hpp"
 #include "testExternalHash.hpp"
 #include "testLinkedList.hpp"
@@ -45,6 +46,8 @@ int main(int argc, char *argv[]) {
         DiscoverAddends::main();
     } else if (algorithm_to_run == "CodedLeaves") {
         CodedLeaves::main();
+    } else if (algorithm_to_run == "TestBinaryTreeAsArrays") {
+        TestBinaryTreeAsArrays::test();
     } else {
         std::cerr << "Unknown algorithm: " << algorithm_to_run << "." << std::endl;
         return 1;

@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "codedLeaves.hpp"
 #include "discoverAddends.hpp"
 #include "testBinaryTree.hpp"
 #include "testContiguousList.hpp"
@@ -42,6 +43,8 @@ int main(int argc, char *argv[]) {
         TestBinaryTree::test();
     } else if (algorithm_to_run == "DiscoverAddends") {
         DiscoverAddends::main();
+    } else if (algorithm_to_run == "CodedLeaves") {
+        CodedLeaves::main();
     } else {
         std::cerr << "Unknown algorithm: " << algorithm_to_run << "." << std::endl;
         return 1;

@@ -2,10 +2,11 @@
 
 #include <expected>
 #include <print>
+#include <stdexcept>
 
 BinaryTreeAsArrays::BinaryTreeAsArrays(unsigned int maximum_size) {
     if (maximum_size < 1) {
-        throw(std::string("Maximum size should be at least 1."));
+        throw std::invalid_argument("Maximum size should be at least 1.");
     }
 
     this->maximum_size = maximum_size;
@@ -13,6 +14,7 @@ BinaryTreeAsArrays::BinaryTreeAsArrays(unsigned int maximum_size) {
     this->content = new Content[maximum_size];
     this->left_child = new unsigned int[maximum_size];
     this->right_child = new unsigned int[maximum_size];
+    this->next_free_position = new unsigned int[maximum_size];
 
     for (unsigned int current_index = 0;
          current_index < this->maximum_size;
@@ -20,6 +22,7 @@ BinaryTreeAsArrays::BinaryTreeAsArrays(unsigned int maximum_size) {
         this->content[current_index] = empty_content;
         this->right_child[current_index] = empty_index;
         this->left_child[current_index] = empty_index;
+        this->next_free_position[current_index] = empty_index;
     }
 }
 
@@ -27,6 +30,7 @@ BinaryTreeAsArrays::~BinaryTreeAsArrays() {
     delete[] this->content;
     delete[] this->left_child;
     delete[] this->right_child;
+    delete[] this->next_free_position;
 }
 
 bool BinaryTreeAsArrays::recursiveContains(unsigned int index, Content content) {
@@ -49,12 +53,28 @@ bool BinaryTreeAsArrays::contains(Content content) {
     return this->recursiveContains(this->index_of_root, content);
 }
 
+unsigned int BinaryTreeAsArrays::allocatePosition() {
+    // Reuse previously removed position.
+    if (this->first_free_position != empty_index) {
+        auto reused_index = this->first_free_position;
+        this->first_free_position = this->next_free_position[reused_index];
+        return reused_index;
+    }
+
+    // Use new unused position.
+    if (this->next_free_index == this->maximum_size) {
+        throw std::length_error("Tree is full.");
+    }
+    auto new_index = this->next_free_index;
+    this->next_free_index++;
+    return new_index;
+}
+
 unsigned int BinaryTreeAsArrays::createNode(Content content) {
-    unsigned int index_of_new_node = this->next_free_index;
+    unsigned int index_of_new_node = this->allocatePosition();
     this->content[index_of_new_node] = content;
     this->left_child[index_of_new_node] = empty_index;
     this->right_child[index_of_new_node] = empty_index;
-    this->next_free_index++;
     return index_of_new_node;
 }
 
@@ -80,6 +100,11 @@ unsigned int BinaryTreeAsArrays::insert(Content content) {
     return index_of_new_node;
 }
 
+void BinaryTreeAsArrays::releasePosition(unsigned int removed_index) {
+    this->next_free_position[removed_index] = this->first_free_position;
+    this->first_free_position = removed_index;
+}
+
 unsigned int BinaryTreeAsArrays::findMinimum(unsigned int index) {
     while (this->left_child[index] != empty_index) {
         index = this->left_child[index];
@@ -96,16 +121,19 @@ std::expected<unsigned int, std::string> BinaryTreeAsArrays::recursiveRemove(uns
         // Leaf node.
         if (this->left_child[index] == empty_index &&
             this->right_child[index] == empty_index) {
+            this->releasePosition(index);
             return empty_index;
         }
 
         // Has only left child.
         if (this->right_child[index] == empty_index) {
+            this->releasePosition(index);
             return this->left_child[index];
         }
 
         // Has only right child.
         if (this->left_child[index] == empty_index) {
+            this->releasePosition(index);
             return this->right_child[index];
         }
 

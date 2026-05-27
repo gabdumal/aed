@@ -1,6 +1,5 @@
 #include "testBinaryTreeAsArrays.hpp"
 
-#include <cmath>
 #include <print>
 
 #include "binaryTreeAsArrays.hpp"
@@ -61,7 +60,6 @@ void TestBinaryTreeAsArrays::test() {
     tree->insert(9);
     tree->insert(12);
     tree->insert(11);
-    // tree->insert(13);
 
     TestBinaryTreeAsArrays::printTree(tree);
 
@@ -73,6 +71,9 @@ void TestBinaryTreeAsArrays::test() {
 
     TestBinaryTreeAsArrays::testRemove(tree, 3);
     TestBinaryTreeAsArrays::testContains(tree, 3);
+
+    tree->insert(13);
+    TestBinaryTreeAsArrays::printTree(tree);
 
     TestBinaryTreeAsArrays::testRemove(tree, 8);
     TestBinaryTreeAsArrays::testContains(tree, 8);

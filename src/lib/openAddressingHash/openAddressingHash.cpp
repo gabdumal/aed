@@ -2,14 +2,15 @@
 
 #include <expected>
 #include <print>
+#include <stdexcept>
 #include <string>
 
 OpenAddressingHash::OpenAddressingHash(int maximum_size, int step) {
     if (maximum_size < 1) {
-        throw(std::string("Maximum size should be at least 1."));
+        throw std::invalid_argument("Maximum size should be at least 1.");
     }
     if (step < 1) {
-        throw(std::string("Step should be at least 1."));
+        throw std::invalid_argument("Step should be at least 1.");
     }
 
     this->maximum_size = (unsigned int) maximum_size;

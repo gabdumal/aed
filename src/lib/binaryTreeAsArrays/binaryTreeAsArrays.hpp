@@ -15,17 +15,21 @@ class BinaryTreeAsArrays {
 
         unsigned int maximum_size;
         unsigned int next_free_index = 0;
+        unsigned int first_free_position = empty_index;
         unsigned int index_of_root = empty_index;
 
         Content *content;
         unsigned int *left_child;
         unsigned int *right_child;
+        unsigned int *next_free_position;
 
         bool recursiveContains(unsigned int index, Content content);
 
+        unsigned int allocatePosition();
         unsigned int createNode(Content content);
         unsigned int recursiveInsert(unsigned int index, Content content);
 
+        void releasePosition(unsigned int removed_index);
         unsigned int findMinimum(unsigned int index);
         std::expected<unsigned int, std::string> recursiveRemove(unsigned int index, Content content);
 

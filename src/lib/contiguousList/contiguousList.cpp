@@ -2,6 +2,7 @@
 
 #include <expected>
 #include <print>
+#include <stdexcept>
 
 std::string ContiguousList::getMessageForIndexNotWithin() {
     return "Index should be at least 0 and below " +
@@ -27,7 +28,7 @@ std::string ContiguousList::getMessageForFullList() {
 
 ContiguousList::ContiguousList(int maximum_size) {
     if (maximum_size < 1) {
-        throw(std::string("Maximum size should be at least 1."));
+        throw std::invalid_argument("Maximum size should be at least 1.");
     }
 
     this->maximum_size = maximum_size;

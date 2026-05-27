@@ -1,12 +1,13 @@
 #include "externalHashTable.hpp"
 
 #include <print>
+#include <stdexcept>
 
 #include "externalHashNode.hpp"
 
 ExternalHashTable::ExternalHashTable(int maximum_size) {
     if (maximum_size < 1) {
-        throw(std::string("Maximum size should be at least 1."));
+        throw std::invalid_argument("Maximum size should be at least 1.");
     }
 
     this->maximum_size = (unsigned int) maximum_size;

@@ -12,9 +12,11 @@ class TestBinaryTree {
         static void testCountNodes(BinaryTreeNode *tree);
         static void testCountNodesRecursively(BinaryTreeNode *tree);
 
+        static void testGetHeight(BinaryTreeNode *tree);
+
         static void testIsStrictlyBinary(BinaryTreeNode *tree);
 
-        static void testGetHeight(BinaryTreeNode *tree);
+        static void testIsComplete(BinaryTreeNode *tree);
 
         static void printTree(BinaryTreeNode *tree);
         static void printError(const std::string &error);

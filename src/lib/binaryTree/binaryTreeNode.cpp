@@ -273,3 +273,35 @@ unsigned int BinaryTreeNode::recursiveGetHeight(BinaryTreeNode *node, unsigned i
 unsigned int BinaryTreeNode::getHeight() {
     return BinaryTreeNode::recursiveGetHeight(this, 0);
 }
+
+bool BinaryTreeNode::isComplete() {
+    auto queue = std::queue<BinaryTreeNode *>();
+    queue.push(this);
+
+    bool has_found_a_null_node_already = false;
+
+    while (!queue.empty()) {
+        auto current_node = queue.front();
+        queue.pop();
+
+        if (current_node->children[index_of_left_child] == nullptr) {
+            has_found_a_null_node_already = true;
+        } else {
+            if (has_found_a_null_node_already) {
+                return false;
+            }
+            queue.push(current_node->children[index_of_left_child]);
+        }
+
+        if (current_node->children[index_of_right_child] == nullptr) {
+            has_found_a_null_node_already = true;
+        } else {
+            if (has_found_a_null_node_already) {
+                return false;
+            }
+            queue.push(current_node->children[index_of_right_child]);
+        }
+    }
+
+    return true;
+}

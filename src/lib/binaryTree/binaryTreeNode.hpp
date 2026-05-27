@@ -34,6 +34,8 @@ class BinaryTreeNode {
 
         static bool recursiveIsStrictlyBinary(BinaryTreeNode *node);
 
+        static unsigned int recursiveGetHeight(BinaryTreeNode *node, unsigned int height);
+
     public:
         BinaryTreeNode(Content content);
 
@@ -42,9 +44,13 @@ class BinaryTreeNode {
         bool contains(Content content);
         void insert(Content content);
         std::expected<void, std::string> remove(Content content);
+
         unsigned int countNodes();
         unsigned int countNodesRecursively();
+        unsigned int getHeight();
+
         bool isStrictlyBinary();
+        bool isComplete();
 
         void print();
 };

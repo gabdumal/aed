@@ -14,6 +14,8 @@ class TestBinaryTree {
 
         static void testIsStrictlyBinary(BinaryTreeNode *tree);
 
+        static void testGetHeight(BinaryTreeNode *tree);
+
         static void printTree(BinaryTreeNode *tree);
         static void printError(const std::string &error);
 

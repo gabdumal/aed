@@ -38,19 +38,25 @@ void TestBinaryTree::testRemove(BinaryTreeNode *tree, BinaryTreeNode::Content co
 
 void TestBinaryTree::testCountNodes(BinaryTreeNode *tree) {
     auto quantity_of_nodes = tree->countNodes();
-    std::println("Quantity of nodes: {}", quantity_of_nodes);
+    std::println("Quantity of nodes: {}.", quantity_of_nodes);
     std::println();
 }
 
 void TestBinaryTree::testCountNodesRecursively(BinaryTreeNode *tree) {
     auto quantity_of_nodes = tree->countNodesRecursively();
-    std::println("Quantity of nodes (recursive): {}", quantity_of_nodes);
+    std::println("Quantity of nodes (recursive): {}.", quantity_of_nodes);
     std::println();
 }
 
 void TestBinaryTree::testIsStrictlyBinary(BinaryTreeNode *tree) {
     auto is_strictly_binary = tree->isStrictlyBinary();
-    std::println("Is strictly binary: {}", is_strictly_binary);
+    std::println("Is strictly binary: {}.", is_strictly_binary);
+    std::println();
+}
+
+void TestBinaryTree::testGetHeight(BinaryTreeNode *tree) {
+    auto height = tree->getHeight();
+    std::println("Height: {}.", height);
     std::println();
 }
 
@@ -59,17 +65,17 @@ void TestBinaryTree::test() {
 
     TestBinaryTree::testCountNodes(tree);
     TestBinaryTree::testCountNodesRecursively(tree);
-
+    TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
 
     tree->insert(5);
-
     TestBinaryTree::printTree(tree);
+    TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
 
     tree->insert(20);
-
     TestBinaryTree::printTree(tree);
+    TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
 
     tree->insert(15);
@@ -87,10 +93,10 @@ void TestBinaryTree::test() {
     tree->insert(12);
 
     TestBinaryTree::printTree(tree);
-    TestBinaryTree::testIsStrictlyBinary(tree);
-
     TestBinaryTree::testCountNodes(tree);
     TestBinaryTree::testCountNodesRecursively(tree);
+    TestBinaryTree::testGetHeight(tree);
+    TestBinaryTree::testIsStrictlyBinary(tree);
 
     TestBinaryTree::testContains(tree, 10);
     TestBinaryTree::testContains(tree, 0);
@@ -119,6 +125,12 @@ void TestBinaryTree::test() {
     TestBinaryTree::testCountNodes(tree);
     TestBinaryTree::testCountNodesRecursively(tree);
 
+    TestBinaryTree::printTree(tree);
+    TestBinaryTree::testCountNodes(tree);
+    TestBinaryTree::testCountNodesRecursively(tree);
+    TestBinaryTree::testGetHeight(tree);
+    TestBinaryTree::testIsStrictlyBinary(tree);
+
     TestBinaryTree::testRemove(tree, 20);
     TestBinaryTree::testRemove(tree, 5);
     TestBinaryTree::testRemove(tree, 1);
@@ -127,6 +139,9 @@ void TestBinaryTree::test() {
     tree->insert(26);
 
     TestBinaryTree::printTree(tree);
+    TestBinaryTree::testCountNodes(tree);
+    TestBinaryTree::testCountNodesRecursively(tree);
+    TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
 
     delete tree;

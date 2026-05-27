@@ -1,5 +1,6 @@
 #include "binaryTreeNode.hpp"
 
+#include <algorithm>
 #include <expected>
 #include <format>
 #include <print>
@@ -256,4 +257,19 @@ bool BinaryTreeNode::recursiveIsStrictlyBinary(BinaryTreeNode *node) {
 
 bool BinaryTreeNode::isStrictlyBinary() {
     return BinaryTreeNode::recursiveIsStrictlyBinary(this);
+}
+
+unsigned int BinaryTreeNode::recursiveGetHeight(BinaryTreeNode *node, unsigned int height) {
+    if (node == nullptr) {
+        return height;
+    }
+
+    auto height_at_left = recursiveGetHeight(node->children[index_of_left_child], height + 1);
+    auto height_at_right = recursiveGetHeight(node->children[index_of_right_child], height + 1);
+
+    return std::max(height_at_right, height_at_left);
+}
+
+unsigned int BinaryTreeNode::getHeight() {
+    return BinaryTreeNode::recursiveGetHeight(this, 0);
 }

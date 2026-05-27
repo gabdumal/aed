@@ -36,6 +36,12 @@ void TestBinaryTree::testRemove(BinaryTreeNode *tree, BinaryTreeNode::Content co
     std::println();
 }
 
+void TestBinaryTree::testCountNodes(BinaryTreeNode *tree) {
+    auto quantity_of_nodes = tree->countNodes();
+    std::println("Quantity of nodes: {}", quantity_of_nodes);
+    std::println();
+}
+
 void TestBinaryTree::test() {
     BinaryTreeNode *tree = new BinaryTreeNode(10);
     tree->insert(5);
@@ -79,6 +85,8 @@ void TestBinaryTree::test() {
 
     TestBinaryTree::testRemove(tree, 7);
     TestBinaryTree::testContains(tree, 7);
+
+    TestBinaryTree::testCountNodes(tree);
 
     delete tree;
 }

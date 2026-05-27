@@ -38,6 +38,7 @@ class BinaryTreeNode {
         bool contains(Content content);
         void insert(Content content);
         std::expected<void, std::string> remove(Content content);
+        unsigned int countNodes();
 
         void print();
 };

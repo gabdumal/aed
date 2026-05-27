@@ -3,6 +3,7 @@
 #include <expected>
 #include <format>
 #include <print>
+#include <queue>
 
 BinaryTreeNode::BinaryTreeNode(Content content) {
     this->content = content;
@@ -195,4 +196,27 @@ std::string BinaryTreeNode::recursivePrint(BinaryTreeNode *node, const std::stri
 void BinaryTreeNode::print() {
     auto output = BinaryTreeNode::recursivePrint(this, std::string(""), false, true);
     std::print("{}", output);
+}
+
+unsigned int BinaryTreeNode::countNodes() {
+    unsigned int quantity_of_nodes = 0;
+
+    auto queue = std::queue<BinaryTreeNode *>();
+    queue.push(this);
+
+    while (!queue.empty()) {
+        auto current_node = queue.front();
+        queue.pop();
+
+        quantity_of_nodes++;
+
+        if (current_node->children[index_of_left_child] != nullptr) {
+            queue.push(current_node->children[index_of_left_child]);
+        }
+        if (current_node->children[index_of_right_child] != nullptr) {
+            queue.push(current_node->children[index_of_right_child]);
+        }
+    }
+
+    return quantity_of_nodes;
 }

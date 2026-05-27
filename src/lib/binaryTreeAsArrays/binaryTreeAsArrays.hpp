@@ -21,8 +21,13 @@ class BinaryTreeAsArrays {
         unsigned int *left_child;
         unsigned int *right_child;
 
+        bool recursiveContains(unsigned int index, Content content);
+
         unsigned int createNode(Content content);
         unsigned int recursiveInsert(unsigned int index, Content content);
+
+        unsigned int findMinimum(unsigned int index);
+        std::expected<unsigned int, std::string> recursiveRemove(unsigned int index, Content content);
 
         std::string recursivePrint(unsigned int index, const std::string &prefix, bool is_last_child, bool is_root);
 
@@ -33,7 +38,6 @@ class BinaryTreeAsArrays {
 
         bool contains(Content content);
         unsigned int insert(Content content);
-
         std::expected<void, std::string> remove(Content content);
 
         void print();

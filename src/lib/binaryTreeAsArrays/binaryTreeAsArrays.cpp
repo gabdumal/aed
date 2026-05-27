@@ -1,5 +1,6 @@
 #include "binaryTreeAsArrays.hpp"
 
+#include <expected>
 #include <print>
 
 BinaryTreeAsArrays::BinaryTreeAsArrays(unsigned int maximum_size) {
@@ -28,8 +29,24 @@ BinaryTreeAsArrays::~BinaryTreeAsArrays() {
     delete[] this->right_child;
 }
 
+bool BinaryTreeAsArrays::recursiveContains(unsigned int index, Content content) {
+    if (index == empty_index) {
+        return false;
+    }
+
+    if (this->content[index] == content) {
+        return true;
+    }
+
+    if (content < this->content[index]) {
+        return this->recursiveContains(this->left_child[index], content);
+    } else {
+        return this->recursiveContains(this->right_child[index], content);
+    }
+}
+
 bool BinaryTreeAsArrays::contains(Content content) {
-    return false;
+    return this->recursiveContains(this->index_of_root, content);
 }
 
 unsigned int BinaryTreeAsArrays::createNode(Content content) {
@@ -63,7 +80,71 @@ unsigned int BinaryTreeAsArrays::insert(Content content) {
     return index_of_new_node;
 }
 
+unsigned int BinaryTreeAsArrays::findMinimum(unsigned int index) {
+    while (this->left_child[index] != empty_index) {
+        index = this->left_child[index];
+    }
+    return index;
+}
+
+std::expected<unsigned int, std::string> BinaryTreeAsArrays::recursiveRemove(unsigned int index, Content content) {
+    if (index == empty_index) {
+        return std::unexpected(message_for_content_not_found);
+    }
+
+    if (this->content[index] == content) {
+        // Leaf node.
+        if (this->left_child[index] == empty_index &&
+            this->right_child[index] == empty_index) {
+            return empty_index;
+        }
+
+        // Has only left child.
+        if (this->right_child[index] == empty_index) {
+            return this->left_child[index];
+        }
+
+        // Has only right child.
+        if (this->left_child[index] == empty_index) {
+            return this->right_child[index];
+        }
+
+        // Has both children.
+        unsigned int index_of_successor = this->findMinimum(this->right_child[index]);
+
+        this->content[index] = this->content[index_of_successor];
+
+        auto result = this->recursiveRemove(this->right_child[index], this->content[index_of_successor]);
+        if (!result) {
+            return std::unexpected(result.error());
+        }
+        this->right_child[index] = result.value();
+
+        return index;
+    }
+
+    if (content < this->content[index]) {
+        auto result = recursiveRemove(this->left_child[index], content);
+        if (!result) {
+            return std::unexpected(result.error());
+        }
+        this->left_child[index] = result.value();
+        return index;
+    } else {
+        auto result = recursiveRemove(this->right_child[index], content);
+        if (!result) {
+            return std::unexpected(result.error());
+        }
+        this->right_child[index] = result.value();
+        return index;
+    }
+}
+
 std::expected<void, std::string> BinaryTreeAsArrays::remove(Content content) {
+    auto result = this->recursiveRemove(this->index_of_root, content);
+    if (!result) {
+        return std::unexpected(result.error());
+    }
     return {};
 }
 

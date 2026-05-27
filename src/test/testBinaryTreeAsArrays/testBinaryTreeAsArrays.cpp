@@ -38,7 +38,7 @@ void TestBinaryTreeAsArrays::testRemove(BinaryTreeAsArrays *tree, BinaryTreeAsAr
 }
 
 void TestBinaryTreeAsArrays::test() {
-    BinaryTreeAsArrays *tree = new BinaryTreeAsArrays(31);
+    BinaryTreeAsArrays *tree = new BinaryTreeAsArrays(15);
 
     tree->insert(5);
 
@@ -48,54 +48,56 @@ void TestBinaryTreeAsArrays::test() {
 
     TestBinaryTreeAsArrays::printTree(tree);
 
-    // tree->insert(15);
-    // tree->insert(1);
-    // tree->insert(7);
-    // tree->insert(4);
-    // tree->insert(2);
-    // tree->insert(25);
-    // tree->insert(22);
-    // tree->insert(6);
-    // tree->insert(3);
-    // tree->insert(8);
-    // tree->insert(9);
-    // tree->insert(11);
-    // tree->insert(12);
+    tree->insert(15);
+    tree->insert(1);
+    tree->insert(7);
+    tree->insert(4);
+    tree->insert(2);
+    tree->insert(25);
+    tree->insert(22);
+    tree->insert(6);
+    tree->insert(3);
+    tree->insert(8);
+    tree->insert(9);
+    tree->insert(12);
+    tree->insert(11);
+    // tree->insert(13);
 
-    // TestBinaryTreeAsArrays::printTree(tree);
+    TestBinaryTreeAsArrays::printTree(tree);
 
-    // TestBinaryTreeAsArrays::testContains(tree, 10);
-    // TestBinaryTreeAsArrays::testContains(tree, 0);
-    // TestBinaryTreeAsArrays::testContains(tree, 3);
-    // TestBinaryTreeAsArrays::testContains(tree, 8);
-    // TestBinaryTreeAsArrays::testContains(tree, 11);
+    TestBinaryTreeAsArrays::testContains(tree, 10);
+    TestBinaryTreeAsArrays::testContains(tree, 0);
+    TestBinaryTreeAsArrays::testContains(tree, 3);
+    TestBinaryTreeAsArrays::testContains(tree, 8);
+    TestBinaryTreeAsArrays::testContains(tree, 11);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 3);
-    // TestBinaryTreeAsArrays::testContains(tree, 3);
+    TestBinaryTreeAsArrays::testRemove(tree, 3);
+    TestBinaryTreeAsArrays::testContains(tree, 3);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 8);
-    // TestBinaryTreeAsArrays::testContains(tree, 8);
+    TestBinaryTreeAsArrays::testRemove(tree, 8);
+    TestBinaryTreeAsArrays::testContains(tree, 8);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 10);
-    // TestBinaryTreeAsArrays::testContains(tree, 10);
+    TestBinaryTreeAsArrays::testRemove(tree, 10);
+    TestBinaryTreeAsArrays::testContains(tree, 10);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 11);
-    // TestBinaryTreeAsArrays::testContains(tree, 11);
+    TestBinaryTreeAsArrays::testRemove(tree, 11);
+    TestBinaryTreeAsArrays::testContains(tree, 11);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 7);
-    // TestBinaryTreeAsArrays::testContains(tree, 7);
+    TestBinaryTreeAsArrays::testRemove(tree, 7);
+    TestBinaryTreeAsArrays::testContains(tree, 7);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 7);
-    // TestBinaryTreeAsArrays::testContains(tree, 7);
+    TestBinaryTreeAsArrays::testRemove(tree, 7);
+    TestBinaryTreeAsArrays::testContains(tree, 7);
 
-    // TestBinaryTreeAsArrays::testRemove(tree, 20);
-    // TestBinaryTreeAsArrays::testRemove(tree, 5);
-    // TestBinaryTreeAsArrays::testRemove(tree, 1);
-    // tree->insert(5);
-    // tree->insert(24);
-    // tree->insert(26);
+    TestBinaryTreeAsArrays::testRemove(tree, 20);
+    TestBinaryTreeAsArrays::testRemove(tree, 5);
+    TestBinaryTreeAsArrays::testRemove(tree, 1);
 
-    // TestBinaryTreeAsArrays::printTree(tree);
+    tree->insert(5);
+    tree->insert(24);
+    tree->insert(26);
+
+    TestBinaryTreeAsArrays::printTree(tree);
 
     delete tree;
 }

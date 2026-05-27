@@ -220,3 +220,18 @@ unsigned int BinaryTreeNode::countNodes() {
 
     return quantity_of_nodes;
 }
+
+unsigned int BinaryTreeNode::recursiveCountNodesRecursively(BinaryTreeNode *node) {
+    if (node == nullptr) {
+        return 0;
+    }
+
+    auto quantity_of_nodes_to_the_left = BinaryTreeNode::recursiveCountNodesRecursively(node->children[index_of_left_child]);
+    auto quantity_of_nodes_to_the_right = BinaryTreeNode::recursiveCountNodesRecursively(node->children[index_of_right_child]);
+
+    return quantity_of_nodes_to_the_left + quantity_of_nodes_to_the_right + 1;
+}
+
+unsigned int BinaryTreeNode::countNodesRecursively() {
+    return BinaryTreeNode::recursiveCountNodesRecursively(this);
+}

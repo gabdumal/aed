@@ -10,6 +10,7 @@ class TestBinaryTree {
         static void testRemove(BinaryTreeNode *tree, BinaryTreeNode::Content content);
 
         static void testCountNodes(BinaryTreeNode *tree);
+        static void testCountNodesRecursively(BinaryTreeNode *tree);
 
         static void printTree(BinaryTreeNode *tree);
         static void printError(const std::string &error);

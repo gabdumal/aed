@@ -30,6 +30,8 @@ class BinaryTreeNode {
 
         static std::string recursivePrint(BinaryTreeNode *node, const std::string &prefix, bool is_last_child, bool is_root);
 
+        static unsigned int recursiveCountNodesRecursively(BinaryTreeNode *node);
+
     public:
         BinaryTreeNode(Content content);
 
@@ -39,6 +41,7 @@ class BinaryTreeNode {
         void insert(Content content);
         std::expected<void, std::string> remove(Content content);
         unsigned int countNodes();
+        unsigned int countNodesRecursively();
 
         void print();
 };

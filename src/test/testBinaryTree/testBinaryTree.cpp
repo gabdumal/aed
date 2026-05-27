@@ -42,8 +42,18 @@ void TestBinaryTree::testCountNodes(BinaryTreeNode *tree) {
     std::println();
 }
 
+void TestBinaryTree::testCountNodesRecursively(BinaryTreeNode *tree) {
+    auto quantity_of_nodes = tree->countNodesRecursively();
+    std::println("Quantity of nodes (recursive): {}", quantity_of_nodes);
+    std::println();
+}
+
 void TestBinaryTree::test() {
     BinaryTreeNode *tree = new BinaryTreeNode(10);
+
+    TestBinaryTree::testCountNodes(tree);
+    TestBinaryTree::testCountNodesRecursively(tree);
+
     tree->insert(5);
     tree->insert(20);
     tree->insert(15);
@@ -61,6 +71,9 @@ void TestBinaryTree::test() {
     tree->insert(12);
 
     TestBinaryTree::printTree(tree);
+
+    TestBinaryTree::testCountNodes(tree);
+    TestBinaryTree::testCountNodesRecursively(tree);
 
     TestBinaryTree::testContains(tree, 10);
     TestBinaryTree::testContains(tree, 0);
@@ -87,6 +100,7 @@ void TestBinaryTree::test() {
     TestBinaryTree::testContains(tree, 7);
 
     TestBinaryTree::testCountNodes(tree);
+    TestBinaryTree::testCountNodesRecursively(tree);
 
     delete tree;
 }

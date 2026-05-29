@@ -1,5 +1,5 @@
-#ifndef __BINARY_TREE_HPP__
-#define __BINARY_TREE_HPP__
+#ifndef __BINARY_TREE_NODE_HPP__
+#define __BINARY_TREE_NODE_HPP__
 
 #include <expected>
 #include <string>
@@ -55,4 +55,4 @@ class BinaryTreeNode {
         void print();
 };
 
-#endif  // __BINARY_TREE_HPP__
+#endif  // __BINARY_TREE_NODE_HPP__

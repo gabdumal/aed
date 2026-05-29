@@ -21,4 +21,5 @@ target_link_libraries(aed
         discoverAddends
         codedLeaves
         testBinaryTreeAsArrays
+        testAvlTree
 )

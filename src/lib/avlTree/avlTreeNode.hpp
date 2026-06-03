@@ -17,7 +17,7 @@ class AvlTreeNode {
 
         Content content;
         AvlTreeNode *children[maximum_quantity_of_children];
-        int balancing_factor;
+        unsigned int height;
 
         static AvlTreeNode *rotateToLeft(AvlTreeNode *node);
         static AvlTreeNode *rotateToRight(AvlTreeNode *node);
@@ -40,8 +40,6 @@ class AvlTreeNode {
 
         static bool recursiveIsStrictlyBinary(AvlTreeNode *node);
 
-        static unsigned int recursiveGetHeight(AvlTreeNode *node, unsigned int height);
-
     public:
         AvlTreeNode(Content content);
 
@@ -53,7 +51,9 @@ class AvlTreeNode {
 
         unsigned int countNodes();
         unsigned int countNodesRecursively();
-        unsigned int getHeight();
+
+        static unsigned int getHeight(AvlTreeNode *node);
+        static int getBalancingFactor(AvlTreeNode *node);
 
         bool isStrictlyBinary();
         bool isComplete();

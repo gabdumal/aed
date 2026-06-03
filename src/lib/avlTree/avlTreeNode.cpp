@@ -8,7 +8,7 @@
 
 AvlTreeNode::AvlTreeNode(Content content) {
     this->content = content;
-    this->balancing_factor = 0;
+    this->height = 1;
     for (unsigned int current_index = 0;
          current_index < this->maximum_quantity_of_children;
          ++current_index) {
@@ -25,7 +25,7 @@ AvlTreeNode::~AvlTreeNode() {
     }
 
     this->content = default_content;
-    this->balancing_factor = 0;
+    this->height = 0;
 }
 
 AvlTreeNode *AvlTreeNode::rotateToLeft(AvlTreeNode *node) {
@@ -33,7 +33,40 @@ AvlTreeNode *AvlTreeNode::rotateToLeft(AvlTreeNode *node) {
         return nullptr;
     }
 
+    auto right_child = node->children[index_of_right_child];
+    if (right_child == nullptr) {
+        return node;
+    }
+    auto left_child_of_right_child =
+        right_child == nullptr
+            ? nullptr
+            : right_child->children[index_of_left_child];
+
+    right_child->children[index_of_left_child] = node;
+    node->children[index_of_right_child] = left_child_of_right_child;
+
+    node->height =
+        1 + std::max(
+                getHeight(node->children[index_of_left_child]),
+                getHeight(node->children[index_of_right_child]));
+    right_child->height =
+        1 + std::max(
+                getHeight(right_child->children[index_of_left_child]),
+                getHeight(right_child->children[index_of_right_child]));
+
+    return right_child;
+}
+
+AvlTreeNode *AvlTreeNode::rotateToRight(AvlTreeNode *node) {
+    if (node == nullptr) {
+        return nullptr;
+    }
+
     auto left_child = node->children[index_of_left_child];
+    if (left_child == nullptr) {
+        return node;
+    }
+
     auto right_child_of_left_child =
         left_child == nullptr
             ? nullptr
@@ -42,14 +75,39 @@ AvlTreeNode *AvlTreeNode::rotateToLeft(AvlTreeNode *node) {
     left_child->children[index_of_right_child] = node;
     node->children[index_of_left_child] = right_child_of_left_child;
 
-    return nullptr;
+    node->height =
+        1 + std::max(
+                getHeight(node->children[index_of_left_child]),
+                getHeight(node->children[index_of_right_child]));
+    left_child->height =
+        1 + std::max(
+                getHeight(left_child->children[index_of_left_child]),
+                getHeight(left_child->children[index_of_right_child]));
+
+    return left_child;
 }
 
-AvlTreeNode *AvlTreeNode::rotateToRight(AvlTreeNode *node) { return nullptr; }
+AvlTreeNode *AvlTreeNode::rotateToLeftThenRight(AvlTreeNode *node) {
+    if (node == nullptr) {
+        return nullptr;
+    }
 
-AvlTreeNode *AvlTreeNode::rotateToLeftThenRight(AvlTreeNode *node) { return nullptr; }
+    auto left_child = node->children[index_of_left_child];
+    node->children[index_of_left_child] = rotateToLeft(left_child);
 
-AvlTreeNode *AvlTreeNode::rotateToRightThenLeft(AvlTreeNode *node) { return nullptr; }
+    return rotateToRight(node);
+}
+
+AvlTreeNode *AvlTreeNode::rotateToRightThenLeft(AvlTreeNode *node) {
+    if (node == nullptr) {
+        return nullptr;
+    }
+
+    auto right_child = node->children[index_of_right_child];
+    node->children[index_of_right_child] = rotateToRight(right_child);
+
+    return rotateToLeft(node);
+}
 
 AvlTreeNode *AvlTreeNode::recursiveInsert(AvlTreeNode *node, Content content) {
     if (node == nullptr) {
@@ -61,6 +119,32 @@ AvlTreeNode *AvlTreeNode::recursiveInsert(AvlTreeNode *node, Content content) {
         node->children[index_of_left_child] = recursiveInsert(node->children[index_of_left_child], content);
     } else {
         node->children[index_of_right_child] = recursiveInsert(node->children[index_of_right_child], content);
+    }
+
+    auto left_child = node->children[index_of_left_child];
+    auto right_child = node->children[index_of_right_child];
+
+    node->height =
+        1 + std::max(
+                getHeight(left_child),
+                getHeight(right_child));
+
+    auto balancing_factor = getBalancingFactor(node);
+
+    auto balancing_factor_of_left_child = getBalancingFactor(left_child);
+    if (balancing_factor >= 2 && balancing_factor_of_left_child >= 1) {
+        return rotateToRight(node);
+    }
+    if (balancing_factor >= 2 && balancing_factor_of_left_child <= -1) {
+        return rotateToLeftThenRight(node);
+    }
+
+    auto balancing_factor_of_right_child = getBalancingFactor(right_child);
+    if (balancing_factor <= -2 && balancing_factor_of_right_child <= -1) {
+        return rotateToLeft(node);
+    }
+    if (balancing_factor <= -2 && balancing_factor_of_right_child >= 1) {
+        return rotateToRightThenLeft(node);
     }
 
     return node;
@@ -183,10 +267,10 @@ std::string AvlTreeNode::recursivePrint(AvlTreeNode *node, const std::string &pr
     }
 
     if (is_root) {
-        output += std::format("{}\n", node->content);
+        output += std::format("{} ({})\n", node->content, getBalancingFactor(node));
     } else {
         auto connector = is_last_child ? "└── " : "├── ";
-        output += prefix + connector + std::format("{}\n", node->content);
+        output += prefix + connector + std::format("{} ({})\n", node->content, getBalancingFactor(node));
     }
 
     std::string child_prefix = prefix;
@@ -262,6 +346,21 @@ unsigned int AvlTreeNode::countNodesRecursively() {
     return AvlTreeNode::recursiveCountNodesRecursively(this);
 }
 
+unsigned int AvlTreeNode::getHeight(AvlTreeNode *node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    return node->height;
+}
+
+int AvlTreeNode::getBalancingFactor(AvlTreeNode *node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    return (int) getHeight(node->children[index_of_left_child]) -
+           (int) getHeight(node->children[index_of_right_child]);
+}
+
 bool AvlTreeNode::recursiveIsStrictlyBinary(AvlTreeNode *node) {
     if (node == nullptr) {
         return true;
@@ -282,21 +381,6 @@ bool AvlTreeNode::recursiveIsStrictlyBinary(AvlTreeNode *node) {
 
 bool AvlTreeNode::isStrictlyBinary() {
     return AvlTreeNode::recursiveIsStrictlyBinary(this);
-}
-
-unsigned int AvlTreeNode::recursiveGetHeight(AvlTreeNode *node, unsigned int height) {
-    if (node == nullptr) {
-        return height;
-    }
-
-    auto height_at_left = recursiveGetHeight(node->children[index_of_left_child], height + 1);
-    auto height_at_right = recursiveGetHeight(node->children[index_of_right_child], height + 1);
-
-    return std::max(height_at_right, height_at_left);
-}
-
-unsigned int AvlTreeNode::getHeight() {
-    return AvlTreeNode::recursiveGetHeight(this, 0);
 }
 
 bool AvlTreeNode::isComplete() {

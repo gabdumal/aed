@@ -4,6 +4,7 @@
 #include "codedLeaves.hpp"
 #include "discoverAddends.hpp"
 #include "testAvlTree.hpp"
+#include "testAvlTreeBal.hpp"
 #include "testBinaryTree.hpp"
 #include "testBinaryTreeAsArrays.hpp"
 #include "testContiguousList.hpp"
@@ -51,6 +52,8 @@ int main(int argc, char *argv[]) {
         TestBinaryTreeAsArrays::test();
     } else if (algorithm_to_run == "TestAvlTree") {
         TestAvlTree::test();
+    } else if (algorithm_to_run == "TestAvlTreeBal") {
+        TestAvlTreeBal::test();
     } else {
         std::cerr << "Unknown algorithm: " << algorithm_to_run << "." << std::endl;
         return 1;

@@ -22,4 +22,5 @@ target_link_libraries(aed
         codedLeaves
         testBinaryTreeAsArrays
         testAvlTree
+        testAvlTreeBal
 )

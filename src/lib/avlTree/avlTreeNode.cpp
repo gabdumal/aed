@@ -109,16 +109,9 @@ AvlTreeNode *AvlTreeNode::rotateToRightThenLeft(AvlTreeNode *node) {
     return rotateToLeft(node);
 }
 
-AvlTreeNode *AvlTreeNode::recursiveInsert(AvlTreeNode *node, Content content) {
+AvlTreeNode *AvlTreeNode::updateAvlStructure(AvlTreeNode *node) {
     if (node == nullptr) {
-        auto new_node = new AvlTreeNode(content);
-        return new_node;
-    }
-
-    if (content < node->content) {
-        node->children[index_of_left_child] = recursiveInsert(node->children[index_of_left_child], content);
-    } else {
-        node->children[index_of_right_child] = recursiveInsert(node->children[index_of_right_child], content);
+        return nullptr;
     }
 
     auto left_child = node->children[index_of_left_child];
@@ -148,6 +141,21 @@ AvlTreeNode *AvlTreeNode::recursiveInsert(AvlTreeNode *node, Content content) {
     }
 
     return node;
+}
+
+AvlTreeNode *AvlTreeNode::recursiveInsert(AvlTreeNode *node, Content content) {
+    if (node == nullptr) {
+        auto new_node = new AvlTreeNode(content);
+        return new_node;
+    }
+
+    if (content < node->content) {
+        node->children[index_of_left_child] = recursiveInsert(node->children[index_of_left_child], content);
+    } else {
+        node->children[index_of_right_child] = recursiveInsert(node->children[index_of_right_child], content);
+    }
+
+    return updateAvlStructure(node);
 }
 
 void AvlTreeNode::insert(Content content) {
@@ -219,35 +227,32 @@ std::expected<AvlTreeNode *, std::string> AvlTreeNode::recursiveRemove(AvlTreeNo
         return std::unexpected(message_for_content_not_found);
     }
 
-    if (content == node->content) {
+    if (content < node->content) {
+        (void) AvlTreeNode::advanceStepToFindNodeToRemove(node, content, index_of_left_child);
+    } else if (content > node->content) {
+        (void) AvlTreeNode::advanceStepToFindNodeToRemove(node, content, index_of_right_child);
+    } else {
         // Node with 0 or 1 children.
         if (node->children[index_of_left_child] == nullptr) {
-            return AvlTreeNode::removeNodeWith0Or1Children(node, index_of_right_child);
+            node = AvlTreeNode::removeNodeWith0Or1Children(node, index_of_right_child);
+        } else if (node->children[index_of_right_child] == nullptr) {
+            node = AvlTreeNode::removeNodeWith0Or1Children(node, index_of_left_child);
+        } else {
+            // Node with 2 children.
+            auto successor_node = AvlTreeNode::getSuccessor(node);
+            AvlTreeNode::switchNodes(node, successor_node);
+
+            auto result = AvlTreeNode::recursiveRemove(node->children[index_of_right_child], successor_node->content);
+            if (!result) {
+                return std::unexpected(result.error());
+            }
+
+            auto new_right_child_of_node = result.value();
+            node->children[index_of_right_child] = new_right_child_of_node;
         }
-        if (node->children[index_of_right_child] == nullptr) {
-            return AvlTreeNode::removeNodeWith0Or1Children(node, index_of_left_child);
-        }
-
-        // Node with 2 children.
-        auto successor_node = AvlTreeNode::getSuccessor(node);
-        AvlTreeNode::switchNodes(node, successor_node);
-
-        auto result = AvlTreeNode::recursiveRemove(node->children[index_of_right_child], successor_node->content);
-        if (!result) {
-            return std::unexpected(result.error());
-        }
-
-        auto new_right_child_of_node = result.value();
-        node->children[index_of_right_child] = new_right_child_of_node;
-
-        return node;
     }
 
-    if (content < node->content) {
-        return AvlTreeNode::advanceStepToFindNodeToRemove(node, content, index_of_left_child);
-    } else {
-        return AvlTreeNode::advanceStepToFindNodeToRemove(node, content, index_of_right_child);
-    }
+    return updateAvlStructure(node);
 }
 
 std::expected<void, std::string> AvlTreeNode::remove(Content content) {

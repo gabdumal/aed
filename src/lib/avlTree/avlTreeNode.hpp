@@ -24,6 +24,8 @@ class AvlTreeNode {
         static AvlTreeNode *rotateToLeftThenRight(AvlTreeNode *node);
         static AvlTreeNode *rotateToRightThenLeft(AvlTreeNode *node);
 
+        static AvlTreeNode *updateAvlStructure(AvlTreeNode *node);
+
         static bool recursiveContains(AvlTreeNode *node, Content content);
 
         static AvlTreeNode *recursiveInsert(AvlTreeNode *node, Content content);

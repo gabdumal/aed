@@ -107,6 +107,7 @@ void TestAvlTree::test() {
 
     tree->insert(6);
     TestAvlTree::printTree(tree);
+
     tree->insert(3);
     TestAvlTree::printTree(tree);
 
@@ -139,51 +140,63 @@ void TestAvlTree::test() {
     TestAvlTree::testContains(tree, 8);
     TestAvlTree::testContains(tree, 11);
 
-    // TestAvlTree::testRemove(tree, 3);
-    // TestAvlTree::testContains(tree, 3);
+    TestAvlTree::testRemove(tree, 3);
+    TestAvlTree::testContains(tree, 3);
 
-    // TestAvlTree::testRemove(tree, 8);
-    // TestAvlTree::testContains(tree, 8);
+    TestAvlTree::testCountNodes(tree);
+    TestAvlTree::testCountNodesRecursively(tree);
+    TestAvlTree::testGetHeight(tree);
+    TestAvlTree::testIsStrictlyBinary(tree);
+    TestAvlTree::testIsComplete(tree);
 
-    // TestAvlTree::testRemove(tree, 10);
-    // TestAvlTree::testContains(tree, 10);
+    TestAvlTree::testRemove(tree, 6);
+    TestAvlTree::testContains(tree, 6);
 
-    // TestAvlTree::testRemove(tree, 11);
-    // TestAvlTree::testContains(tree, 11);
+    TestAvlTree::testCountNodes(tree);
+    TestAvlTree::testCountNodesRecursively(tree);
+    TestAvlTree::testGetHeight(tree);
+    TestAvlTree::testIsStrictlyBinary(tree);
+    TestAvlTree::testIsComplete(tree);
 
-    // TestAvlTree::testRemove(tree, 7);
-    // TestAvlTree::testContains(tree, 7);
+    TestAvlTree::testRemove(tree, 10);
+    TestAvlTree::testContains(tree, 10);
 
-    // TestAvlTree::testRemove(tree, 7);
-    // TestAvlTree::testContains(tree, 7);
+    TestAvlTree::testRemove(tree, 11);
+    TestAvlTree::testContains(tree, 11);
 
-    // TestAvlTree::printTree(tree);
-    // TestAvlTree::testCountNodes(tree);
-    // TestAvlTree::testCountNodesRecursively(tree);
-    // TestAvlTree::testGetHeight(tree);
-    // TestAvlTree::testIsStrictlyBinary(tree);
-    // TestAvlTree::testIsComplete(tree);
+    TestAvlTree::testRemove(tree, 7);
+    TestAvlTree::testContains(tree, 7);
 
-    // TestAvlTree::testRemove(tree, 20);
-    // TestAvlTree::testRemove(tree, 5);
-    // TestAvlTree::testRemove(tree, 1);
+    TestAvlTree::testRemove(tree, 7);
+    TestAvlTree::testContains(tree, 7);
 
-    // TestAvlTree::testCountNodes(tree);
-    // TestAvlTree::testCountNodesRecursively(tree);
-    // TestAvlTree::testGetHeight(tree);
-    // TestAvlTree::testIsStrictlyBinary(tree);
-    // TestAvlTree::testIsComplete(tree);
+    TestAvlTree::testCountNodes(tree);
+    TestAvlTree::testCountNodesRecursively(tree);
+    TestAvlTree::testGetHeight(tree);
+    TestAvlTree::testIsStrictlyBinary(tree);
+    TestAvlTree::testIsComplete(tree);
 
-    // tree->insert(5);
-    // tree->insert(24);
-    // tree->insert(26);
+    TestAvlTree::testRemove(tree, 20);
+    TestAvlTree::testRemove(tree, 5);
+    TestAvlTree::testRemove(tree, 1);
 
-    // TestAvlTree::printTree(tree);
-    // TestAvlTree::testCountNodes(tree);
-    // TestAvlTree::testCountNodesRecursively(tree);
-    // TestAvlTree::testGetHeight(tree);
-    // TestAvlTree::testIsStrictlyBinary(tree);
-    // TestAvlTree::testIsComplete(tree);
+    TestAvlTree::testCountNodes(tree);
+    TestAvlTree::testCountNodesRecursively(tree);
+    TestAvlTree::testGetHeight(tree);
+    TestAvlTree::testIsStrictlyBinary(tree);
+    TestAvlTree::testIsComplete(tree);
+
+    tree->insert(5);
+    tree->insert(24);
+    tree->insert(26);
+    tree->insert(30);
+
+    TestAvlTree::printTree(tree);
+    TestAvlTree::testCountNodes(tree);
+    TestAvlTree::testCountNodesRecursively(tree);
+    TestAvlTree::testGetHeight(tree);
+    TestAvlTree::testIsStrictlyBinary(tree);
+    TestAvlTree::testIsComplete(tree);
 
     delete tree;
 }

@@ -36,6 +36,8 @@ class BinaryTreeNode {
 
         static unsigned int recursiveGetHeight(BinaryTreeNode *node, unsigned int height);
 
+        static bool recursiveIsAvl(BinaryTreeNode *node);
+
     public:
         BinaryTreeNode(Content content);
 
@@ -51,6 +53,7 @@ class BinaryTreeNode {
 
         bool isStrictlyBinary();
         bool isComplete();
+        bool isAvl();
 
         void print();
 };

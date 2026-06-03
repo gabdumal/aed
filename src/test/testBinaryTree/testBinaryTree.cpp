@@ -66,6 +66,12 @@ void TestBinaryTree::testIsComplete(BinaryTreeNode *tree) {
     std::println();
 }
 
+void TestBinaryTree::testIsAvl(BinaryTreeNode *tree) {
+    auto is_avl = tree->isAvl();
+    std::println("Is AVL: {}.", is_avl);
+    std::println();
+}
+
 void TestBinaryTree::test() {
     BinaryTreeNode *tree = new BinaryTreeNode(10);
 
@@ -74,18 +80,21 @@ void TestBinaryTree::test() {
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     tree->insert(5);
     TestBinaryTree::printTree(tree);
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     tree->insert(20);
     TestBinaryTree::printTree(tree);
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     tree->insert(15);
     tree->insert(1);
@@ -107,6 +116,7 @@ void TestBinaryTree::test() {
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     TestBinaryTree::testContains(tree, 10);
     TestBinaryTree::testContains(tree, 0);
@@ -138,6 +148,7 @@ void TestBinaryTree::test() {
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     TestBinaryTree::testRemove(tree, 20);
     TestBinaryTree::testRemove(tree, 5);
@@ -148,6 +159,7 @@ void TestBinaryTree::test() {
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     tree->insert(5);
     tree->insert(24);
@@ -159,6 +171,7 @@ void TestBinaryTree::test() {
     TestBinaryTree::testGetHeight(tree);
     TestBinaryTree::testIsStrictlyBinary(tree);
     TestBinaryTree::testIsComplete(tree);
+    TestBinaryTree::testIsAvl(tree);
 
     delete tree;
 }

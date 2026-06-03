@@ -18,6 +18,8 @@ class TestBinaryTree {
 
         static void testIsComplete(BinaryTreeNode *tree);
 
+        static void testIsAvl(BinaryTreeNode *tree);
+
         static void printTree(BinaryTreeNode *tree);
         static void printError(const std::string &error);
 

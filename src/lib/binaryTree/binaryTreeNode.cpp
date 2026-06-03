@@ -305,3 +305,26 @@ bool BinaryTreeNode::isComplete() {
 
     return true;
 }
+
+bool BinaryTreeNode::recursiveIsAvl(BinaryTreeNode *node) {
+    if (node == nullptr) {
+        return true;
+    }
+
+    auto left_child = node->children[index_of_left_child];
+    auto right_child = node->children[index_of_right_child];
+
+    auto height_of_left_child = recursiveGetHeight(left_child, 0);
+    auto height_of_right_child = recursiveGetHeight(right_child, 0);
+
+    int balancing_factor = (int) height_of_left_child - (int) height_of_right_child;
+
+    return balancing_factor >= -1 &&
+           balancing_factor <= 1 &&
+           recursiveIsAvl(left_child) &&
+           recursiveIsAvl(right_child);
+}
+
+bool BinaryTreeNode::isAvl() {
+    return BinaryTreeNode::recursiveIsAvl(this);
+}

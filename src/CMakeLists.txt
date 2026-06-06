@@ -23,4 +23,5 @@ target_link_libraries(aed
         testBinaryTreeAsArrays
         testAvlTree
         testAvlTreeBal
+        testHeap
 )

@@ -9,6 +9,7 @@
 #include "testBinaryTreeAsArrays.hpp"
 #include "testContiguousList.hpp"
 #include "testExternalHash.hpp"
+#include "testHeap.hpp"
 #include "testLinkedList.hpp"
 #include "testLinkedQueue.hpp"
 #include "testLinkedStack.hpp"
@@ -54,6 +55,8 @@ int main(int argc, char *argv[]) {
         TestAvlTree::test();
     } else if (algorithm_to_run == "TestAvlTreeBal") {
         TestAvlTreeBal::test();
+    } else if (algorithm_to_run == "TestHeap") {
+        TestHeap::test();
     } else {
         std::cerr << "Unknown algorithm: " << algorithm_to_run << "." << std::endl;
         return 1;

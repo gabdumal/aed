@@ -21,6 +21,37 @@ HeapNode::~HeapNode() {
     this->right_child = nullptr;
 }
 
+HeapNode *HeapNode::descend(HeapNode *node) {
+    if (node == nullptr) {
+        return nullptr;
+    }
+
+    // Percolate the node's content down the heap until the heap property
+    // is restored (i.e. node->content <= both children's content).
+    while (node->left_child != nullptr || node->right_child != nullptr) {
+        HeapNode *smallest_child = node->left_child;
+
+        if (node->right_child != nullptr) {
+            if (smallest_child == nullptr || node->right_child->content < smallest_child->content) {
+                smallest_child = node->right_child;
+            }
+        }
+
+        if (smallest_child == nullptr) {
+            break;
+        }
+
+        if (smallest_child->content < node->content) {
+            std::swap(node->content, smallest_child->content);
+            node = smallest_child;
+        } else {
+            break;
+        }
+    }
+
+    return node;
+}
+
 HeapNode *HeapNode::recursiveInsert(HeapNode *node, Content content) {
     if (node == nullptr) {
         auto new_node = new HeapNode(content);

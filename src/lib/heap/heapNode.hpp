@@ -16,6 +16,8 @@ class HeapNode {
         HeapNode *left_child;
         HeapNode *right_child;
 
+        static HeapNode *descend(HeapNode *node);
+
         static bool recursiveContains(HeapNode *node, Content content);
 
         static HeapNode *recursiveInsert(HeapNode *node, Content content);

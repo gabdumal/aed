@@ -96,37 +96,100 @@ void HeapNode::insert(Content content) {
     }
 }
 
-bool HeapNode::recursiveContains(HeapNode *node, Content content) {
-    if (node == nullptr) {
-        return false;
-    }
+bool HeapNode::contains(Content content) {
+    std::queue<HeapNode *> queue;
 
-    if (content == node->content) {
-        return true;
+    queue.push(this);
+    while (!queue.empty()) {
+        auto current = queue.front();
+        queue.pop();
+
+        if (current->content == content) {
+            return true;
+        }
+
+        if (current->left_child != nullptr &&
+            current->left_child->content <= content) {
+            queue.push(current->left_child);
+        }
+
+        if (current->right_child != nullptr &&
+            current->right_child->content <= content) {
+            queue.push(current->right_child);
+        }
     }
 
     return false;
 }
 
-bool HeapNode::contains(Content content) {
-    return HeapNode::recursiveContains(this, content);
-}
+std::expected<void, std::string> HeapNode::remove(Content content) {
+    // Find the node to remove and the last node (rightmost deepest) via level-order traversal.
+    std::queue<HeapNode *> queue;
+    queue.push(this);
 
-std::expected<HeapNode *, std::string> HeapNode::recursiveRemove(HeapNode *node, Content content) {
-    if (node == nullptr) {
+    HeapNode *node_to_remove = nullptr;
+    HeapNode *last_node = nullptr;
+
+    while (!queue.empty()) {
+        auto current = queue.front();
+        queue.pop();
+
+        if (current->content == content && node_to_remove == nullptr) {
+            node_to_remove = current;
+        }
+
+        last_node = current;
+
+        if (current->left_child != nullptr) {
+            queue.push(current->left_child);
+        }
+        if (current->right_child != nullptr) {
+            queue.push(current->right_child);
+        }
+    }
+
+    if (node_to_remove == nullptr) {
         return std::unexpected(message_for_content_not_found);
     }
 
-    return nullptr;
-}
+    // If the node to remove is the last node, simply detach and delete it (or reset root).
+    if (node_to_remove == last_node) {
+        if (node_to_remove->parent != nullptr) {
+            if (node_to_remove->parent->left_child == node_to_remove) {
+                node_to_remove->parent->left_child = nullptr;
+            } else if (node_to_remove->parent->right_child == node_to_remove) {
+                node_to_remove->parent->right_child = nullptr;
+            }
+            delete node_to_remove;
+        } else {
+            // Single-node heap (root). Reset content to default.
+            this->content = default_content;
+        }
 
-std::expected<void, std::string> HeapNode::remove(Content content) {
-    auto result = HeapNode::recursiveRemove(this, content);
-    if (!result) {
-        return std::unexpected(result.error());
-    } else {
         return {};
     }
+
+    // Replace target node's content with last node's content, remove last node, then restore heap property.
+    node_to_remove->content = last_node->content;
+
+    if (last_node->parent != nullptr) {
+        if (last_node->parent->left_child == last_node) {
+            last_node->parent->left_child = nullptr;
+        } else if (last_node->parent->right_child == last_node) {
+            last_node->parent->right_child = nullptr;
+        }
+    }
+
+    delete last_node;
+
+    // After replacing, the node may need to move up or down to restore heap invariant.
+    if (node_to_remove->parent != nullptr && node_to_remove->parent->content > node_to_remove->content) {
+        HeapNode::ascend(node_to_remove);
+    } else {
+        HeapNode::descend(node_to_remove);
+    }
+
+    return {};
 }
 
 std::string HeapNode::recursivePrint(HeapNode *node, const std::string &prefix, bool is_last_child, bool is_root) {

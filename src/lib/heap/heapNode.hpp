@@ -20,10 +20,6 @@ class HeapNode {
         static void ascend(HeapNode *node);
         static HeapNode *descend(HeapNode *node);
 
-        static bool recursiveContains(HeapNode *node, Content content);
-
-        static std::expected<HeapNode *, std::string> recursiveRemove(HeapNode *node, Content content);
-
         static std::string recursivePrint(HeapNode *node, const std::string &prefix, bool is_last_child, bool is_root);
 
         static unsigned int recursiveCountNodesRecursively(HeapNode *node);

@@ -5,9 +5,9 @@
 
 class TestBinomialHeap {
     private:
-        static void testInsert(BinomialHeapNode *node, BinomialHeapNode::Content content);
+        static BinomialHeapNode *testInsert(BinomialHeapNode *node, BinomialHeapNode::Content);
         static void testFront(BinomialHeapNode *node);
-        static void testPop(BinomialHeapNode *node);
+        static BinomialHeapNode *testPop(BinomialHeapNode *node);
 
         static BinomialHeapNode *testAdd(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);
         static BinomialHeapNode *testUnite(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);

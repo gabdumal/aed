@@ -75,7 +75,7 @@ BinomialHeapNode *BinomialHeapNode::unite(BinomialHeapNode *first_heap, Binomial
     BinomialHeapNode *current = new_heap;
     while (current_on_first_heap != nullptr &&
            current_on_second_heap != nullptr) {
-        if (current_on_first_heap->order >= current_on_second_heap->order) {
+        if (current_on_first_heap->order > current_on_second_heap->order) {
             current->sibling = current_on_first_heap;
             current_on_first_heap = current_on_first_heap->sibling;
         } else {
@@ -124,15 +124,63 @@ BinomialHeapNode *BinomialHeapNode::unite(BinomialHeapNode *first_heap, Binomial
     return new_heap;
 }
 
-void BinomialHeapNode::insert(Content content) {
+BinomialHeapNode *BinomialHeapNode::insert(Content content) {
+    auto new_node = new BinomialHeapNode(content);
+    return unite(this, new_node);
 }
 
 BinomialHeapNode::Content BinomialHeapNode::front() {
-    return default_content;
+    auto current = this;
+    auto smallest_content = current->content;
+
+    while (current != nullptr) {
+        if (current->content < smallest_content) {
+            smallest_content = current->content;
+        }
+        current = current->sibling;
+    }
+
+    return smallest_content;
 }
 
-BinomialHeapNode::Content BinomialHeapNode::pop() {
-    return default_content;
+BinomialHeapNode *BinomialHeapNode::pop() {
+    BinomialHeapNode *before_smallest = nullptr;
+    BinomialHeapNode *smallest = this;
+    BinomialHeapNode *predecessor = nullptr;
+    BinomialHeapNode *current = this->sibling;
+
+    while (current != nullptr) {
+        if (current->content < smallest->content) {
+            before_smallest = predecessor;
+            smallest = current;
+        }
+        predecessor = current;
+        current = current->sibling;
+    }
+
+    auto new_root = this;
+    if (before_smallest != nullptr) {
+        before_smallest->sibling = smallest->sibling;
+    } else {
+        new_root = this->sibling;
+    }
+
+    // Detach smallest's children and clear their parent pointers.
+    BinomialHeapNode *children_head = smallest->child;
+    if (children_head != nullptr) {
+        for (auto p = children_head; p != nullptr; p = p->sibling) {
+            p->parent = nullptr;
+        }
+    }
+
+    // Detach smallest itself before delete to avoid recursive deletion.
+    smallest->child = nullptr;
+    smallest->sibling = nullptr;
+
+    new_root = unite(new_root, children_head);
+    delete smallest;
+
+    return new_root;
 }
 
 std::string BinomialHeapNode::recursivePrint(BinomialHeapNode *node, const std::string &prefix, bool is_last_child, bool is_root) {
@@ -143,7 +191,7 @@ std::string BinomialHeapNode::recursivePrint(BinomialHeapNode *node, const std::
     }
 
     if (is_root) {
-        output += std::format("{}\n", node->content);
+        output += std::format("{} ({})\n", node->content, node->order);
     } else {
         auto connector = is_last_child ? "└── " : "├── ";
         output += prefix + connector + std::format("{}\n", node->content);
@@ -154,26 +202,37 @@ std::string BinomialHeapNode::recursivePrint(BinomialHeapNode *node, const std::
         child_prefix += is_last_child ? "    " : "│   ";
     }
 
-    bool has_left = node->child != nullptr;     // left child  = child
-    bool has_right = node->sibling != nullptr;  // right child = sibling
+    bool has_child = node->child != nullptr;
+    bool has_sibling = node->sibling != nullptr;
 
-    if (!has_left && !has_right) {
+    if (!has_child && !has_sibling) {
         return output;
     }
 
     // Print right subtree first so it appears above in the ASCII art.
-    if (has_right) {
-        output += BinomialHeapNode::recursivePrint(node->sibling, child_prefix, false, false);
-    } else {
-        auto connector = "├── ";
-        output += child_prefix + connector + std::format("{}\n", std::string("-"));
-    }
+    if (!is_root) {
+        if (has_sibling) {
+            output += BinomialHeapNode::recursivePrint(node->sibling, child_prefix, false, false);
+        } else {
+            auto connector = "├── ";
+            output += child_prefix + connector + std::format("{}\n", std::string("-"));
+        }
 
-    if (has_left) {
-        output += BinomialHeapNode::recursivePrint(node->child, child_prefix, true, false);
+        if (has_child) {
+            output += BinomialHeapNode::recursivePrint(node->child, child_prefix, true, false);
+        } else {
+            auto connector = "└── ";
+            output += child_prefix + connector + std::format("{}\n", std::string("-"));
+        }
     } else {
-        auto connector = "└── ";
-        output += child_prefix + connector + std::format("{}\n", std::string("-"));
+        // For root nodes, print the child subtree, then print the next root(s).
+        if (has_child) {
+            output += BinomialHeapNode::recursivePrint(node->child, child_prefix, true, false);
+        }
+
+        if (has_sibling) {
+            output += BinomialHeapNode::recursivePrint(node->sibling, std::string(""), false, true);
+        }
     }
 
     return output;

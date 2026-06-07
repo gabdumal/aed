@@ -27,9 +27,9 @@ class BinomialHeapNode {
         static BinomialHeapNode *add(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);
         static BinomialHeapNode *unite(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);
 
-        void insert(Content content);
+        BinomialHeapNode *insert(Content content);
         Content front();
-        Content pop();
+        BinomialHeapNode *pop();
 
         unsigned int countNodes();
 

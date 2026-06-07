@@ -17,7 +17,8 @@ class BinomialHeapNode {
         BinomialHeapNode *child;
         unsigned int order;
 
-        static std::string recursivePrint(BinomialHeapNode *node, const std::string &prefix, bool is_last_child, bool is_root);
+        static void printTree(BinomialHeapNode *node, const std::string &prefix, bool last);
+        void printRootList();
 
     public:
         BinomialHeapNode(Content content);

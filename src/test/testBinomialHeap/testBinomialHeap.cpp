@@ -129,46 +129,46 @@ void TestBinomialHeap::test() {
     TestBinomialHeap::testFront(node);
     TestBinomialHeap::testCountNodes(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = node->insert(5);
-    // node = node->insert(24);
-    // node = node->insert(26);
-    // node = node->insert(30);
+    node = node->insert(5);
+    node = node->insert(24);
+    node = node->insert(26);
+    node = node->insert(30);
 
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
-    // TestBinomialHeap::testCountNodes(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
+    TestBinomialHeap::testCountNodes(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
-    // node = TestBinomialHeap::testPop(node);
-    // TestBinomialHeap::printHeap(node);
-    // TestBinomialHeap::testFront(node);
+    node = TestBinomialHeap::testPop(node);
+    TestBinomialHeap::printHeap(node);
+    TestBinomialHeap::testFront(node);
 
     delete node;
 }

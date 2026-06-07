@@ -10,12 +10,13 @@ class TestBinomialHeap {
         static void testPop(BinomialHeapNode *node);
 
         static BinomialHeapNode *testAdd(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);
+        static BinomialHeapNode *testUnite(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);
 
         static void testCountNodes(BinomialHeapNode *node);
 
         static void printHeap(BinomialHeapNode *node);
 
-        static void testWithAdd();
+        static void testWithAddAndUnite();
 
     public:
         static void test();

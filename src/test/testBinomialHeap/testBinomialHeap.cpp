@@ -17,6 +17,13 @@ BinomialHeapNode *TestBinomialHeap::testAdd(BinomialHeapNode *first_heap, Binomi
     return new_heap;
 }
 
+BinomialHeapNode *TestBinomialHeap::testUnite(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap) {
+    std::println("Unite.");
+    auto new_heap = BinomialHeapNode::unite(first_heap, second_heap);
+    printHeap(new_heap);
+    return new_heap;
+}
+
 void TestBinomialHeap::testFront(BinomialHeapNode *node) {
     std::println("Front: {}.", node->front());
     std::println();
@@ -33,21 +40,27 @@ void TestBinomialHeap::testCountNodes(BinomialHeapNode *node) {
     std::println();
 }
 
-void TestBinomialHeap::testWithAdd() {
+void TestBinomialHeap::testWithAddAndUnite() {
     BinomialHeapNode *first_heap = testAdd(new BinomialHeapNode(10), new BinomialHeapNode(20));
 
-    BinomialHeapNode *second_heap = testAdd(new BinomialHeapNode(5), new BinomialHeapNode(40));
+    BinomialHeapNode *second_heap = BinomialHeapNode::add(new BinomialHeapNode(5), new BinomialHeapNode(40));
     first_heap = testAdd(first_heap, second_heap);
 
-    second_heap = testAdd(new BinomialHeapNode(14), new BinomialHeapNode(7));
-    second_heap = testAdd(second_heap, testAdd(new BinomialHeapNode(6), new BinomialHeapNode(25)));
+    second_heap = BinomialHeapNode::add(new BinomialHeapNode(14), new BinomialHeapNode(7));
+    second_heap = BinomialHeapNode::add(second_heap, BinomialHeapNode::add(new BinomialHeapNode(6), new BinomialHeapNode(25)));
     first_heap = testAdd(first_heap, second_heap);
+
+    second_heap = testAdd(
+        BinomialHeapNode::add(new BinomialHeapNode(23), new BinomialHeapNode(9)),
+        BinomialHeapNode::add(new BinomialHeapNode(11), new BinomialHeapNode(32)));
+
+    first_heap = testUnite(first_heap, second_heap);
 
     delete first_heap;
 }
 
 void TestBinomialHeap::test() {
-    testWithAdd();
+    testWithAddAndUnite();
 
     // BinomialHeapNode *node = new BinomialHeapNode(10);
 

@@ -3,7 +3,6 @@
 #include <format>
 #include <print>
 #include <stdexcept>
-#include <vector>
 
 BinomialHeapNode::BinomialHeapNode(Content content) {
     this->content = content;
@@ -35,7 +34,7 @@ BinomialHeapNode *BinomialHeapNode::add(BinomialHeapNode *first_heap, BinomialHe
         return first_heap;
     }
     if (first_heap->order != second_heap->order) {
-        throw new std::invalid_argument("The order of both heaps must be the same.");
+        throw std::invalid_argument("The order of both heaps must be the same.");
     }
 
     // Guarantee the heaps of greater order appear first on the linked list.
@@ -45,6 +44,7 @@ BinomialHeapNode *BinomialHeapNode::add(BinomialHeapNode *first_heap, BinomialHe
 
     second_heap->sibling = first_heap->child;
     first_heap->child = second_heap;
+    second_heap->parent = first_heap;
     first_heap->order++;
 
     return first_heap;
@@ -58,38 +58,66 @@ BinomialHeapNode *BinomialHeapNode::unite(BinomialHeapNode *first_heap, Binomial
         return first_heap;
     }
 
-    auto current_on_first_heap = first_heap;
-    auto current_on_second_heap = second_heap;
-
     BinomialHeapNode *new_heap = nullptr;
-    if (current_on_first_heap->order > current_on_second_heap->order) {
+
+    // Merge root lists by decreasing order (greater orders first).
+    BinomialHeapNode *current_on_first_heap = first_heap;
+    BinomialHeapNode *current_on_second_heap = second_heap;
+
+    if (current_on_first_heap->order >= current_on_second_heap->order) {
         new_heap = current_on_first_heap;
         current_on_first_heap = current_on_first_heap->sibling;
-    } else if (current_on_second_heap->order > current_on_first_heap->order) {
+    } else {
         new_heap = current_on_second_heap;
         current_on_second_heap = current_on_second_heap->sibling;
     }
 
     BinomialHeapNode *current = new_heap;
-
-    while (true) {
-        if (current_on_first_heap->order == current_on_second_heap->order) {
+    while (current_on_first_heap != nullptr &&
+           current_on_second_heap != nullptr) {
+        if (current_on_first_heap->order >= current_on_second_heap->order) {
+            current->sibling = current_on_first_heap;
             current_on_first_heap = current_on_first_heap->sibling;
+        } else {
+            current->sibling = current_on_second_heap;
             current_on_second_heap = current_on_second_heap->sibling;
-
-            current->sibling = add(current_on_first_heap, current_on_second_heap);
-            current = current->sibling;
-        } else if (current_on_first_heap->order > current_on_second_heap->order) {
-            current_on_first_heap = current_on_first_heap->sibling;
-            new_heap->sibling = current_on_first_heap;
-        } else if (current_on_second_heap->order > current_on_first_heap->order) {
-            current_on_second_heap = current_on_second_heap->sibling;
-            new_heap->sibling = current_on_second_heap;
         }
+        current = current->sibling;
+    }
+    current->sibling = (current_on_first_heap != nullptr) ? current_on_first_heap : current_on_second_heap;
 
-        if (current_on_first_heap == nullptr ||
-            current_on_second_heap == nullptr) {
-            break;
+    // Consolidate: link trees of equal order so that no two roots have the same order.
+    BinomialHeapNode *previous = nullptr;
+    BinomialHeapNode *a = new_heap;
+    BinomialHeapNode *b = a->sibling;
+
+    while (b != nullptr) {
+        auto c = b->sibling;
+
+        if ((a->order != b->order) ||
+            (c != nullptr && c->order == a->order)) {
+            // Move forward.
+            previous = a;
+            a = b;
+            b = c;
+        } else {
+            if (a->content < b->content) {
+                // Heap 'a' becomes parent of heap 'b'.
+                a->sibling = b->sibling;
+                add(a, b);
+                b = a->sibling;
+            } else {
+                // Heap 'b' becomes parent of heap 'c'.
+                if (previous == nullptr) {
+                    new_heap = b;
+                } else {
+                    previous->sibling = b;
+                }
+                add(b, a);
+                previous = b;
+                a = b;
+                b = a->sibling;
+            }
         }
     }
 
@@ -126,23 +154,26 @@ std::string BinomialHeapNode::recursivePrint(BinomialHeapNode *node, const std::
         child_prefix += is_last_child ? "    " : "│   ";
     }
 
-    // Collect all direct children (child + its siblings)
-    std::vector<BinomialHeapNode *> children;
-    for (auto c = node->child; c != nullptr; c = c->sibling) {
-        children.push_back(c);
-    }
+    bool has_left = node->child != nullptr;     // left child  = child
+    bool has_right = node->sibling != nullptr;  // right child = sibling
 
-    if (children.empty()) {
+    if (!has_left && !has_right) {
         return output;
     }
 
-    // Print the left-most child first, then remaining siblings appear on the last rows.
-    bool first_is_last = (children.size() == 1);
-    output += BinomialHeapNode::recursivePrint(children[0], child_prefix, first_is_last, false);
+    // Print right subtree first so it appears above in the ASCII art.
+    if (has_right) {
+        output += BinomialHeapNode::recursivePrint(node->sibling, child_prefix, false, false);
+    } else {
+        auto connector = "├── ";
+        output += child_prefix + connector + std::format("{}\n", std::string("-"));
+    }
 
-    for (size_t i = 1; i < children.size(); ++i) {
-        bool is_last = (i + 1 == children.size());
-        output += BinomialHeapNode::recursivePrint(children[i], child_prefix, is_last, false);
+    if (has_left) {
+        output += BinomialHeapNode::recursivePrint(node->child, child_prefix, true, false);
+    } else {
+        auto connector = "└── ";
+        output += child_prefix + connector + std::format("{}\n", std::string("-"));
     }
 
     return output;
@@ -161,7 +192,7 @@ unsigned int BinomialHeapNode::countNodes() {
         if (current->order == 0) {
             quantity_of_nodes += 1;
         } else {
-            quantity_of_nodes += (unsigned int) 2 << (((int) this->order) - 1);
+            quantity_of_nodes += (unsigned int) 2 << (((int) current->order) - 1);
         }
 
         current = current->sibling;

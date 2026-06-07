@@ -13,14 +13,14 @@ class HeapNode {
         static constexpr auto message_for_content_not_found = "Content not found.";
 
         Content content;
+        HeapNode *parent;
         HeapNode *left_child;
         HeapNode *right_child;
 
+        static void ascend(HeapNode *node);
         static HeapNode *descend(HeapNode *node);
 
         static bool recursiveContains(HeapNode *node, Content content);
-
-        static HeapNode *recursiveInsert(HeapNode *node, Content content);
 
         static std::expected<HeapNode *, std::string> recursiveRemove(HeapNode *node, Content content);
 

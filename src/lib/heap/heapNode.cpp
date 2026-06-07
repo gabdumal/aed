@@ -4,9 +4,11 @@
 #include <expected>
 #include <format>
 #include <print>
+#include <queue>
 
 HeapNode::HeapNode(Content content) {
     this->content = content;
+    this->parent = nullptr;
     this->left_child = nullptr;
     this->right_child = nullptr;
 }
@@ -14,11 +16,25 @@ HeapNode::HeapNode(Content content) {
 HeapNode::~HeapNode() {
     this->content = default_content;
 
+    this->parent = nullptr;
+
     delete left_child;
     this->left_child = nullptr;
 
     delete right_child;
     this->right_child = nullptr;
+}
+
+void HeapNode::ascend(HeapNode *node) {
+    if (node == nullptr) {
+        return;
+    }
+
+    if (node->parent != nullptr &&
+        node->parent->content > node->content) {
+        std::swap(node->content, node->parent->content);
+        ascend(node->parent);
+    }
 }
 
 HeapNode *HeapNode::descend(HeapNode *node) {
@@ -52,17 +68,32 @@ HeapNode *HeapNode::descend(HeapNode *node) {
     return node;
 }
 
-HeapNode *HeapNode::recursiveInsert(HeapNode *node, Content content) {
-    if (node == nullptr) {
-        auto new_node = new HeapNode(content);
-        return new_node;
-    }
-
-    return nullptr;
-}
-
 void HeapNode::insert(Content content) {
-    HeapNode::recursiveInsert(this, content);
+    std::queue<HeapNode *> queue;
+    queue.push(this);
+
+    while (!queue.empty()) {
+        HeapNode *current = queue.front();
+        queue.pop();
+
+        if (current->left_child == nullptr) {
+            current->left_child = new HeapNode(content);
+            current->left_child->parent = current;
+            ascend(current->left_child);
+            return;
+        } else {
+            queue.push(current->left_child);
+        }
+
+        if (current->right_child == nullptr) {
+            current->right_child = new HeapNode(content);
+            current->right_child->parent = current;
+            ascend(current->right_child);
+            return;
+        } else {
+            queue.push(current->right_child);
+        }
+    }
 }
 
 bool HeapNode::recursiveContains(HeapNode *node, Content content) {

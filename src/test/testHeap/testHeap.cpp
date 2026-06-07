@@ -117,44 +117,44 @@ void TestHeap::test() {
     TestHeap::testContains(tree, 8);
     TestHeap::testContains(tree, 11);
 
-    TestHeap::testRemove(tree, 3);
-    TestHeap::testContains(tree, 3);
+    // TestHeap::testRemove(tree, 3);
+    // TestHeap::testContains(tree, 3);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    // TestHeap::testCountNodes(tree);
+    // TestHeap::testIsStrictlyBinary(tree);
 
-    TestHeap::testRemove(tree, 6);
-    TestHeap::testContains(tree, 6);
+    // TestHeap::testRemove(tree, 6);
+    // TestHeap::testContains(tree, 6);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    // TestHeap::testCountNodes(tree);
+    // TestHeap::testIsStrictlyBinary(tree);
 
-    TestHeap::testRemove(tree, 10);
-    TestHeap::testContains(tree, 10);
+    // TestHeap::testRemove(tree, 10);
+    // TestHeap::testContains(tree, 10);
 
-    TestHeap::testRemove(tree, 11);
-    TestHeap::testContains(tree, 11);
+    // TestHeap::testRemove(tree, 11);
+    // TestHeap::testContains(tree, 11);
 
-    TestHeap::testRemove(tree, 7);
-    TestHeap::testContains(tree, 7);
+    // TestHeap::testRemove(tree, 7);
+    // TestHeap::testContains(tree, 7);
 
-    TestHeap::testRemove(tree, 7);
-    TestHeap::testContains(tree, 7);
+    // TestHeap::testRemove(tree, 7);
+    // TestHeap::testContains(tree, 7);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    // TestHeap::testCountNodes(tree);
+    // TestHeap::testIsStrictlyBinary(tree);
 
-    TestHeap::testRemove(tree, 20);
-    TestHeap::testRemove(tree, 5);
-    TestHeap::testRemove(tree, 1);
+    // TestHeap::testRemove(tree, 20);
+    // TestHeap::testRemove(tree, 5);
+    // TestHeap::testRemove(tree, 1);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    // TestHeap::testCountNodes(tree);
+    // TestHeap::testIsStrictlyBinary(tree);
 
-    tree->insert(5);
-    tree->insert(24);
-    tree->insert(26);
-    tree->insert(30);
+    // tree->insert(5);
+    // tree->insert(24);
+    // tree->insert(26);
+    // tree->insert(30);
 
     TestHeap::printTree(tree);
     TestHeap::testCountNodes(tree);

@@ -4,9 +4,9 @@
 
 #include "heapNode.hpp"
 
-void TestHeap::printTree(HeapNode *tree) {
-    std::println("Tree: ");
-    tree->print();
+void TestHeap::printHeap(HeapNode *node) {
+    std::println("Heap: ");
+    node->print();
     std::println();
 }
 
@@ -14,9 +14,9 @@ void TestHeap::printError(const std::string &error) {
     std::println("Error: {}", error);
 }
 
-void TestHeap::testContains(HeapNode *tree, HeapNode::Content content) {
+void TestHeap::testContains(HeapNode *node, HeapNode::Content content) {
     std::println("Contains {}?", content);
-    auto result = tree->contains(content);
+    auto result = node->contains(content);
     if (result) {
         std::println("True.");
     } else {
@@ -25,20 +25,20 @@ void TestHeap::testContains(HeapNode *tree, HeapNode::Content content) {
     std::println();
 }
 
-void TestHeap::testRemove(HeapNode *tree, HeapNode::Content content) {
+void TestHeap::testRemove(HeapNode *node, HeapNode::Content content) {
     std::println("Remove {}.", content);
-    auto result = tree->remove(content);
+    auto result = node->remove(content);
     if (!result) {
         printError(result.error());
     } else {
-        printTree(tree);
+        printHeap(node);
     }
     std::println();
 }
 
-void TestHeap::testPop(HeapNode *tree) {
+void TestHeap::testPop(HeapNode *node) {
     std::println("Pop.");
-    auto result = tree->pop();
+    auto result = node->pop();
     if (!result) {
         printError(result.error());
     } else {
@@ -47,144 +47,144 @@ void TestHeap::testPop(HeapNode *tree) {
     std::println();
 }
 
-void TestHeap::testCountNodes(HeapNode *tree) {
-    auto quantity_of_nodes = tree->countNodes();
+void TestHeap::testCountNodes(HeapNode *node) {
+    auto quantity_of_nodes = node->countNodes();
     std::println("Quantity of nodes: {}.", quantity_of_nodes);
     std::println();
 }
 
-void TestHeap::testGetHeight(HeapNode *tree) {
-    auto height = HeapNode::getHeight(tree);
+void TestHeap::testGetHeight(HeapNode *node) {
+    auto height = HeapNode::getHeight(node);
     std::println("Height: {}.", height);
     std::println();
 }
 
-void TestHeap::testIsStrictlyBinary(HeapNode *tree) {
-    auto is_strictly_binary = tree->isStrictlyBinary();
+void TestHeap::testIsStrictlyBinary(HeapNode *node) {
+    auto is_strictly_binary = node->isStrictlyBinary();
     std::println("Is strictly binary: {}.", is_strictly_binary);
     std::println();
 }
 
 void TestHeap::test() {
-    HeapNode *tree = new HeapNode(10);
+    HeapNode *node = new HeapNode(10);
 
-    TestHeap::printTree(tree);
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    TestHeap::printHeap(node);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    tree->insert(5);
-    TestHeap::printTree(tree);
-    TestHeap::testGetHeight(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    node->insert(5);
+    TestHeap::printHeap(node);
+    TestHeap::testGetHeight(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    tree->insert(20);
-    TestHeap::printTree(tree);
-    TestHeap::testGetHeight(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    node->insert(20);
+    TestHeap::printHeap(node);
+    TestHeap::testGetHeight(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    tree->insert(15);
-    tree->insert(1);
-    TestHeap::printTree(tree);
+    node->insert(15);
+    node->insert(1);
+    TestHeap::printHeap(node);
 
-    tree->insert(7);
-    TestHeap::printTree(tree);
+    node->insert(7);
+    TestHeap::printHeap(node);
 
-    tree->insert(4);
-    TestHeap::printTree(tree);
+    node->insert(4);
+    TestHeap::printHeap(node);
 
-    tree->insert(2);
-    TestHeap::printTree(tree);
+    node->insert(2);
+    TestHeap::printHeap(node);
 
-    tree->insert(25);
-    tree->insert(22);
-    TestHeap::printTree(tree);
+    node->insert(25);
+    node->insert(22);
+    TestHeap::printHeap(node);
 
-    tree->insert(6);
-    TestHeap::printTree(tree);
+    node->insert(6);
+    TestHeap::printHeap(node);
 
-    tree->insert(3);
-    TestHeap::printTree(tree);
+    node->insert(3);
+    TestHeap::printHeap(node);
 
-    tree->insert(8);
-    TestHeap::printTree(tree);
+    node->insert(8);
+    TestHeap::printHeap(node);
 
-    tree->insert(9);
-    TestHeap::printTree(tree);
+    node->insert(9);
+    TestHeap::printHeap(node);
 
-    tree->insert(11);
-    tree->insert(12);
-    TestHeap::printTree(tree);
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    node->insert(11);
+    node->insert(12);
+    TestHeap::printHeap(node);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    tree->insert(27);
-    TestHeap::printTree(tree);
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    node->insert(27);
+    TestHeap::printHeap(node);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    TestHeap::testContains(tree, 10);
-    TestHeap::testContains(tree, 0);
-    TestHeap::testContains(tree, 3);
-    TestHeap::testContains(tree, 8);
-    TestHeap::testContains(tree, 11);
+    TestHeap::testContains(node, 10);
+    TestHeap::testContains(node, 0);
+    TestHeap::testContains(node, 3);
+    TestHeap::testContains(node, 8);
+    TestHeap::testContains(node, 11);
 
-    TestHeap::testRemove(tree, 3);
-    TestHeap::testContains(tree, 3);
+    TestHeap::testRemove(node, 3);
+    TestHeap::testContains(node, 3);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    TestHeap::testRemove(tree, 6);
-    TestHeap::testContains(tree, 6);
+    TestHeap::testRemove(node, 6);
+    TestHeap::testContains(node, 6);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    TestHeap::testRemove(tree, 10);
-    TestHeap::testContains(tree, 10);
+    TestHeap::testRemove(node, 10);
+    TestHeap::testContains(node, 10);
 
-    TestHeap::testRemove(tree, 11);
-    TestHeap::testContains(tree, 11);
+    TestHeap::testRemove(node, 11);
+    TestHeap::testContains(node, 11);
 
-    TestHeap::testRemove(tree, 7);
-    TestHeap::testContains(tree, 7);
+    TestHeap::testRemove(node, 7);
+    TestHeap::testContains(node, 7);
 
-    TestHeap::testRemove(tree, 7);
-    TestHeap::testContains(tree, 7);
+    TestHeap::testRemove(node, 7);
+    TestHeap::testContains(node, 7);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    TestHeap::testRemove(tree, 20);
-    TestHeap::testRemove(tree, 5);
-    TestHeap::testRemove(tree, 1);
+    TestHeap::testRemove(node, 20);
+    TestHeap::testRemove(node, 5);
+    TestHeap::testRemove(node, 1);
 
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    tree->insert(5);
-    tree->insert(24);
-    tree->insert(26);
-    tree->insert(30);
+    node->insert(5);
+    node->insert(24);
+    node->insert(26);
+    node->insert(30);
 
-    TestHeap::printTree(tree);
-    TestHeap::testCountNodes(tree);
-    TestHeap::testIsStrictlyBinary(tree);
+    TestHeap::printHeap(node);
+    TestHeap::testCountNodes(node);
+    TestHeap::testIsStrictlyBinary(node);
 
-    TestHeap::testPop(tree);
-    TestHeap::printTree(tree);
+    TestHeap::testPop(node);
+    TestHeap::printHeap(node);
 
-    TestHeap::testPop(tree);
-    TestHeap::printTree(tree);
+    TestHeap::testPop(node);
+    TestHeap::printHeap(node);
 
-    TestHeap::testPop(tree);
-    TestHeap::printTree(tree);
+    TestHeap::testPop(node);
+    TestHeap::printHeap(node);
 
-    TestHeap::testPop(tree);
-    TestHeap::printTree(tree);
+    TestHeap::testPop(node);
+    TestHeap::printHeap(node);
 
-    TestHeap::testPop(tree);
-    TestHeap::printTree(tree);
+    TestHeap::testPop(node);
+    TestHeap::printHeap(node);
 
-    delete tree;
+    delete node;
 }

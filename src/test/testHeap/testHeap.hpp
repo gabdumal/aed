@@ -5,22 +5,19 @@
 
 class TestHeap {
     private:
-        static void testContains(HeapNode *tree, HeapNode::Content content);
+        static void testContains(HeapNode *node, HeapNode::Content content);
 
-        static void testRemove(HeapNode *tree, HeapNode::Content content);
+        static void testRemove(HeapNode *node, HeapNode::Content content);
 
-        static void testPop(HeapNode *tree);
+        static void testPop(HeapNode *node);
 
-        static void testCountNodes(HeapNode *tree);
-        static void testCountNodesRecursively(HeapNode *tree);
+        static void testCountNodes(HeapNode *node);
 
-        static void testGetHeight(HeapNode *tree);
+        static void testGetHeight(HeapNode *node);
 
-        static void testIsStrictlyBinary(HeapNode *tree);
+        static void testIsStrictlyBinary(HeapNode *node);
 
-        static void testIsComplete(HeapNode *tree);
-
-        static void printTree(HeapNode *tree);
+        static void printHeap(HeapNode *node);
         static void printError(const std::string &error);
 
     public:

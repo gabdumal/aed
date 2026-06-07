@@ -24,4 +24,5 @@ target_link_libraries(aed
         testAvlTree
         testAvlTreeBal
         testHeap
+        testBinomialHeap
 )

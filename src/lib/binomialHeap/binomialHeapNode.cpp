@@ -2,12 +2,15 @@
 
 #include <format>
 #include <print>
-#include <queue>
+#include <stdexcept>
+#include <vector>
 
 BinomialHeapNode::BinomialHeapNode(Content content) {
     this->content = content;
     this->parent = nullptr;
     this->sibling = nullptr;
+    this->child = nullptr;
+    this->order = 0;
 }
 
 BinomialHeapNode::~BinomialHeapNode() {
@@ -15,15 +18,82 @@ BinomialHeapNode::~BinomialHeapNode() {
 
     this->parent = nullptr;
 
+    delete sibling;
+    this->sibling = nullptr;
+
     delete child;
     this->child = nullptr;
 
-    delete sibling;
-    this->sibling = nullptr;
+    this->order = 0;
 }
 
-unsigned int BinomialHeapNode::getOrder() {
-    return this->order;
+BinomialHeapNode *BinomialHeapNode::add(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap) {
+    if (first_heap == nullptr) {
+        return second_heap;
+    }
+    if (second_heap == nullptr) {
+        return first_heap;
+    }
+    if (first_heap->order != second_heap->order) {
+        throw new std::invalid_argument("The order of both heaps must be the same.");
+    }
+
+    // Guarantee the heaps of greater order appear first on the linked list.
+    if (first_heap->content > second_heap->content) {
+        return add(second_heap, first_heap);
+    }
+
+    second_heap->sibling = first_heap->child;
+    first_heap->child = second_heap;
+    first_heap->order++;
+
+    return first_heap;
+}
+
+BinomialHeapNode *BinomialHeapNode::unite(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap) {
+    if (first_heap == nullptr) {
+        return second_heap;
+    }
+    if (second_heap == nullptr) {
+        return first_heap;
+    }
+
+    auto current_on_first_heap = first_heap;
+    auto current_on_second_heap = second_heap;
+
+    BinomialHeapNode *new_heap = nullptr;
+    if (current_on_first_heap->order > current_on_second_heap->order) {
+        new_heap = current_on_first_heap;
+        current_on_first_heap = current_on_first_heap->sibling;
+    } else if (current_on_second_heap->order > current_on_first_heap->order) {
+        new_heap = current_on_second_heap;
+        current_on_second_heap = current_on_second_heap->sibling;
+    }
+
+    BinomialHeapNode *current = new_heap;
+
+    while (true) {
+        if (current_on_first_heap->order == current_on_second_heap->order) {
+            current_on_first_heap = current_on_first_heap->sibling;
+            current_on_second_heap = current_on_second_heap->sibling;
+
+            current->sibling = add(current_on_first_heap, current_on_second_heap);
+            current = current->sibling;
+        } else if (current_on_first_heap->order > current_on_second_heap->order) {
+            current_on_first_heap = current_on_first_heap->sibling;
+            new_heap->sibling = current_on_first_heap;
+        } else if (current_on_second_heap->order > current_on_first_heap->order) {
+            current_on_second_heap = current_on_second_heap->sibling;
+            new_heap->sibling = current_on_second_heap;
+        }
+
+        if (current_on_first_heap == nullptr ||
+            current_on_second_heap == nullptr) {
+            break;
+        }
+    }
+
+    return new_heap;
 }
 
 void BinomialHeapNode::insert(Content content) {
@@ -56,30 +126,23 @@ std::string BinomialHeapNode::recursivePrint(BinomialHeapNode *node, const std::
         child_prefix += is_last_child ? "    " : "│   ";
     }
 
-    bool has_child = node->child != nullptr;
-    bool has_sibling = node->sibling != nullptr;
+    // Collect all direct children (child + its siblings)
+    std::vector<BinomialHeapNode *> children;
+    for (auto c = node->child; c != nullptr; c = c->sibling) {
+        children.push_back(c);
+    }
 
-    // If this node has neither a child nor a sibling, nothing more to print.
-    if (!has_child && !has_sibling) {
+    if (children.empty()) {
         return output;
     }
 
-    // In the left-child / right-sibling representation, print the sibling first
-    // (so it appears on the same level to the right), then the child (as the
-    // left-most child). Use placeholders when a position is empty to keep the
-    // visual alignment consistent.
-    if (has_sibling) {
-        output += BinomialHeapNode::recursivePrint(node->sibling, child_prefix, false, false);
-    } else {
-        auto connector = "├── ";
-        output += child_prefix + connector + std::format("{}\n", std::string("-"));
-    }
+    // Print the left-most child first, then remaining siblings appear on the last rows.
+    bool first_is_last = (children.size() == 1);
+    output += BinomialHeapNode::recursivePrint(children[0], child_prefix, first_is_last, false);
 
-    if (has_child) {
-        output += BinomialHeapNode::recursivePrint(node->child, child_prefix, true, false);
-    } else {
-        auto connector = "└── ";
-        output += child_prefix + connector + std::format("{}\n", std::string("-"));
+    for (size_t i = 1; i < children.size(); ++i) {
+        bool is_last = (i + 1 == children.size());
+        output += BinomialHeapNode::recursivePrint(children[i], child_prefix, is_last, false);
     }
 
     return output;

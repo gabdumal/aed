@@ -34,6 +34,7 @@ class HeapNode {
         bool contains(Content content);
         void insert(Content content);
         std::expected<void, std::string> remove(Content content);
+        std::expected<Content, std::string> pop();
 
         unsigned int countNodes();
 

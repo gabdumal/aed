@@ -36,6 +36,17 @@ void TestHeap::testRemove(HeapNode *tree, HeapNode::Content content) {
     std::println();
 }
 
+void TestHeap::testPop(HeapNode *tree) {
+    std::println("Pop.");
+    auto result = tree->pop();
+    if (!result) {
+        printError(result.error());
+    } else {
+        std::println("{}", result.value());
+    }
+    std::println();
+}
+
 void TestHeap::testCountNodes(HeapNode *tree) {
     auto quantity_of_nodes = tree->countNodes();
     std::println("Quantity of nodes: {}.", quantity_of_nodes);
@@ -159,6 +170,21 @@ void TestHeap::test() {
     TestHeap::printTree(tree);
     TestHeap::testCountNodes(tree);
     TestHeap::testIsStrictlyBinary(tree);
+
+    TestHeap::testPop(tree);
+    TestHeap::printTree(tree);
+
+    TestHeap::testPop(tree);
+    TestHeap::printTree(tree);
+
+    TestHeap::testPop(tree);
+    TestHeap::printTree(tree);
+
+    TestHeap::testPop(tree);
+    TestHeap::printTree(tree);
+
+    TestHeap::testPop(tree);
+    TestHeap::printTree(tree);
 
     delete tree;
 }

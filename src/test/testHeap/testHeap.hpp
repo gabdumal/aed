@@ -9,6 +9,8 @@ class TestHeap {
 
         static void testRemove(HeapNode *tree, HeapNode::Content content);
 
+        static void testPop(HeapNode *tree);
+
         static void testCountNodes(HeapNode *tree);
         static void testCountNodesRecursively(HeapNode *tree);
 

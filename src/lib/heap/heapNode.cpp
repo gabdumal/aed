@@ -192,6 +192,59 @@ std::expected<void, std::string> HeapNode::remove(Content content) {
     return {};
 }
 
+std::expected<HeapNode::Content, std::string> HeapNode::pop() {
+    // Save the root content to return later.
+    Content top_content = this->content;
+
+    // If the node is a leaf (single-node heap), reset content to default and return it.
+    if (this->left_child == nullptr && this->right_child == nullptr) {
+        this->content = default_content;
+        return top_content;
+    }
+
+    // Find the last node (rightmost deepest) via level-order traversal.
+    std::queue<HeapNode *> queue;
+    queue.push(this);
+
+    HeapNode *last_node = nullptr;
+
+    while (!queue.empty()) {
+        auto current = queue.front();
+        queue.pop();
+
+        last_node = current;
+
+        if (current->left_child != nullptr) {
+            queue.push(current->left_child);
+        }
+        if (current->right_child != nullptr) {
+            queue.push(current->right_child);
+        }
+    }
+
+    if (last_node == nullptr) {
+        return std::unexpected(message_for_content_not_found);
+    }
+
+    // Replace root content with last node's content, detach and delete last node.
+    this->content = last_node->content;
+
+    if (last_node->parent != nullptr) {
+        if (last_node->parent->left_child == last_node) {
+            last_node->parent->left_child = nullptr;
+        } else if (last_node->parent->right_child == last_node) {
+            last_node->parent->right_child = nullptr;
+        }
+    }
+
+    delete last_node;
+
+    // Restore heap invariant by percolating the new root content down.
+    HeapNode::descend(this);
+
+    return top_content;
+}
+
 std::string HeapNode::recursivePrint(HeapNode *node, const std::string &prefix, bool is_last_child, bool is_root) {
     std::string output = "";
 

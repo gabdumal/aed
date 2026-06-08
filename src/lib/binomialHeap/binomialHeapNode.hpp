@@ -20,6 +20,9 @@ class BinomialHeapNode {
         static void printTree(BinomialHeapNode *node, const std::string &prefix, bool last);
         void printRootList();
 
+        static void ascend(BinomialHeapNode *node);
+        static void descend(BinomialHeapNode *node);
+
     public:
         BinomialHeapNode(Content content);
 
@@ -35,6 +38,8 @@ class BinomialHeapNode {
         unsigned int countNodes();
 
         void print();
+
+        void changeContent(Content new_content);
 };
 
 #endif  // __BINOMIAL_HEAP_NODE_HPP__

@@ -275,3 +275,49 @@ unsigned int BinomialHeapNode::countNodes() {
 
     return quantity_of_nodes;
 }
+
+void BinomialHeapNode::ascend(BinomialHeapNode *node) {
+    while (node->parent != nullptr &&
+           node->content < node->parent->content) {
+        std::swap(node->content,
+                  node->parent->content);
+
+        node = node->parent;
+    }
+}
+
+void BinomialHeapNode::descend(BinomialHeapNode *node) {
+    while (true) {
+        BinomialHeapNode *smallest = node;
+
+        for (auto child = node->child;
+             child != nullptr;
+             child = child->sibling) {
+            if (child->content < smallest->content) {
+                smallest = child;
+            }
+        }
+
+        if (smallest == node) {
+            break;
+        }
+
+        std::swap(node->content,
+                  smallest->content);
+
+        node = smallest;
+    }
+}
+
+void BinomialHeapNode::changeContent(
+    Content new_content) {
+    auto old_content = this->content;
+
+    this->content = new_content;
+
+    if (new_content < old_content) {
+        ascend(this);
+    } else if (new_content > old_content) {
+        descend(this);
+    }
+}

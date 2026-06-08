@@ -13,6 +13,7 @@ class TestBinomialHeap {
         static BinomialHeapNode *testUnite(BinomialHeapNode *first_heap, BinomialHeapNode *second_heap);
 
         static void testCountNodes(BinomialHeapNode *node);
+        static void testChangeContent(BinomialHeapNode *node, BinomialHeapNode::Content);
 
         static void printHeap(BinomialHeapNode *node);
 

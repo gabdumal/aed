@@ -31,6 +31,12 @@ BinomialHeapNode *TestBinomialHeap::testInsert(BinomialHeapNode *node, BinomialH
     return new_heap;
 }
 
+void TestBinomialHeap::testChangeContent(BinomialHeapNode *node, BinomialHeapNode::Content content) {
+    std::println("Change priority to {}.", content);
+    node->changeContent(content);
+    printHeap(node);
+}
+
 void TestBinomialHeap::testFront(BinomialHeapNode *node) {
     std::println("Front: {}.", node->front());
     std::println();
@@ -169,6 +175,11 @@ void TestBinomialHeap::test() {
     node = TestBinomialHeap::testPop(node);
     TestBinomialHeap::printHeap(node);
     TestBinomialHeap::testFront(node);
+
+    TestBinomialHeap::testChangeContent(node, 50);
+    TestBinomialHeap::testChangeContent(node, 17);
+    TestBinomialHeap::testChangeContent(node, 8);
+    TestBinomialHeap::testChangeContent(node, 20);
 
     delete node;
 }
